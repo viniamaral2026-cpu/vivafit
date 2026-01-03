@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { Skeleton } from '@/components/ui/skeleton';
 import { usePathname, useRouter } from 'next/navigation';
@@ -28,12 +28,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
   
-  useEffect(() => {
-    const getSession = async () => {
+  const fetchUserSession = useCallback(async () => {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (session?.user) {
-        // Fetch additional user profile data from your 'profiles' table
         const { data: profile } = await supabase
           .from('profiles')
           .select('subscription')
@@ -49,9 +47,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(null);
       }
       setLoading(false);
-    };
+  }, [supabase]);
 
-    getSession();
+
+  useEffect(() => {
+    fetchUserSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
 
     return () => subscription.unsubscribe();
-  }, [supabase, supabase.auth]);
+  }, [fetchUserSession, supabase]);
 
   const isPremium = user?.subscription === 'Premium';
   
@@ -110,5 +110,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
-
-    
