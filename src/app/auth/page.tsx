@@ -64,7 +64,15 @@ export default function AuthPage() {
         createdAt: serverTimestamp(),
         subscription: "Free",
         role: "User",
+        onboardingComplete: false,
       });
+       router.push("/onboarding");
+    } else {
+      if(docSnap.data().onboardingComplete) {
+         router.push("/workouts");
+      } else {
+         router.push("/onboarding");
+      }
     }
   }
 
@@ -73,7 +81,10 @@ export default function AuthPage() {
     try {
       const result = await signInWithPopup(auth, provider);
       await createOrUpdateUserDocument(result.user);
-      handleSuccess(providerName);
+      toast({
+        title: `Login com ${providerName} bem-sucedido!`,
+        description: "Você será redirecionado...",
+      });
     } catch (error) {
       handleError(providerName, error);
     }
@@ -82,8 +93,12 @@ export default function AuthPage() {
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      handleSuccess("E-mail");
+      const result = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      await createOrUpdateUserDocument(result.user);
+      toast({
+        title: `Login com E-mail bem-sucedido!`,
+        description: "Você será redirecionado...",
+      });
     } catch (error: any) {
         console.error("Erro no login com E-mail:", error);
         let description = "Ocorreu um erro ao tentar fazer login. Verifique seu e-mail e senha.";
@@ -109,9 +124,8 @@ export default function AuthPage() {
 
       toast({
         title: "Cadastro bem-sucedido!",
-        description: "Sua conta foi criada. Você será redirecionado.",
+        description: "Sua conta foi criada. Vamos configurar seu perfil.",
       });
-      router.push("/workouts");
     } catch (error: any) {
       console.error("Erro no cadastro:", error);
       let description = "Ocorreu um erro ao criar sua conta. Tente novamente.";
