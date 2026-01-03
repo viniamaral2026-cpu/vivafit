@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-fitness",
-      "description": "A woman in a yoga pose at sunset",
-      "imageUrl": "https://images.unsplash.com/photo-1668459551917-af9d0155d838?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx5b2dhJTIwc3Vuc2V0fGVufDB8fHx8MTc2NzQzNTk1NHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "yoga sunset"
+      "description": "A diverse group of people in a fitness class",
+      "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmaXRuZXNzJTIwY2xhc3N8ZW58MHx8fHwxNzY3NTk0NjUxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fitness class"
     },
     {
       "id": "workout-1",
@@ -33,25 +33,25 @@
     {
       "id": "workout-5",
       "description": "A man running on a treadmill with determination",
-      "imageUrl": "https://images.unsplash.com/photo-1651840403915-a69f6386b959?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cnVubmluZyUyMHRyZWFkbWlsbHxlbnwwfHx8fDE3NjczODM2MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1651840403915-a69f6386b959?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cnVubmluZyUyMHRyZWFkbWlsbHxlbnwwfHx8fDE3NjczODM2MDN8MA&ixlib_rb-4.1.0&q=80&w=1080",
       "imageHint": "running treadmill"
     },
     {
       "id": "workout-6",
       "description": "A serene yoga session outdoors by the water",
-      "imageUrl": "https://images.unsplash.com/photo-1564282350350-a8355817fd2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvdXRkb29yJTIweW9nYXxlbnwwfHx8fDE3Njc0MzU5NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1564282350350-a8355817fd2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvdXRkb29yJTIweW9nYXxlbnwwfHx8fDE3Njc0MzU5NTR8MA&ixlib_rb-4.1.0&q=80&w=1080",
       "imageHint": "outdoor yoga"
     },
     {
       "id": "ad-1",
       "description": "A display of healthy food products",
-      "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3Njc0MjE2MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3Njc0MjE2MzF8MA&ixlib_rb-4.1.0&q=80&w=1080",
       "imageHint": "healthy food"
     },
     {
       "id": "ad-2",
       "description": "A collection of colorful running shoes",
-      "imageUrl": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxydW5uaW5nJTIwc2hvZXN8ZW58MHx8fHwxNzY3NDI5MTM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxydW5uaW5nJTIwc2hvZXN8ZW58MHx8fHwxNzY3NDI5MTM2fDA&ixlib_rb-4.1.0&q=80&w=1080",
       "imageHint": "running shoes"
     }
   ]
