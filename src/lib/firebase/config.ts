@@ -16,11 +16,11 @@ const firebaseConfig = {
 // SIMULATED: Firebase is temporarily disabled to allow UI development without a backend.
 let app, auth, db;
 try {
-  // app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-  // auth = getAuth(app);
-  // db = initializeFirestore(app, {
-  //   localCache: memoryLocalCache()
-  // });
+    // app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    // auth = getAuth(app);
+    // db = initializeFirestore(app, {
+    //   localCache: memoryLocalCache()
+    // });
     console.log("Firebase is currently disabled. Running in offline/simulation mode.");
 } catch (e) {
     console.error("Firebase initialization failed. Running in offline mode.");

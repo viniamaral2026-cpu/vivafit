@@ -5,6 +5,12 @@ import ads from './seed-data/ads.json';
 
 async function seedDatabase() {
     console.log('Iniciando o processo de semeadura do banco de dados...');
+    
+    if (!db) {
+        console.warn('AVISO: O Firebase não está conectado. O aplicativo está rodando em modo offline.');
+        console.warn('Os dados serão lidos de arquivos locais. O comando `db:seed` não é necessário neste modo.');
+        process.exit(0);
+    }
 
     try {
         // Seed Workouts
@@ -51,6 +57,10 @@ async function seedDatabase() {
 
     } catch (error) {
         console.error('Ocorreu um erro durante a semeadura do banco de dados:', error);
+        if (error.message.includes('PERMISSION_DENIED')) {
+            console.error('\nERRO DE PERMISSÃO: Verifique se a API do Firestore está ativada no seu projeto Google Cloud e se as Regras de Segurança permitem escrita.');
+            console.error('Visite: https://console.developers.google.com/apis/api/firestore.googleapis.com/overview');
+        }
         process.exit(1);
     }
 }

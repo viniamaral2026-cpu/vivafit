@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
          setUser(mockUser);
       }
       setLoading(false);
-    }, 1000); // Simulate network delay
+    }, 500); // Shorten delay
   }, []);
   
   if (loading) {
