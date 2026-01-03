@@ -1,3 +1,58 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-fitness",
+      "description": "A woman in a yoga pose at sunset",
+      "imageUrl": "https://images.unsplash.com/photo-1668459551917-af9d0155d838?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx5b2dhJTIwc3Vuc2V0fGVufDB8fHx8MTc2NzQzNTk1NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "yoga sunset"
+    },
+    {
+      "id": "workout-1",
+      "description": "A person doing yoga in a bright studio",
+      "imageUrl": "https://images.unsplash.com/photo-1641971216860-9fe6fc00de40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx5b2dhJTIwZml0bmVzc3xlbnwwfHx8fDE3NjczNTQ0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "yoga fitness"
+    },
+    {
+      "id": "workout-2",
+      "description": "A person lifting weights in a modern gym",
+      "imageUrl": "https://images.unsplash.com/photo-1665366593451-e2e80e3a4212?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3ZWlnaHRsaWZ0aW5nJTIwZ3ltfGVufDB8fHx8MTc2NzMyMTU2OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "weightlifting gym"
+    },
+    {
+      "id": "workout-3",
+      "description": "A group of people in a high-energy cardio class",
+      "imageUrl": "https://images.unsplash.com/photo-1758875569612-94d5e0f1a35f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjYXJkaW8lMjBjbGFzc3xlbnwwfHx8fDE3Njc0MzU5NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cardio class"
+    },
+    {
+      "id": "workout-4",
+      "description": "A woman performing a pilates exercise on a mat",
+      "imageUrl": "https://images.unsplash.com/photo-1754257319723-6a775bedb0fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGlsYXRlcyUyMGV4ZXJjaXNlfGVufDB8fHx8MTc2NzQzNTk1NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pilates exercise"
+    },
+    {
+      "id": "workout-5",
+      "description": "A man running on a treadmill with determination",
+      "imageUrl": "https://images.unsplash.com/photo-1651840403915-a69f6386b959?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cnVubmluZyUyMHRyZWFkbWlsbHxlbnwwfHx8fDE3NjczODM2MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "running treadmill"
+    },
+    {
+      "id": "workout-6",
+      "description": "A serene yoga session outdoors by the water",
+      "imageUrl": "https://images.unsplash.com/photo-1564282350350-a8355817fd2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvdXRkb29yJTIweW9nYXxlbnwwfHx8fDE3Njc0MzU5NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "outdoor yoga"
+    },
+    {
+      "id": "ad-1",
+      "description": "A display of healthy food products",
+      "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3Njc0MjE2MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "healthy food"
+    },
+    {
+      "id": "ad-2",
+      "description": "A collection of colorful running shoes",
+      "imageUrl": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxydW5uaW5nJTIwc2hvZXN8ZW58MHx8fHwxNzY3NDI5MTM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "running shoes"
+    }
+  ]
 }
