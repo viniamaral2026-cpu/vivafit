@@ -100,7 +100,7 @@ export default function DashboardLayout({
       { label: "Atividades", icon: Activity, href: "/activity" },
       { label: "Medidas", icon: Ruler, href: "/measurements" },
       { label: "Sinais vitais", icon: HeartPulse, href: "/vitals" },
-      { label: "Sono", icon: Bed, href: "#" },
+      { label: "Sono", icon: Bed, href: "/sleep" },
       { label: "Monitoramento de ciclo", icon: CalendarDays, href: "#" },
   ].filter(item => item.label.toLowerCase().includes(searchQuery.toLowerCase()));
   
