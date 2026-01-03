@@ -9,6 +9,7 @@ import {
   Settings,
   Wallet,
   Info,
+  ShieldQuestion,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -52,6 +53,7 @@ export default function AccountLayout({
     { href: "/account/payments", label: "Pagamentos", icon: Wallet },
     { href: "/account/settings", label: "Configurações", icon: Settings },
     { href: "/account/info", label: "Minhas Informações", icon: Info },
+    { href: "/account/google", label: "Conta Google", icon: ShieldQuestion },
   ];
   
   if (authLoading || !user) {
@@ -64,6 +66,7 @@ export default function AccountLayout({
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
+                 <Skeleton className="h-10 w-full" />
                  <Skeleton className="h-10 w-full" />
             </div>
         </div>

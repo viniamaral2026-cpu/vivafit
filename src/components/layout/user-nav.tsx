@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -13,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CreditCard, LayoutDashboard, LogOut, User as UserIcon } from "lucide-react";
+import { CreditCard, LayoutDashboard, LogOut, User as UserIcon, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/app/auth-provider";
 import { useToast } from "@/hooks/use-toast";
 
@@ -70,8 +71,14 @@ export function UserNav() {
               <span>Perfil</span>
             </Link>
           </DropdownMenuItem>
+           <DropdownMenuItem asChild>
+            <Link href="/account/google">
+              <ShieldCheck className="mr-2 h-4 w-4" />
+              <span>Gerenciar Conta</span>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/account/subscription">
+            <Link href="/account/billing">
               <CreditCard className="mr-2 h-4 w-4" />
               <span>Assinatura</span>
             </Link>
