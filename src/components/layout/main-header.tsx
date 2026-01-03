@@ -24,7 +24,6 @@ export function MainHeader() {
   const isAppPage = [
     '/journal',
     '/recipes',
-    '/workouts',
     '/ai-coach',
     '/premium',
     '/devices',
@@ -34,21 +33,14 @@ export function MainHeader() {
     '/subscribe',
     '/onboarding',
     '/dashboard'
-  ].some(path => pathname.startsWith(path) && path !== '/workouts');
+  ].some(path => pathname.startsWith(path));
 
-  const isWorkoutDetailPage = pathname.startsWith('/workouts/')
 
-  // Hide header on all internal app pages, except for the main /workouts list page.
-  // The workout detail page needs the main header.
-  if (!loading && user && isAppPage && !isWorkoutDetailPage) {
+  // Hide header on all internal app pages.
+  if (isAppPage) {
     return null;
   }
   
-  // Also hide on auth pages.
-  if (pathname.startsWith('/auth') || pathname.startsWith('/subscribe') || pathname.startsWith('/onboarding')) {
-      return null;
-  }
-
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -65,8 +57,8 @@ export function MainHeader() {
             ))}
              {/* Show link to Journal if user is logged in */}
             {user && !loading && (
-                 <Link href="/journal" className="transition-colors hover:text-foreground/80 text-foreground/60">
-                    Diário
+                 <Link href="/journal" className="transition-colors hover:text-foreground/80 text-primary font-semibold">
+                    Acessar Diário
                 </Link>
             )}
           </nav>
@@ -98,8 +90,8 @@ export function MainHeader() {
               ))}
                {/* Show link to Journal if user is logged in */}
               {user && !loading && (
-                    <Link href="/journal" className="text-foreground">
-                        Diário
+                    <Link href="/journal" className="text-primary font-semibold">
+                        Acessar Diário
                     </Link>
               )}
             </div>
@@ -108,7 +100,9 @@ export function MainHeader() {
 
         <div className="flex flex-1 items-center justify-end space-x-4">
           {loading ? null : user ? (
-            <UserNav />
+             <Button asChild>
+                <Link href="/journal">Entrar no App</Link>
+              </Button>
           ) : (
             <>
               <Link href="/auth" className="hidden md:inline-flex text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60">

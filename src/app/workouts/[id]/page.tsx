@@ -1,3 +1,4 @@
+import { UserNav } from "@/components/layout/user-nav";
 import { MainHeader } from "@/components/layout/main-header";
 import { Workout } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
@@ -42,14 +43,16 @@ export default async function WorkoutDetailPage({ params }: { params: { id: stri
 
   return (
     <div className="flex min-h-screen flex-col">
-      <MainHeader />
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between">
+           <Button variant="ghost" asChild>
+              <Link href="/workouts">&larr; Voltar para os Treinos</Link>
+           </Button>
+           <UserNav />
+        </div>
+      </header>
       <main className="container py-8">
         <div className="max-w-4xl mx-auto">
-            <div className="mb-4">
-                <Button variant="ghost" asChild>
-                    <Link href="/workouts">&larr; Back to Workouts</Link>
-                </Button>
-            </div>
             <div className="relative mb-6 aspect-video rounded-lg overflow-hidden bg-muted">
                 {showPremiumBlocker ? (
                     <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center z-10">
