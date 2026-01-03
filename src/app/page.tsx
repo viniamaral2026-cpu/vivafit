@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ export default function Home() {
                     data-ai-hint={heroImage.imageHint}
                     width={526}
                     height={296}
-                    className="aspect-video object-cover"
+                    className="aspect-video object-contain"
                   />
                 </div>
               )}
