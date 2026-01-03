@@ -145,7 +145,7 @@ export default function DashboardLayout({
       <Sidebar>
         <SidebarHeader className="p-4">
             <Link href="/dashboard">
-              <Logo className="w-full" />
+              <Logo className="w-24" />
             </Link>
         </SidebarHeader>
         <SidebarContent className="p-2">
