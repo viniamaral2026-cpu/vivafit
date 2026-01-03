@@ -8,19 +8,18 @@ import { UserNav } from "./user-nav";
 import { Logo } from "@/components/icons/logo";
 
 const navLinks = [
-  { href: "/#features", label: "Features" },
-  { href: "/#pricing", label: "Pricing" },
-  { href: "/workouts", label: "Workouts" },
-  { href: "/admin/dashboard", label: "Admin" },
+  { href: "/#features", label: "Funcionalidades" },
+  { href: "/#pricing", label: "Preços" },
+  { href: "/workouts", label: "Recursos" },
 ];
 
 export function MainHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
+      <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Logo />
+            <Logo className="w-24"/>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {navLinks.map(link => (
@@ -56,9 +55,13 @@ export function MainHeader() {
           </SheetContent>
         </Sheet>
 
-        <div className="flex flex-1 items-center justify-end space-x-2">
-          {/* This is a placeholder for auth state. In a real app, you'd conditionally render this. */}
-          <UserNav />
+        <div className="flex flex-1 items-center justify-end space-x-4">
+          <Link href="/login" className="hidden md:inline-flex text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60">
+            Entrar
+          </Link>
+          <Button asChild>
+            <Link href="/register">Começar no app</Link>
+          </Button>
         </div>
       </div>
     </header>

@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CheckCircle, Crown, Dumbbell, Flame, HeartPulse, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { MainHeader } from "@/components/layout/main-header";
 import placeholderImages from '@/lib/placeholder-images.json';
+import { Card, CardContent } from "@/components/ui/card";
+import { BarChart, Video, Bot, Watch } from "lucide-react";
 
 export default function Home() {
   const heroImage = placeholderImages.placeholderImages.find(p => p.id === 'hero-fitness');
@@ -14,72 +14,91 @@ export default function Home() {
       <MainHeader />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+        <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline">
-                    Unlock Your Potential with VivaFit
+            <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+              <div className="flex flex-col justify-center space-y-6">
+                <div className="space-y-4">
+                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline">
+                    Transforme seu corpo com <span className="text-primary">inteligência e motivação.</span>
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Access exclusive workout plans, track your progress, and join a community dedicated to a healthier lifestyle.
+                    O VivaFit combina IA de ponta, acompanhamento de exercícios e treinos personalizados para garantir que você alcance seus melhores resultados.
                   </p>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <div className="flex flex-col gap-4 min-[400px]:flex-row">
                   <Button size="lg" asChild>
                     <Link href="/register">
-                      Start Your Free Trial
+                      Começar Gratuitamente
                     </Link>
                   </Button>
-                  <Button size="lg" variant="secondary" asChild>
-                    <Link href="/#pricing">
-                      See Plans
+                  <Button size="lg" variant="outline" asChild>
+                    <Link href="#">
+                      Ver Vídeo Demo
                     </Link>
                   </Button>
                 </div>
               </div>
               {heroImage && (
-                <Image
-                  src={heroImage.imageUrl}
-                  alt={heroImage.description}
-                  data-ai-hint={heroImage.imageHint}
-                  width={600}
-                  height={400}
-                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
-                />
+                <div className="relative">
+                  <Image
+                    src={heroImage.imageUrl}
+                    alt={heroImage.description}
+                    data-ai-hint={heroImage.imageHint}
+                    width={600}
+                    height={400}
+                    className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <button className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/80 backdrop-blur-sm transition-transform hover:scale-110">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-primary-foreground"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+        <section id="features" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Key Features</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">Everything You Need to Succeed</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Tudo o que você precisa em um só lugar</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our platform is designed to provide you with the tools and content to achieve your fitness goals.
+                  Explore os pilares da sua jornada fitness.
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
-              <div className="grid gap-1 text-center">
-                <Crown className="mx-auto h-12 w-12 text-primary" />
-                <h3 className="text-xl font-bold">Premium Content</h3>
-                <p className="text-muted-foreground">High-quality workout videos and plans from top trainers.</p>
+            <div className="mx-auto grid max-w-5xl items-start gap-8 py-12 sm:grid-cols-2 md:grid-cols-4 lg:gap-12">
+              <div className="grid gap-2 text-center">
+                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-green-100 text-green-600">
+                    <BarChart className="h-6 w-6" />
+                 </div>
+                <h3 className="text-lg font-bold">Contador de Macros</h3>
+                <p className="text-sm text-muted-foreground">Ajuste sua alimentação e bata suas metas diárias com facilidade.</p>
               </div>
-              <div className="grid gap-1 text-center">
-                <HeartPulse className="mx-auto h-12 w-12 text-primary" />
-                <h3 className="text-xl font-bold">Progress Tracking</h3>
-                <p className="text-muted-foreground">Monitor your performance and see your improvements over time.</p>
+              <div className="grid gap-2 text-center">
+                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                    <Video className="h-6 w-6" />
+                 </div>
+                <h3 className="text-lg font-bold">Treinos em Vídeo</h3>
+                <p className="text-sm text-muted-foreground">Centenas de treinos guiados por especialistas, de acordo com seu nível.</p>
               </div>
-              <div className="grid gap-1 text-center">
-                <Flame className="mx-auto h-12 w-12 text-primary" />
-                <h3 className="text-xl font-bold">Personalized Plans</h3>
-                <p className="text-muted-foreground">Get workout routines tailored to your specific fitness level and goals.</p>
+              <div className="grid gap-2 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
+                    <Bot className="h-6 w-6" />
+                 </div>
+                <h3 className="text-lg font-bold">IA Health Coach</h3>
+                <p className="text-sm text-muted-foreground">Utilize a IA para otimizar os seus treinos e tirar dúvidas 24h.</p>
+              </div>
+               <div className="grid gap-2 text-center">
+                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100 text-orange-600">
+                    <Watch className="h-6 w-6" />
+                 </div>
+                <h3 className="text-lg font-bold">Sincronização Wearable</h3>
+                <p className="text-sm text-muted-foreground">Integre seus dados de smartwatches para um acompanhamento completo.</p>
               </div>
             </div>
           </div>
@@ -87,40 +106,27 @@ export default function Home() {
 
         {/* Pricing Section */}
         <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
-            <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">
-                Find the Perfect Plan
-              </h2>
-              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Choose a subscription that fits your needs and start your fitness journey today.
-              </p>
-            </div>
-            <div className="mx-auto w-full max-w-md">
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle>Premium Monthly</CardTitle>
-                  <CardDescription>
-                    Full access to all our premium features and content.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="grid gap-4">
-                  <div className="flex items-baseline justify-center space-x-2">
-                    <span className="text-4xl font-bold">$12</span>
-                    <span className="text-xl text-muted-foreground">/month</span>
-                  </div>
-                  <ul className="grid gap-2 text-left text-muted-foreground">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Unlimited premium workouts</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Personalized plans</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Ad-free experience</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Cancel anytime</li>
-                  </ul>
+          <div className="container px-4 md:px-6">
+            <div className="mx-auto max-w-4xl">
+              <Card className="bg-gray-900 text-white rounded-3xl p-8 md:p-12 shadow-2xl" style={{background: 'linear-gradient(145deg, #182848 0%, #4b6cb7 100%)'}}>
+                <CardContent className="grid md:grid-cols-2 gap-8 items-center">
+                    <div className="space-y-4 text-center md:text-left">
+                        <div className="inline-block rounded-lg bg-white/10 px-3 py-1 text-sm">POWERED BY VIVAFIT</div>
+                        <h2 className="text-4xl font-bold tracking-tight font-headline">VivaFit Premium</h2>
+                        <p className="text-gray-300">
+                          Desbloqueie planos de refeição personalizados, ou IA, artigos exclusivos e Masterclasses com especialistas.
+                        </p>
+                    </div>
+                    <div className="flex flex-col items-center gap-6">
+                         <div className="text-center rounded-xl bg-black/20 p-6">
+                            <div className="text-5xl font-bold">R$ 9,99<span className="text-2xl text-gray-400">/mês</span></div>
+                            <p className="text-sm text-gray-400">Cancele quando quiser</p>
+                        </div>
+                        <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white" size="lg" asChild>
+                            <Link href="/subscribe">Seja Premium Agora</Link>
+                        </Button>
+                    </div>
                 </CardContent>
-                <CardFooter>
-                  <Button className="w-full" asChild>
-                    <Link href="/subscribe">Subscribe Now</Link>
-                  </Button>
-                </CardFooter>
               </Card>
             </div>
           </div>
@@ -130,10 +136,10 @@ export default function Home() {
         <p className="text-xs text-muted-foreground">&copy; 2024 VivaFit. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link href="#" className="text-xs hover:underline underline-offset-4">
-            Terms of Service
+            Termos de Serviço
           </Link>
           <Link href="#" className="text-xs hover:underline underline-offset-4">
-            Privacy
+            Privacidade
           </Link>
         </nav>
       </footer>
