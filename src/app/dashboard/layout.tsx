@@ -14,6 +14,12 @@ import {
     Info,
     Clapperboard,
     Home,
+    Search,
+    Activity,
+    Ruler,
+    HeartPulse,
+    Bed,
+    CalendarDays,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -30,11 +36,12 @@ import {
 import { UserNav } from "@/components/layout/user-nav";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "../auth-provider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
 
 export default function DashboardLayout({
   children,
@@ -45,6 +52,7 @@ export default function DashboardLayout({
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (authLoading) return; 
@@ -86,6 +94,14 @@ export default function DashboardLayout({
     { href: "/testimonials", label: "Depoimentos", icon: Clapperboard },
     { href: "/devices", label: "Dispositivos", icon: Smartphone },
   ];
+
+  const searchResults = [
+      { label: "Atividades", icon: Activity, href: "#" },
+      { label: "Medidas", icon: Ruler, href: "#" },
+      { label: "Sinais Vitais", icon: HeartPulse, href: "#" },
+      { label: "Sono", icon: Bed, href: "#" },
+      { label: "Monitoramento de ciclo", icon: CalendarDays, href: "#" },
+  ].filter(item => item.label.toLowerCase().includes(searchQuery.toLowerCase()));
   
   if (authLoading || !user) {
     return (
@@ -134,25 +150,56 @@ export default function DashboardLayout({
           </Card>
         </SidebarHeader>
         <SidebarContent className="p-2">
-          <SidebarMenu>
-            {menuItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname.startsWith(item.href) && (item.href === '/dashboard' ? pathname === item.href : true)}
-                  variant={pathname.startsWith(item.href) && (item.href === '/dashboard' ? pathname === item.href : true) ? 'default' : 'ghost'}
-                  className="w-full justify-start"
-                  tooltip={{ children: item.label }}
-                >
-                  <Link href={item.href} className="flex items-center">
-                    <item.icon className="w-5 h-5 mr-3" />
-                    <span>{item.label}</span>
-                    {item.isPremium && <Gem className="ml-auto h-4 w-4 text-yellow-400" />}
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
+            <div className="relative mb-2">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input 
+                    placeholder="Procurar..." 
+                    className="pl-9"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </div>
+          {searchQuery ? (
+             <SidebarMenu>
+                 {searchResults.length > 0 ? searchResults.map((item) => (
+                    <SidebarMenuItem key={item.label}>
+                        <SidebarMenuButton
+                        asChild
+                        variant="ghost"
+                        className="w-full justify-start"
+                        tooltip={{ children: item.label }}
+                        >
+                        <Link href={item.href} className="flex items-center">
+                            <item.icon className="w-5 h-5 mr-3" />
+                            <span>{item.label}</span>
+                        </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                 )) : (
+                    <p className="p-4 text-sm text-center text-muted-foreground">Nenhum resultado.</p>
+                 )}
+            </SidebarMenu>
+          ) : (
+            <SidebarMenu>
+                {menuItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                    asChild
+                    isActive={pathname.startsWith(item.href) && (item.href === '/dashboard' ? pathname === item.href : true)}
+                    variant={pathname.startsWith(item.href) && (item.href === '/dashboard' ? pathname === item.href : true) ? 'default' : 'ghost'}
+                    className="w-full justify-start"
+                    tooltip={{ children: item.label }}
+                    >
+                    <Link href={item.href} className="flex items-center">
+                        <item.icon className="w-5 h-5 mr-3" />
+                        <span>{item.label}</span>
+                        {item.isPremium && <Gem className="ml-auto h-4 w-4 text-yellow-400" />}
+                    </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+                ))}
+            </SidebarMenu>
+          )}
         </SidebarContent>
         <SidebarFooter className="flex flex-col gap-2 p-4">
             <Card className="bg-primary/10 border-primary/20">
