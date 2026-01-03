@@ -1,21 +1,133 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { List, Watch } from "lucide-react";
+import { Watch } from "lucide-react";
+import { useAuth } from "@/app/auth-provider";
+import { useEffect, useState } from "react";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase/config";
+import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
+
+type NotificationSettings = {
+    workoutReminders: boolean;
+    mealLogging: boolean;
+    weeklySummary: boolean;
+}
 
 export default function AccountSettingsPage() {
+    const { user } = useAuth();
+    const { toast } = useToast();
+    const [settings, setSettings] = useState<NotificationSettings | null>(null);
+    const [loading, setLoading] = useState(true);
+
+     useEffect(() => {
+        if (user) {
+            const fetchSettings = async () => {
+                setLoading(true);
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists() && userDoc.data().notificationSettings) {
+                    setSettings(userDoc.data().notificationSettings);
+                } else {
+                    // Default settings if none are found
+                    setSettings({
+                        workoutReminders: true,
+                        mealLogging: true,
+                        weeklySummary: false,
+                    });
+                }
+                setLoading(false);
+            };
+            fetchSettings();
+        } else {
+             setLoading(false);
+        }
+    }, [user]);
+
+    const handleSettingChange = async (key: keyof NotificationSettings, value: boolean) => {
+        if (!user || !settings) return;
+
+        const newSettings = { ...settings, [key]: value };
+        setSettings(newSettings);
+        
+        try {
+            const userDocRef = doc(db, "users", user.uid);
+            await updateDoc(userDocRef, {
+                notificationSettings: newSettings
+            });
+            toast({
+                title: "Configuração salva!",
+                description: "Suas preferências de notificação foram atualizadas.",
+            });
+        } catch (error) {
+            console.error("Error updating settings:", error);
+            // Revert optimistic update on error
+            setSettings(settings);
+            toast({
+                title: "Erro",
+                description: "Não foi possível salvar suas configurações. Tente novamente.",
+                variant: "destructive"
+            });
+        }
+    };
+
+
+    if (loading) {
+        return (
+             <div className="space-y-6">
+                <div>
+                    <Skeleton className="h-8 w-1/4" />
+                    <Skeleton className="h-4 w-1/2 mt-2" />
+                </div>
+                 <Card>
+                    <CardHeader>
+                        <Skeleton className="h-6 w-1/3" />
+                        <Skeleton className="h-4 w-2/3 mt-2" />
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <Skeleton className="h-10 w-full" />
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <Skeleton className="h-6 w-1/3" />
+                        <Skeleton className="h-4 w-2/3 mt-2" />
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <Skeleton className="h-5 w-1/3" />
+                            <Skeleton className="h-6 w-11 rounded-full" />
+                        </div>
+                         <div className="flex items-center justify-between">
+                            <Skeleton className="h-5 w-1/3" />
+                            <Skeleton className="h-6 w-11 rounded-full" />
+                        </div>
+                         <div className="flex items-center justify-between">
+                            <Skeleton className="h-5 w-1/3" />
+                            <Skeleton className="h-6 w-11 rounded-full" />
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        )
+    }
+
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold font-headline">Settings</h1>
-                <p className="text-muted-foreground">Manage your account and device settings.</p>
+                <h1 className="text-2xl font-bold font-headline">Configurações</h1>
+                <p className="text-muted-foreground">Gerencie as configurações da sua conta e dispositivos.</p>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Connected Devices</CardTitle>
-                    <CardDescription>Sync your activity from your wearable devices.</CardDescription>
+                    <CardTitle>Dispositivos Conectados</CardTitle>
+                    <CardDescription>Sincronize sua atividade de seus dispositivos vestíveis.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="flex items-center justify-between rounded-lg border p-4">
@@ -23,32 +135,48 @@ export default function AccountSettingsPage() {
                             <Watch className="w-8 h-8" />
                             <div>
                                 <h3 className="font-semibold">Smartwatch</h3>
-                                <p className="text-sm text-muted-foreground">Not connected</p>
+                                <p className="text-sm text-muted-foreground">Não conectado</p>
                             </div>
                         </div>
-                        <Button variant="outline">Connect</Button>
+                        <Button variant="outline">Conectar</Button>
                     </div>
                 </CardContent>
             </Card>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Notifications</CardTitle>
-                    <CardDescription>Manage how you receive notifications from VivaFit.</CardDescription>
+                    <CardTitle>Notificações</CardTitle>
+                    <CardDescription>Gerencie como você recebe notificações do VivaFit.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="workout-reminders">Workout Reminders</Label>
-                        <Switch id="workout-reminders" defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="meal-logging">Meal Logging Alerts</Label>
-                        <Switch id="meal-logging" defaultChecked />
-                    </div>
-                     <div className="flex items-center justify-between">
-                        <Label htmlFor="weekly-summary">Weekly Progress Summary</Label>
-                        <Switch id="weekly-summary" />
-                    </div>
+                    {settings && (
+                        <>
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="workout-reminders">Lembretes de treino</Label>
+                                <Switch 
+                                    id="workout-reminders" 
+                                    checked={settings.workoutReminders} 
+                                    onCheckedChange={(value) => handleSettingChange('workoutReminders', value)}
+                                />
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="meal-logging">Alertas de registro de refeições</Label>
+                                <Switch 
+                                    id="meal-logging" 
+                                    checked={settings.mealLogging}
+                                    onCheckedChange={(value) => handleSettingChange('mealLogging', value)}
+                                />
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="weekly-summary">Resumo semanal do progresso</Label>
+                                <Switch 
+                                    id="weekly-summary"
+                                    checked={settings.weeklySummary}
+                                    onCheckedChange={(value) => handleSettingChange('weeklySummary', value)}
+                                />
+                            </div>
+                        </>
+                    )}
                 </CardContent>
             </Card>
         </div>
