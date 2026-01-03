@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -79,7 +80,7 @@ export default function AdminLayout({
               </SidebarMenuItem>
             ))}
              <Collapsible open={isContentOpen} onOpenChange={setIsContentOpen}>
-                <CollapsibleTrigger className="w-full">
+                <CollapsibleTrigger asChild className="w-full">
                      <SidebarMenuButton className="w-full justify-between" variant="ghost">
                         <div className="flex items-center gap-2">
                             <Newspaper />
