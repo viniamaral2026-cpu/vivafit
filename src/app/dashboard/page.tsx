@@ -10,7 +10,6 @@ import { useAuth } from "../auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DailyGoalCard } from "@/components/dashboard/daily-goal-card";
 import { WeeklyGoalCard } from "@/components/dashboard/weekly-goal-card";
-import { Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { WeightTrendCard } from "@/components/dashboard/weight-trend-card";
 import { EnergyManagementCard } from "@/components/dashboard/energy-management-card";
@@ -121,10 +120,17 @@ export default function DashboardPage() {
         
         <DailyGoalCard />
         <WeeklyGoalCard />
+        
+        <div className="space-y-4">
+            <h2 className="text-xl font-bold font-headline px-2">Tendências</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <WeightTrendCard />
+                <EnergyManagementCard />
+            </div>
+        </div>
+
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <WeightTrendCard />
-          <EnergyManagementCard />
           <DiscoverCard />
           <SleepNeedsCard />
           <YourFitSleepCard />
@@ -174,3 +180,4 @@ export default function DashboardPage() {
     </div>
   )
 }
+
