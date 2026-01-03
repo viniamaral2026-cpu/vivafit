@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   User,
   CreditCard,
@@ -22,6 +22,9 @@ import {
 import { UserNav } from "@/components/layout/user-nav";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/icons/logo";
+import { useAuth } from "../auth-provider";
+import { useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AccountLayout({
   children,
@@ -29,19 +32,48 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
 
   const menuItems = [
-    { href: "/account", label: "Profile", icon: User },
-    { href: "/account/subscription", label: "Subscription", icon: CreditCard },
-    { href: "/account/settings", label: "Settings", icon: Settings },
+    { href: "/account", label: "Perfil", icon: User },
+    { href: "/account/subscription", label: "Assinatura", icon: CreditCard },
+    { href: "/account/settings", label: "Configurações", icon: Settings },
   ];
+  
+  if (loading || !user) {
+     return (
+      <div className="flex min-h-screen">
+        <div className="w-64 border-r p-4 hidden md:block">
+            <Skeleton className="h-8 w-24 mb-8" />
+            <div className="space-y-2">
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
+            </div>
+        </div>
+        <div className="flex-1 p-8">
+            <Skeleton className="h-8 w-1/4 mb-4" />
+            <Skeleton className="h-40 w-full" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Logo className="w-24" />
+            <Link href="/">
+              <Logo className="w-24" />
+            </Link>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -65,7 +97,7 @@ export default function AccountLayout({
         <SidebarFooter>
             <Button variant="ghost" className="w-full justify-start" asChild>
                 <Link href="/workouts">
-                    &larr; Back to Workouts
+                    &larr; Voltar para os Treinos
                 </Link>
             </Button>
         </SidebarFooter>

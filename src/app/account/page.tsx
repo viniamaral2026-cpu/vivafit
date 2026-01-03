@@ -8,6 +8,7 @@ import { useAuth } from "../auth-provider";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type UserProfile = {
     name: string;
@@ -24,13 +25,45 @@ export default function AccountProfilePage() {
                 const userDoc = await getDoc(doc(db, "users", user.uid));
                 if (userDoc.exists()) {
                     setProfile(userDoc.data() as UserProfile);
+                } else {
+                    // Fallback for new users who might not have a doc yet
+                    setProfile({
+                        name: user.displayName || 'Usuário',
+                        email: user.email || 'Não informado'
+                    });
                 }
             };
             fetchProfile();
         }
     }, [user]);
 
-    if (!profile) return <div>Carregando perfil...</div>
+    if (!profile) return (
+        <div className="space-y-6">
+            <div>
+                <Skeleton className="h-8 w-1/4" />
+                <Skeleton className="h-4 w-1/2 mt-2" />
+            </div>
+            <Card>
+                <CardHeader>
+                    <Skeleton className="h-6 w-1/3" />
+                    <Skeleton className="h-4 w-2/3 mt-2" />
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="grid gap-2">
+                        <Skeleton className="h-4 w-1/4" />
+                        <Skeleton className="h-10 w-full" />
+                    </div>
+                    <div className="grid gap-2">
+                        <Skeleton className="h-4 w-1/4" />
+                        <Skeleton className="h-10 w-full" />
+                    </div>
+                </CardContent>
+                <CardFooter className="border-t px-6 py-4">
+                    <Skeleton className="h-10 w-32" />
+                </CardFooter>
+            </Card>
+        </div>
+    )
 
     return (
         <div className="space-y-6">
