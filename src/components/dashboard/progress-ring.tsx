@@ -2,13 +2,24 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
 
-const dataSteps = [{ value: 35 }, { value: 65 }] // 35% completed
-const dataCardio = [{ value: 60 }, { value: 40 }] // 60% completed
-
 const COLORS_STEPS = ["hsl(var(--primary))", "hsl(var(--muted))"]
 const COLORS_CARDIO = ["hsl(var(--accent))", "hsl(var(--muted))"]
 
-export function ProgressRing() {
+type ProgressRingProps = {
+  steps: number;
+  stepGoal: number;
+  cardioPoints: number;
+  cardioGoal: number;
+}
+
+export function ProgressRing({ steps, stepGoal, cardioPoints, cardioGoal }: ProgressRingProps) {
+  const stepsPercentage = stepGoal > 0 ? (steps / stepGoal) * 100 : 0;
+  const cardioPercentage = cardioGoal > 0 ? (cardioPoints / cardioGoal) * 100 : 0;
+
+  const dataSteps = [{ value: stepsPercentage }, { value: 100 - stepsPercentage }]
+  const dataCardio = [{ value: cardioPercentage }, { value: 100 - cardioPercentage }]
+
+
   return (
     <div className="w-64 h-64 relative">
       <ResponsiveContainer width="100%" height="100%">
@@ -48,8 +59,8 @@ export function ProgressRing() {
         </PieChart>
       </ResponsiveContainer>
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <div className="text-6xl font-bold text-accent">0</div>
-        <div className="text-6xl font-bold text-primary mt-2">0</div>
+        <div className="text-6xl font-bold text-accent">{cardioPoints}</div>
+        <div className="text-6xl font-bold text-primary mt-2">{steps}</div>
       </div>
     </div>
   )
