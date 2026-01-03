@@ -42,16 +42,16 @@ export default function AdminLayout({
 
   const menuItems = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/users", label: "Users", icon: Users },
-    { href: "/admin/finances", label: "Finances", icon: DollarSign },
-    { href: "/admin/ads", label: "Ads", icon: Megaphone },
+    { href: "/admin/users", label: "Usuários", icon: Users },
+    { href: "/admin/finances", label: "Finanças", icon: DollarSign },
+    { href: "/admin/ads", label: "Anúncios", icon: Megaphone },
   ];
 
   const contentMenuItems = [
-     { href: "/admin/content/workouts", label: "Workouts", icon: Video },
-     { href: "/admin/content/recipes", label: "Recipes", icon: Utensils },
-     { href: "/admin/content/articles", label: "Articles", icon: Newspaper },
-     { href: "/admin/content/testimonials", label: "Testimonials", icon: Clapperboard },
+     { href: "/admin/content/workouts", label: "Treinos", icon: Video },
+     { href: "/admin/content/recipes", label: "Receitas", icon: Utensils },
+     { href: "/admin/content/articles", label: "Artigos", icon: Newspaper },
+     { href: "/admin/content/testimonials", label: "Depoimentos", icon: Clapperboard },
   ];
 
   return (
@@ -83,7 +83,7 @@ export default function AdminLayout({
                      <SidebarMenuButton className="w-full justify-between" variant="ghost">
                         <div className="flex items-center gap-2">
                             <Newspaper />
-                            <span>Manage Content</span>
+                            <span>Gerenciar Conteúdo</span>
                         </div>
                         <ChevronDown className={cn("h-4 w-4 transition-transform", isContentOpen && "rotate-180")} />
                     </SidebarMenuButton>
@@ -103,7 +103,7 @@ export default function AdminLayout({
         <SidebarFooter>
             <Button variant="ghost" className="w-full justify-start" asChild>
                 <Link href="/">
-                    &larr; Back to App
+                    &larr; Voltar ao App
                 </Link>
             </Button>
         </SidebarFooter>

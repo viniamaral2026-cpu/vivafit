@@ -57,14 +57,14 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
+          aria-label="Selecionar tudo"
         />
       ),
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
+          aria-label="Selecionar linha"
         />
       ),
       enableSorting: false,
@@ -78,7 +78,7 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Title
+            Título
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
@@ -87,12 +87,12 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
     },
     {
       accessorKey: "category",
-      header: "Category",
+      header: "Categoria",
       cell: ({ row }) => <div>{row.getValue("category")}</div>,
     },
     {
       accessorKey: "level",
-      header: "Level",
+      header: "Nível",
       cell: ({ row }) => <div>{row.getValue("level")}</div>,
     },
     {
@@ -102,15 +102,15 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
         const isPremium = row.getValue("isPremium");
         return (
           <Badge variant={isPremium ? "default" : "secondary"}>
-            {isPremium ? "Premium" : "Free"}
+            {isPremium ? "Premium" : "Grátis"}
           </Badge>
         );
       },
     },
     {
       accessorKey: "duration",
-      header: "Duration",
-      cell: ({ row }) => <div>{row.getValue("duration")} mins</div>,
+      header: "Duração",
+      cell: ({ row }) => <div>{row.getValue("duration")} min</div>,
     },
     {
       id: "actions",
@@ -119,7 +119,7 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
         const handleCopy = async () => {
           try {
             if (!navigator.clipboard) {
-              throw new Error("Clipboard API not available");
+              throw new Error("API de área de transferência não disponível");
             }
             await navigator.clipboard.writeText(row.original.id);
             toast({
@@ -127,7 +127,7 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
               description: "O ID do treino foi copiado para a área de transferência.",
             });
           } catch (err) {
-             console.error('Failed to copy: ', err);
+             console.error('Falha ao copiar: ', err);
              toast({
               title: "Erro ao Copiar",
               description: "Não foi possível copiar o ID. Verifique as permissões do seu navegador.",
@@ -140,19 +140,19 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">Abrir menu</span>
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuLabel>Ações</DropdownMenuLabel>
               <DropdownMenuItem onClick={handleCopy}>
-                Copy workout ID
+                Copiar ID do treino
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View details</DropdownMenuItem>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+              <DropdownMenuItem>Ver detalhes</DropdownMenuItem>
+              <DropdownMenuItem>Editar</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive">Deletar</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -183,7 +183,7 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter content..."
+          placeholder="Filtrar conteúdo..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
@@ -193,7 +193,7 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
+              Colunas <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -260,7 +260,7 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Nenhum resultado.
                 </TableCell>
               </TableRow>
             )}
@@ -269,8 +269,8 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredSelectedRowModel().rows.length} de{" "}
+          {table.getFilteredRowModel().rows.length} linha(s) selecionadas.
         </div>
         <div className="space-x-2">
           <Button
@@ -279,7 +279,7 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Anterior
           </Button>
           <Button
             variant="outline"
@@ -287,7 +287,7 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Próximo
           </Button>
         </div>
       </div>

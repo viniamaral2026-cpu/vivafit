@@ -13,7 +13,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 
-const categories = ["All", "Cardio", "Strength", "Flexibility", "Abs"];
+const categories = ["Todos", "Cardio", "Força", "Flexibilidade", "Abdômen"];
 
 const masterclassWorkouts: Workout[] = [
     {
@@ -75,7 +75,7 @@ const masterclassWorkouts: Workout[] = [
 
 export default function WorkoutsPage() {
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState('Todos');
 
   useEffect(() => {
     // Simulate data fetching
@@ -84,17 +84,21 @@ export default function WorkoutsPage() {
     }, 500);
   }, []);
   
-  const categoryMap: { [key: string]: string } = {
-    "All": "all",
+  const categoryMap: { [key: string]: string | string[] } = {
+    "Todos": ["Cardio", "Weightlifting", "Yoga", "Pilates"],
     "Cardio": "Cardio",
-    "Strength": "Weightlifting",
-    "Flexibility": "Yoga",
-    "Abs": "Pilates",
+    "Força": "Weightlifting",
+    "Flexibilidade": "Yoga",
+    "Abdômen": "Pilates",
   };
 
   const filteredWorkouts = masterclassWorkouts.filter(workout => {
-    if (activeCategory === 'All') return true;
-    return workout.category === categoryMap[activeCategory];
+    if (activeCategory === 'Todos') return true;
+    const targetCategory = categoryMap[activeCategory];
+    if (Array.isArray(targetCategory)) {
+        return targetCategory.includes(workout.category);
+    }
+    return workout.category === targetCategory;
   });
 
   return (
@@ -164,7 +168,7 @@ export default function WorkoutsPage() {
         <div className="relative mt-16 rounded-2xl overflow-hidden shadow-2xl">
             <Image 
                 src="https://scontent.fpoa13-1.fna.fbcdn.net/v/t39.30808-6/610776226_122094250413204574_3447186860395560382_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=uAPIqEeV8rEQ7kNvwErGvdr&_nc_oc=AdmojXGFJMImfmkx-SyecWayH4RjotRlN2U24mx_OQLTNTHhL2x-t96GaeaUQEqIi7ptAqkPbyRbeUPajpDIlWkU&_nc_zt=23&_nc_ht=scontent.fpoa13-1.fna&_nc_gid=PCg1f1GLhWjb7qWO_hgemA&oh=00_AfqCpYQG4SeSckTh3mcE9f4PeHYYKV_mZ5YKBMlrTCu6Ag&oe=695ED3E7"
-                alt="Woman lifting weights"
+                alt="Mulher levantando pesos"
                 data-ai-hint="woman weightlifting intense"
                 width={1200}
                 height={500}

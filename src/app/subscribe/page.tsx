@@ -58,7 +58,7 @@ export default function SubscribePage() {
     }
 
     const onCardSubmit = (values: z.infer<typeof paymentSchema>) => {
-        console.log("Card details:", values);
+        console.log("Detalhes do cartão:", values);
         onPaymentSuccess();
     }
 

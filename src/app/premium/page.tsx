@@ -126,7 +126,7 @@ const PremiumContent = () => (
             </Button>
           </Card>
           <Card className="bg-gradient-to-b from-blue-700 to-indigo-900 text-white p-8 rounded-2xl shadow-lg">
-            <h3 className="text-2xl font-bold text-center font-headline">Ask the Pro</h3>
+            <h3 className="text-2xl font-bold text-center font-headline">Pergunte ao Profissional</h3>
             <p className="text-center text-blue-200 mt-2 text-sm">
               Mande sua dúvida para nossos nutricionistas e receba resposta em até 24h.
             </p>

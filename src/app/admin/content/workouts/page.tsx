@@ -17,12 +17,12 @@ export default function WorkoutsManagementPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold font-headline">Workouts Management</h1>
-                    <p className="text-muted-foreground">Manage your premium workout content.</p>
+                    <h1 className="text-2xl font-bold font-headline">Gerenciamento de Treinos</h1>
+                    <p className="text-muted-foreground">Gerencie seu conteúdo de treinos premium.</p>
                 </div>
                 <Button>
                     <PlusCircle className="mr-2 h-4 w-4" />
-                    Add Workout
+                    Adicionar Treino
                 </Button>
             </div>
             <ContentDataTable data={workouts} />

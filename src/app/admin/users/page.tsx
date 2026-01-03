@@ -35,20 +35,20 @@ export const columns: ColumnDef<User>[] = [
           <Checkbox
             checked={table.getIsAllPageRowsSelected()}
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all"
+            aria-label="Selecionar todos"
           />
         ),
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
+            aria-label="Selecionar linha"
           />
         ),
     },
     {
         accessorKey: "name",
-        header: "Name",
+        header: "Nome",
         cell: ({row}) => (
             <div className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
@@ -69,20 +69,20 @@ export const columns: ColumnDef<User>[] = [
     },
     {
         accessorKey: "role",
-        header: "Role",
+        header: "Função",
         cell: ({row}) => <Badge variant={row.getValue("role") === "Admin" ? "destructive" : "secondary"}>{row.getValue("role")}</Badge>
     },
     {
         accessorKey: "subscription",
-        header: "Subscription",
+        header: "Assinatura",
         cell: ({row}) => <Badge variant={row.getValue("subscription") === "Premium" ? "default" : "outline"}>{row.getValue("subscription")}</Badge>
     },
     {
         accessorKey: "createdAt",
-        header: "Joined Date",
+        header: "Data de Inscrição",
         cell: ({row}) => {
             const date = new Date(row.getValue("createdAt"));
-            return <div>{date ? date.toLocaleDateString() : 'N/A'}</div>
+            return <div>{date ? date.toLocaleDateString() : 'N/D'}</div>
         }
     },
     {
@@ -91,15 +91,15 @@ export const columns: ColumnDef<User>[] = [
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">Abrir menu</span>
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem>Edit user</DropdownMenuItem>
-              <DropdownMenuItem>View payments</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">Delete user</DropdownMenuItem>
+              <DropdownMenuLabel>Ações</DropdownMenuLabel>
+              <DropdownMenuItem>Editar usuário</DropdownMenuItem>
+              <DropdownMenuItem>Ver pagamentos</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive">Deletar usuário</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ),
@@ -135,8 +135,8 @@ export default function UserManagementPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold font-headline">User Management</h1>
-                <p className="text-muted-foreground">View and manage all registered users.</p>
+                <h1 className="text-2xl font-bold font-headline">Gerenciamento de Usuários</h1>
+                <p className="text-muted-foreground">Veja e gerencie todos os usuários registrados.</p>
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -174,7 +174,7 @@ export default function UserManagementPage() {
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">No users found.</TableCell>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">Nenhum usuário encontrado.</TableCell>
                             </TableRow>
                         )}
                     </TableBody>

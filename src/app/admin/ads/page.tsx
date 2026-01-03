@@ -21,12 +21,12 @@ export default function AdsManagementPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold font-headline">Ad Management</h1>
-                    <p className="text-muted-foreground">Manage your ad placements.</p>
+                    <h1 className="text-2xl font-bold font-headline">Gerenciamento de Anúncios</h1>
+                    <p className="text-muted-foreground">Gerencie seus espaços de anúncio.</p>
                 </div>
                 <Button>
                     <PlusCircle className="mr-2 h-4 w-4" />
-                    Add Ad
+                    Adicionar Anúncio
                 </Button>
             </div>
             
@@ -40,7 +40,7 @@ export default function AdsManagementPage() {
                                     <CardDescription>{ad.company}</CardDescription>
                                 </div>
                                 <Badge variant={ad.isActive ? "default" : "outline"}>
-                                    {ad.isActive ? "Active" : "Inactive"}
+                                    {ad.isActive ? "Ativo" : "Inativo"}
                                 </Badge>
                             </div>
                         </CardHeader>
@@ -56,10 +56,10 @@ export default function AdsManagementPage() {
                                 />
                             </div>
                             <div className="flex justify-between items-center text-sm text-muted-foreground">
-                                <span>Expires: {new Date(ad.expiresAt).toLocaleDateString()}</span>
+                                <span>Expira em: {new Date(ad.expiresAt).toLocaleDateString()}</span>
                                 <div className="flex gap-2">
-                                    <Button variant="outline" size="sm">Edit</Button>
-                                    <Button variant="destructive" size="sm">Delete</Button>
+                                    <Button variant="outline" size="sm">Editar</Button>
+                                    <Button variant="destructive" size="sm">Deletar</Button>
                                 </div>
                             </div>
                         </CardContent>
@@ -67,7 +67,7 @@ export default function AdsManagementPage() {
                 )) : (
                     <Card>
                         <CardContent className="p-6 text-center text-muted-foreground">
-                            No ads found. Add some to the 'ads' collection in Firestore.
+                            Nenhum anúncio encontrado. Adicione alguns à coleção 'ads' no Firestore.
                         </CardContent>
                     </Card>
                 )}

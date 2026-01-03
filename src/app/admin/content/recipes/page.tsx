@@ -13,7 +13,7 @@ const mockRecipes: Recipe[] = [
     {
         id: "recipe1",
         title: "Salada de Quinoa com Abacate",
-        category: "Lunch",
+        category: "Almoço",
         prepTime: 15,
         cookTime: 20,
         calories: 350,
@@ -24,7 +24,7 @@ const mockRecipes: Recipe[] = [
     {
         id: "recipe2",
         title: "Salmão Grelhado com Aspargos",
-        category: "Dinner",
+        category: "Jantar",
         prepTime: 10,
         cookTime: 15,
         calories: 550,

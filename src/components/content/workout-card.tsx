@@ -7,13 +7,20 @@ import { Crown, PlayCircle } from "lucide-react";
 import { Button } from "../ui/button";
 
 const levelMap: { [key: string]: { text: string; color: string } } = {
-  Beginner: { text: "LOW", color: "bg-green-500" },
-  Intermediate: { text: "MEDIUM", color: "bg-orange-500" },
-  Advanced: { text: "HIGH", color: "bg-red-500" },
+  Beginner: { text: "BAIXO", color: "bg-green-500" },
+  Intermediate: { text: "MÉDIO", color: "bg-orange-500" },
+  Advanced: { text: "ALTO", color: "bg-red-500" },
 };
 
 export function WorkoutCard({ workout }: { workout: Workout }) {
   const levelInfo = levelMap[workout.level];
+
+  const categoryTranslations: { [key: string]: string } = {
+    Weightlifting: "Força",
+    Cardio: "Cardio",
+    Yoga: "Flexibilidade",
+    Pilates: "Abdômen"
+  }
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-xl group bg-background rounded-lg">
@@ -49,7 +56,7 @@ export function WorkoutCard({ workout }: { workout: Workout }) {
       <CardContent className="p-4 space-y-3">
          <div>
             <h3 className="font-bold text-lg">{workout.title}</h3>
-            <p className="text-sm text-muted-foreground">{workout.category === 'Weightlifting' ? 'Strength' : workout.category}</p>
+            <p className="text-sm text-muted-foreground">{categoryTranslations[workout.category] || workout.category}</p>
          </div>
          <Button className={`w-full ${workout.isPremium ? 'bg-blue-600 hover:bg-blue-700' : 'bg-primary hover:bg-primary/90'}`}>
             {workout.isPremium ? "Ver Vídeo Guia" : "Iniciar Treino"}
@@ -58,5 +65,3 @@ export function WorkoutCard({ workout }: { workout: Workout }) {
     </Card>
   );
 }
-
-    
