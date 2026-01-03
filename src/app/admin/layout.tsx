@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Dumbbell,
   LayoutDashboard,
   Video,
   Megaphone,
@@ -23,6 +22,7 @@ import {
 } from "@/components/ui/sidebar";
 import { UserNav } from "@/components/layout/user-nav";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/icons/logo";
 
 export default function AdminLayout({
   children,
@@ -43,8 +43,7 @@ export default function AdminLayout({
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Dumbbell className="size-7 text-primary" />
-            <span className="text-lg font-semibold font-headline">VivaFit Admin</span>
+            <Logo className="w-28" />
           </div>
         </SidebarHeader>
         <SidebarContent>

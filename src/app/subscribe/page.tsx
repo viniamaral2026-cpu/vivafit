@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, CreditCard, Dumbbell } from "lucide-react";
+import { CheckCircle, CreditCard } from "lucide-react";
+import { Logo } from "@/components/icons/logo";
 
 export default function SubscribePage() {
     return (
@@ -15,7 +16,7 @@ export default function SubscribePage() {
              </div>
             <Card className="w-full max-w-md shadow-lg">
                 <CardHeader className="text-center">
-                    <Dumbbell className="mx-auto h-10 w-10 text-primary" />
+                    <Logo className="mx-auto" />
                     <CardTitle className="text-2xl font-headline mt-4">Go Premium</CardTitle>
                     <CardDescription>
                         Complete your purchase to unlock all features.

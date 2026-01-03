@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Logo } from "@/components/icons/logo";
 
 export default function LoginPage() {
   return (
@@ -23,7 +23,7 @@ export default function LoginPage() {
         </div>
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <Dumbbell className="mx-auto h-10 w-10 text-primary" />
+          <Logo className="mx-auto" />
           <CardTitle className="text-2xl font-headline mt-4">Welcome Back</CardTitle>
           <CardDescription>
             Enter your email below to login to your account

@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Dumbbell, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserNav } from "./user-nav";
+import { Logo } from "@/components/icons/logo";
 
 const navLinks = [
   { href: "/#features", label: "Features" },
@@ -19,8 +20,7 @@ export function MainHeader() {
       <div className="container flex h-14 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Dumbbell className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline">VivaFit</span>
+            <Logo />
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {navLinks.map(link => (
@@ -44,8 +44,7 @@ export function MainHeader() {
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
             <Link href="/" className="mr-6 flex items-center space-x-2">
-              <Dumbbell className="h-6 w-6 text-primary" />
-              <span className="font-bold font-headline">VivaFit</span>
+              <Logo />
             </Link>
             <div className="flex flex-col space-y-3 pt-6">
               {navLinks.map(link => (

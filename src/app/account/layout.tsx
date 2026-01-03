@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Dumbbell,
   User,
   CreditCard,
   Settings,
@@ -22,6 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { UserNav } from "@/components/layout/user-nav";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/icons/logo";
 
 export default function AccountLayout({
   children,
@@ -41,8 +41,7 @@ export default function AccountLayout({
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Dumbbell className="size-7 text-primary" />
-            <span className="text-lg font-semibold font-headline">My Account</span>
+            <Logo className="w-24" />
           </div>
         </SidebarHeader>
         <SidebarContent>
