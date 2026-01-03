@@ -144,11 +144,9 @@ export default function DashboardLayout({
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader className="p-4">
-          <Card className="shadow-md">
-            <Link href="/dashboard" className="block p-2">
+            <Link href="/dashboard">
               <Logo className="w-full" />
             </Link>
-          </Card>
         </SidebarHeader>
         <SidebarContent className="p-2">
             <div className="relative mb-2">
