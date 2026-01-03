@@ -20,13 +20,36 @@ export function MainHeader() {
   const { user, loading } = useAuth();
   const pathname = usePathname();
 
-  const isAuthPage = pathname === '/auth' || pathname === '/subscribe' || pathname.startsWith('/onboarding');
-  const isProtectedPage = pathname.startsWith('/dashboard') || pathname.startsWith('/account') || pathname.startsWith('/admin') || pathname.startsWith('/ai-coach') || pathname.startsWith('/workouts');
-  
+  // The main header should NOT appear on any authenticated-only app pages or auth flow pages.
+  const isAppPage = [
+    '/journal',
+    '/recipes',
+    '/workouts',
+    '/ai-coach',
+    '/premium',
+    '/devices',
+    '/account',
+    '/admin',
+    '/auth',
+    '/subscribe',
+    '/onboarding',
+    '/dashboard'
+  ].some(path => pathname.startsWith(path) && path !== '/workouts');
 
-  if (isAuthPage) return null;
-  if (!loading && user && isProtectedPage) return null;
+  const isWorkoutDetailPage = pathname.startsWith('/workouts/')
+
+  // Hide header on all internal app pages, except for the main /workouts list page.
+  // The workout detail page needs the main header.
+  if (!loading && user && isAppPage && !isWorkoutDetailPage) {
+    return null;
+  }
   
+  // Also hide on auth pages.
+  if (pathname.startsWith('/auth') || pathname.startsWith('/subscribe') || pathname.startsWith('/onboarding')) {
+      return null;
+  }
+
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -40,6 +63,12 @@ export function MainHeader() {
                 {link.label}
               </Link>
             ))}
+             {/* Show link to Journal if user is logged in */}
+            {user && !loading && (
+                 <Link href="/journal" className="transition-colors hover:text-foreground/80 text-foreground/60">
+                    Diário
+                </Link>
+            )}
           </nav>
         </div>
         
@@ -67,6 +96,12 @@ export function MainHeader() {
                   {link.label}
                 </Link>
               ))}
+               {/* Show link to Journal if user is logged in */}
+              {user && !loading && (
+                    <Link href="/journal" className="text-foreground">
+                        Diário
+                    </Link>
+              )}
             </div>
           </SheetContent>
         </Sheet>
