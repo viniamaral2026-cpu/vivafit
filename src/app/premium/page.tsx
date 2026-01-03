@@ -5,12 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Crown, Calendar, BrainCircuit, ArrowLeft } from 'lucide-react';
+import { Crown, Calendar, BrainCircuit, ArrowLeft, Lock } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Article, Workout } from '@/lib/types';
 import { useAuth } from '../auth-provider';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 // Mock data based on the image
@@ -66,70 +64,9 @@ const masterclassWorkouts: Workout[] = [
     }
 ];
 
-export default function PremiumHubPage() {
-  const { isPremium, loading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !isPremium) {
-      router.push('/subscribe');
-    }
-  }, [isPremium, loading, router]);
-
-  if (loading || !isPremium) {
-    return (
-        <div className="space-y-12 p-8">
-            <Skeleton className="h-12 w-1/3" />
-            <div className="space-y-6">
-                <Skeleton className="h-8 w-1/4" />
-                <div className="grid md:grid-cols-2 gap-8">
-                    <Skeleton className="h-48 w-full" />
-                    <Skeleton className="h-48 w-full" />
-                </div>
-            </div>
-             <div className="space-y-6">
-                <Skeleton className="h-8 w-1/4" />
-                <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <Skeleton className="h-48 w-full" />
-                    <Skeleton className="h-48 w-full" />
-                    <Skeleton className="h-48 w-full" />
-                    <Skeleton className="h-48 w-full" />
-                </div>
-            </div>
-        </div>
-    );
-  }
-
-  return (
-    <div className="bg-muted/30">
-        <div className="container px-4 md:px-6 pt-6">
-            <Button variant="ghost" asChild>
-                <Link href="/journal">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Voltar para o Diário
-                </Link>
-            </Button>
-        </div>
-      {/* Header Section */}
-      <section className="w-full bg-gradient-to-br from-blue-700 to-indigo-800 text-white mt-4">
-        <div className="container px-4 md:px-6 py-12 md:py-20">
-          <div className="max-w-3xl">
-            <div className="inline-block rounded-full bg-white/10 px-3 py-1 text-sm font-semibold mb-4">
-              <Crown className="inline-block w-4 h-4 mr-2 text-yellow-400" />
-              ÁREA EXCLUSIVA
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tighter font-headline">
-              Premium Hub
-            </h1>
-            <p className="mt-4 text-lg md:text-xl text-blue-200">
-              Conteúdos avançados e ferramentas exclusivas para acelerar seus resultados.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <main className="container px-4 md:px-6 py-12 space-y-16">
-        {/* Artigos de Especialistas */}
+const PremiumContent = () => (
+    <>
+         {/* Artigos de Especialistas */}
         <section>
           <div className="flex justify-between items-center mb-6">
             <div>
@@ -237,6 +174,86 @@ export default function PremiumHubPage() {
                 ))}
             </div>
         </section>
+    </>
+);
+
+const PremiumBlocker = () => (
+    <div className="relative">
+      <div className="blur-sm pointer-events-none">
+        <PremiumContent />
+      </div>
+      <div className="absolute inset-0 bg-background/80 flex flex-col items-center justify-center z-10 text-center p-4 rounded-lg">
+          <Lock className="w-16 h-16 text-primary" />
+          <h2 className="text-2xl font-bold mt-4">Desbloqueie o Conteúdo Premium</h2>
+          <p className="text-muted-foreground mt-2 max-w-md">Tenha acesso a artigos, planejamentos com IA, séries Masterclass e muito mais com o plano Premium.</p>
+          <Button asChild className="mt-6" size="lg">
+              <Link href="/subscribe">
+                  <Crown className="mr-2 h-5 w-5"/>
+                  Atualize para o Premium
+              </Link>
+          </Button>
+      </div>
+    </div>
+);
+
+
+export default function PremiumHubPage() {
+  const { isPremium, loading } = useAuth();
+
+  if (loading) {
+    return (
+        <div className="space-y-12 p-8">
+            <Skeleton className="h-12 w-1/3" />
+            <div className="space-y-6">
+                <Skeleton className="h-8 w-1/4" />
+                <div className="grid md:grid-cols-2 gap-8">
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-48 w-full" />
+                </div>
+            </div>
+             <div className="space-y-6">
+                <Skeleton className="h-8 w-1/4" />
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-48 w-full" />
+                </div>
+            </div>
+        </div>
+    );
+  }
+
+  return (
+    <div className="bg-muted/30">
+        <div className="container px-4 md:px-6 pt-6">
+            <Button variant="ghost" asChild>
+                <Link href="/journal">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Voltar para o Diário
+                </Link>
+            </Button>
+        </div>
+      {/* Header Section */}
+      <section className="w-full bg-gradient-to-br from-blue-700 to-indigo-800 text-white mt-4">
+        <div className="container px-4 md:px-6 py-12 md:py-20">
+          <div className="max-w-3xl">
+            <div className="inline-block rounded-full bg-white/10 px-3 py-1 text-sm font-semibold mb-4">
+              <Crown className="inline-block w-4 h-4 mr-2 text-yellow-400" />
+              ÁREA EXCLUSIVA
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tighter font-headline">
+              Premium Hub
+            </h1>
+            <p className="mt-4 text-lg md:text-xl text-blue-200">
+              Conteúdos avançados e ferramentas exclusivas para acelerar seus resultados.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <main className="container px-4 md:px-6 py-12 space-y-16">
+        {isPremium ? <PremiumContent /> : <PremiumBlocker />}
       </main>
     </div>
   );

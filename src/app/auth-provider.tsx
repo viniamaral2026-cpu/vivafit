@@ -25,9 +25,7 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<MockUser | null>(null);
   const [loading, setLoading] = useState(true);
-  const pathname = usePathname();
-  const router = useRouter();
-
+  
   useEffect(() => {
     // Simulate fetching user data
     setTimeout(() => {
@@ -48,16 +46,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const isPremium = user?.subscription === 'Premium';
-
-  useEffect(() => {
-    if (!loading) {
-      // Redirect non-premium users from premium-only pages
-      if (pathname === '/premium' && !isPremium) {
-        router.push('/subscribe');
-      }
-    }
-  }, [loading, isPremium, pathname, router]);
-
   
   if (loading) {
       return (
