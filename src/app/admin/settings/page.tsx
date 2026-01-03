@@ -25,23 +25,6 @@ export default function AdminSettingsPage() {
                 <div className="lg:col-span-2 space-y-8">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Integrações de Pagamento</CardTitle>
-                            <CardDescription>Configure suas chaves de API para PagSeguro.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="pagseguro-token">Token do PagSeguro</Label>
-                                <Input id="pagseguro-token" type="password" placeholder="Cole seu token aqui" />
-                            </div>
-                             <div className="space-y-2">
-                                <Label htmlFor="pagseguro-email">E-mail do PagSeguro</Label>
-                                <Input id="pagseguro-email" type="email" placeholder="seu-email@pagseguro.com" />
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                     <Card>
-                        <CardHeader>
                             <CardTitle>Integrações de Anúncios</CardTitle>
                             <CardDescription>Configure seus IDs de publicidade para Google AdSense e AdMob.</CardDescription>
                         </CardHeader>
@@ -53,6 +36,45 @@ export default function AdminSettingsPage() {
                              <div className="space-y-2">
                                 <Label htmlFor="admob-id">ID do Google AdMob</Label>
                                 <Input id="admob-id" placeholder="ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX" />
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                     <Card>
+                        <CardHeader>
+                            <CardTitle>Marketing & Analytics</CardTitle>
+                            <CardDescription>Configure suas chaves de API para serviços de marketing e análise.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="ga-id">ID de Acompanhamento do Google Analytics</Label>
+                                <Input id="ga-id" placeholder="G-XXXXXXXXXX" />
+                            </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="fb-pixel-id">ID do Pixel do Facebook</Label>
+                                <Input id="fb-pixel-id" placeholder="Seu ID do Pixel" />
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>APIs de Conteúdo e Pagamento</CardTitle>
+                            <CardDescription>Gerencie chaves para serviços externos como PagSeguro e YouTube.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                             <div className="space-y-2">
+                                <Label htmlFor="pagseguro-token">Token do PagSeguro</Label>
+                                <Input id="pagseguro-token" type="password" placeholder="Cole seu token aqui" />
+                            </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="pagseguro-email">E-mail do PagSeguro</Label>
+                                <Input id="pagseguro-email" type="email" placeholder="seu-email@pagseguro.com" />
+                            </div>
+                             <Separator className="my-4" />
+                             <div className="space-y-2">
+                                <Label htmlFor="youtube-api-key">Chave da API do YouTube</Label>
+                                <Input id="youtube-api-key" type="password" placeholder="Sua chave de API do YouTube" />
                             </div>
                         </CardContent>
                     </Card>
