@@ -25,14 +25,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setLoading(true);
       if (user) {
         setUser(user);
         const userDocRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
-        const isComplete = userDoc.exists() && userDoc.data().onboardingComplete;
-        setIsOnboardingComplete(isComplete);
-        if (!isComplete) {
-            router.push('/onboarding');
+        try {
+          const userDoc = await getDoc(userDocRef);
+          const isComplete = userDoc.exists() && userDoc.data().onboardingComplete;
+          setIsOnboardingComplete(isComplete);
+        } catch (error) {
+          console.error("Failed to fetch user onboarding status:", error);
+          // Consider user as not onboarded if there's an error
+          setIsOnboardingComplete(false);
         }
       } else {
         setUser(null);
@@ -42,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, []);
   
   if (loading) {
       return (

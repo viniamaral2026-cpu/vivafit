@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Home, Dumbbell, User } from "lucide-react";
+import { Home, Dumbbell, User, Bot, Utensils } from "lucide-react";
 import {
   SidebarProvider,
   Sidebar,
@@ -32,7 +32,7 @@ export default function DashboardLayout({
     if (!loading) {
       if (!user) {
         router.push('/auth');
-      } else if (!isOnboardingComplete) {
+      } else if (isOnboardingComplete === false) { // Explicitly check for false
         router.push('/onboarding');
       }
     }
@@ -41,10 +41,12 @@ export default function DashboardLayout({
   const menuItems = [
     { href: "/dashboard", label: "Início", icon: Home },
     { href: "/workouts", label: "Treinos", icon: Dumbbell },
+    { href: "/recipes", label: "Receitas", icon: Utensils },
+    { href: "/ai-coach", label: "IA Coach", icon: Bot },
     { href: "/account", label: "Perfil", icon: User },
   ];
   
-  if (loading || !user || !isOnboardingComplete) {
+  if (loading || !user || isOnboardingComplete === null) {
     return (
        <div className="flex min-h-screen items-center justify-center">
             Carregando...

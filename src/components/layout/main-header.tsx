@@ -8,6 +8,19 @@ import { UserNav } from "./user-nav";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "@/app/auth-provider";
 import { usePathname } from "next/navigation";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarProvider,
+  SidebarTrigger,
+} from "../ui/sidebar";
+import { Home, Dumbbell, User, Bot, Utensils } from "lucide-react";
+
 
 const navLinks = [
   { href: "/#features", label: "Funcionalidades" },
@@ -15,14 +28,23 @@ const navLinks = [
   { href: "/workouts", label: "Treinos" },
 ];
 
+const dashboardLinks = [
+    { href: "/dashboard", label: "Início", icon: Home },
+    { href: "/workouts", label: "Treinos", icon: Dumbbell },
+    { href: "/recipes", label: "Receitas", icon: Utensils },
+    { href: "/ai-coach", label: "IA Coach", icon: Bot },
+    { href: "/account", label: "Perfil", icon: User },
+];
+
 export function MainHeader() {
   const { user, loading, isOnboardingComplete } = useAuth();
   const pathname = usePathname();
 
-  const isAuthPage = pathname === '/auth';
+  const isAuthPage = pathname === '/auth' || pathname.startsWith('/onboarding');
   const showDashboardNav = user && isOnboardingComplete;
 
   if (isAuthPage) return null;
+  
   if (showDashboardNav) return null;
 
 
