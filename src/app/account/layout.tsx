@@ -111,7 +111,7 @@ export default function AccountLayout({
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Link href="/journal">
+            <Link href="/dashboard">
               <Logo className="w-24" />
             </Link>
           </div>
@@ -136,8 +136,8 @@ export default function AccountLayout({
         </SidebarContent>
         <SidebarFooter>
             <Button variant="ghost" className="w-full justify-start" asChild>
-                <Link href="/journal">
-                    &larr; Voltar para o Diário
+                <Link href="/dashboard">
+                    &larr; Voltar para o Dashboard
                 </Link>
             </Button>
         </SidebarFooter>
