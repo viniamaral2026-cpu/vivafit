@@ -45,9 +45,9 @@ export default function Home() {
                     src={heroImage.imageUrl}
                     alt={heroImage.description}
                     data-ai-hint={heroImage.imageHint}
-                    width={600}
-                    height={400}
-                    className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full"
+                    width={526}
+                    height={296}
+                    className="mx-auto overflow-hidden rounded-xl sm:w-full"
                   />
                 </div>
               )}
