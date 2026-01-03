@@ -10,36 +10,36 @@ export default function SubscribePage() {
              <div className="absolute top-4 left-4">
                 <Button variant="ghost" asChild>
                     <Link href="/">
-                    &larr; Back to Home
+                    &larr; Voltar para a Home
                     </Link>
                 </Button>
              </div>
             <Card className="w-full max-w-md shadow-lg">
                 <CardHeader className="text-center">
                     <Logo className="mx-auto" />
-                    <CardTitle className="text-2xl font-headline mt-4">Go Premium</CardTitle>
+                    <CardTitle className="text-2xl font-headline mt-4">Seja Premium</CardTitle>
                     <CardDescription>
-                        Complete your purchase to unlock all features.
+                        Finalize sua compra para desbloquear todos os recursos.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="rounded-lg border bg-secondary/50 p-4">
                         <div className="flex justify-between items-center">
-                            <h4 className="font-semibold">Premium Monthly</h4>
-                            <div className="text-xl font-bold">$12.00</div>
+                            <h4 className="font-semibold">Premium Mensal</h4>
+                            <div className="text-xl font-bold">R$ 9,99</div>
                         </div>
-                        <p className="text-sm text-muted-foreground">Billed monthly.</p>
+                        <p className="text-sm text-muted-foreground">Cobrado mensalmente.</p>
                     </div>
                     <ul className="grid gap-2 text-sm text-muted-foreground">
-                        <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Unlimited premium workouts</li>
-                        <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Personalized plans</li>
-                        <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Ad-free experience</li>
+                        <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Treinos premium ilimitados</li>
+                        <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Planos personalizados</li>
+                        <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" /> Experiência sem anúncios</li>
                     </ul>
                 </CardContent>
                 <CardFooter>
                     <Button className="w-full" size="lg">
                         <CreditCard className="mr-2 h-5 w-5"/>
-                        Pay with Pagseguro
+                        Pagar com Pagseguro
                     </Button>
                 </CardFooter>
             </Card>

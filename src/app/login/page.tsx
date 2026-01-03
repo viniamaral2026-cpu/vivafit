@@ -17,16 +17,16 @@ export default function LoginPage() {
        <div className="absolute top-4 left-4">
           <Button variant="ghost" asChild>
             <Link href="/">
-              &larr; Back to Home
+              &larr; Voltar para a Home
             </Link>
           </Button>
         </div>
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <Logo className="mx-auto" />
-          <CardTitle className="text-2xl font-headline mt-4">Welcome Back</CardTitle>
+          <CardTitle className="text-2xl font-headline mt-4">Bem-vindo de volta</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Entre com seu e-mail para acessar sua conta
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -42,27 +42,27 @@ export default function LoginPage() {
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Senha</Label>
                 <Link
                   href="#"
                   className="ml-auto inline-block text-sm underline"
                 >
-                  Forgot your password?
+                  Esqueceu sua senha?
                 </Link>
               </div>
               <Input id="password" type="password" required />
             </div>
             <Button type="submit" className="w-full">
-              Login
+              Entrar
             </Button>
             <Button variant="outline" className="w-full">
-              Login with Google
+              Entrar com Google
             </Button>
           </div>
           <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
+            Não tem uma conta?{" "}
             <Link href="/register" className="underline">
-              Sign up
+              Cadastre-se
             </Link>
           </div>
         </CardContent>

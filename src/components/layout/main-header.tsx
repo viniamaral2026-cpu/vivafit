@@ -10,7 +10,7 @@ import { Logo } from "@/components/icons/logo";
 const navLinks = [
   { href: "/#features", label: "Funcionalidades" },
   { href: "/#pricing", label: "Preços" },
-  { href: "/workouts", label: "Recursos" },
+  { href: "/workouts", label: "Treinos" },
 ];
 
 export function MainHeader() {
