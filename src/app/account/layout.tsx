@@ -8,6 +8,7 @@ import {
   CreditCard,
   Settings,
   Wallet,
+  Info,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -50,6 +51,7 @@ export default function AccountLayout({
     { href: "/account/billing", label: "Assinatura", icon: CreditCard },
     { href: "/account/payments", label: "Pagamentos", icon: Wallet },
     { href: "/account/settings", label: "Configurações", icon: Settings },
+    { href: "/account/info", label: "Minhas Informações", icon: Info },
   ];
   
   if (authLoading || !user) {
@@ -62,6 +64,7 @@ export default function AccountLayout({
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
+                 <Skeleton className="h-10 w-full" />
             </div>
         </div>
         <div className="flex-1">
