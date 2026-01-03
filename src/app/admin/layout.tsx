@@ -7,6 +7,11 @@ import {
   Video,
   Megaphone,
   Users,
+  Utensils,
+  Newspaper,
+  Clapperboard,
+  DollarSign,
+  ChevronDown,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -23,6 +28,9 @@ import {
 import { UserNav } from "@/components/layout/user-nav";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/icons/logo";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function AdminLayout({
   children,
@@ -30,12 +38,20 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [isContentOpen, setIsContentOpen] = useState(true);
 
   const menuItems = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/content", label: "Content", icon: Video },
-    { href: "/admin/ads", label: "Ads", icon: Megaphone },
     { href: "/admin/users", label: "Users", icon: Users },
+    { href: "/admin/finances", label: "Finances", icon: DollarSign },
+    { href: "/admin/ads", label: "Ads", icon: Megaphone },
+  ];
+
+  const contentMenuItems = [
+     { href: "/admin/content/workouts", label: "Workouts", icon: Video },
+     { href: "/admin/content/recipes", label: "Recipes", icon: Utensils },
+     { href: "/admin/content/articles", label: "Articles", icon: Newspaper },
+     { href: "/admin/content/testimonials", label: "Testimonials", icon: Clapperboard },
   ];
 
   return (
@@ -62,6 +78,26 @@ export default function AdminLayout({
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
+             <Collapsible open={isContentOpen} onOpenChange={setIsContentOpen}>
+                <CollapsibleTrigger className="w-full">
+                     <SidebarMenuButton className="w-full justify-between" variant="ghost">
+                        <div className="flex items-center gap-2">
+                            <Newspaper />
+                            <span>Manage Content</span>
+                        </div>
+                        <ChevronDown className={cn("h-4 w-4 transition-transform", isContentOpen && "rotate-180")} />
+                    </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                    <div className="flex flex-col gap-1 py-1 pl-8">
+                        {contentMenuItems.map(item => (
+                             <Link href={item.href} key={item.href} className={`text-sm py-2 px-3 rounded-md hover:bg-muted ${pathname.startsWith(item.href) ? 'font-semibold text-primary' : 'text-muted-foreground'}`}>
+                                {item.label}
+                            </Link>
+                        ))}
+                    </div>
+                </CollapsibleContent>
+             </Collapsible>
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
