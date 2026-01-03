@@ -15,44 +15,43 @@ O VivaFit é uma aplicação completa de saúde e bem-estar projetada para ajuda
 
 ---
 
-## Estado Atual do Protótipo
-
-O protótipo atual é focado na interface do usuário (UI) e na experiência do usuário (UX), com muitas funcionalidades simuladas.
+## Checklist de Desenvolvimento
 
 ### Funcionalidades Implementadas (UI e Simulação)
 
-- **Fluxo de Autenticação:** Páginas de login, criação de conta e recuperação de senha. A autenticação do usuário é simulada via `sessionStorage`.
-- **Onboarding de Usuário:** Um fluxo de várias etapas para coletar informações básicas do usuário e definir metas iniciais.
-- **Dashboard Principal:** Painel central com resumo das atividades diárias e semanais, tendências de peso e energia, e sugestões de conteúdo.
-- **Navegação Completa:** Layouts de barra lateral para o painel do usuário e para o painel administrativo.
-- **Gerenciamento de Conta:** Seção onde os usuários podem gerenciar perfil, assinatura (simulada), pagamentos (simulados) e configurações.
-- **Páginas de Conteúdo:**
-  - **Treinos:** Listagem e página de detalhes dos vídeos de treino.
-  - **Premium Hub:** Página de conteúdo exclusivo para assinantes.
-  - **Depoimentos:** Galeria de histórias de sucesso de usuários.
-- **AI Coach:** Interface de chat funcional conectada a um fluxo Genkit para conselhos de saúde.
-- **Painel Administrativo:**
-  - Dashboard com estatísticas (mock).
-  - Gerenciamento de usuários, conteúdo (treinos, receitas, artigos), anúncios e finanças (com dados mock).
-  - Página de configurações para integrações de serviços.
+- [x] **Fluxo de Autenticação:** Páginas de login, criação de conta e recuperação de senha. A autenticação é simulada via `sessionStorage`.
+- [x] **Onboarding de Usuário:** Um fluxo de várias etapas para coletar informações básicas do usuário e definir metas iniciais.
+- [x] **Dashboard Principal:** Painel central com resumo das atividades diárias e semanais, tendências de peso e energia.
+- [x] **Navegação Completa:** Layouts de barra lateral para o painel do usuário e para o painel administrativo.
+- [x] **Gerenciamento de Conta:** Seção onde os usuários podem gerenciar perfil, assinatura (simulada), pagamentos (simulados) e configurações.
+- [x] **Páginas de Conteúdo:**
+  - [x] **Treinos:** Listagem e página de detalhes dos vídeos de treino.
+  - [x] **Premium Hub:** Página de conteúdo exclusivo para assinantes (com bloqueio para não-assinantes).
+  - [x] **Depoimentos:** Galeria de histórias de sucesso de usuários.
+- [x] **AI Coach:** Interface de chat funcional conectada a um fluxo Genkit para conselhos de saúde.
+- [x] **Painel Administrativo:**
+  - [x] Dashboard com estatísticas (mock).
+  - [x] Gerenciamento de usuários, conteúdo (treinos, receitas, artigos), anúncios e finanças (com dados mock).
+  - [x] Página de configurações para integrações de serviços.
+- [x] **Ajuste de Logo e Layout:** A logo foi ajustada para caber corretamente nos cabeçalhos e o contraste do layout foi melhorado.
 
 ### Funcionalidades Pendentes e Próximos Passos
 
 A principal prioridade é substituir os dados simulados por uma integração real com o Firebase.
 
-1.  **Integração com Firebase:**
-    - **Firestore:** Substituir todos os dados mock (arquivos `.json` em `/src/lib/firebase/seed-data`) por chamadas reais ao Firestore para treinos, usuários, artigos, etc.
-    - **Firebase Authentication:** Implementar o provedor de autenticação real do Firebase para substituir a simulação com `sessionStorage`.
-    - **Cloud Functions / Backend:** Criar funções de backend para lidar com lógica de negócios, como processamento de pagamentos e gerenciamento de assinaturas.
+- [ ] **Integração com Firebase:**
+    - [ ] **Firestore:** Substituir todos os dados mock (arquivos `.json` em `/src/lib/firebase/seed-data`) por chamadas reais ao Firestore para treinos, usuários, artigos, etc.
+    - [ ] **Firebase Authentication:** Implementar o provedor de autenticação real do Firebase para substituir a simulação com `sessionStorage`.
+    - [ ] **Cloud Functions / Backend:** Criar funções de backend para lidar com lógica de negócios, como processamento de pagamentos e gerenciamento de assinaturas.
 
-2.  **Lógica de Backend:**
-    - **Pagamentos:** Integrar com um gateway de pagamento (ex: PagSeguro, Stripe) para gerenciar assinaturas Premium.
-    - **Anúncios:** Implementar a lógica para exibir anúncios do AdSense e AdMob para usuários gratuitos.
-    - **Notificações:** Configurar um sistema de notificações (ex: via Firebase Cloud Messaging).
+- [ ] **Lógica de Backend:**
+    - [ ] **Pagamentos:** Integrar com um gateway de pagamento (ex: PagSeguro, Stripe) para gerenciar assinaturas Premium.
+    - [ ] **Anúncios:** Implementar a lógica para exibir anúncios do AdSense e AdMob para usuários gratuitos.
+    - [ ] **Notificações:** Configurar um sistema de notificações (ex: via Firebase Cloud Messaging).
 
-3.  **Refinamento de Funcionalidades:**
-    - Conectar os formulários do painel administrativo para efetivamente criar, editar e deletar conteúdo no banco de dados.
-    - Desenvolver a lógica do "Planejador Semanal IA" na página Premium.
+- [ ] **Refinamento de Funcionalidades:**
+    - [ ] Conectar os formulários do painel administrativo para efetivamente criar, editar e deletar conteúdo no banco de dados.
+    - [ ] Desenvolver a lógica do "Planejador Semanal IA" na página Premium.
 
 ---
 
