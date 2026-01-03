@@ -4,18 +4,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Ad } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
+import adsData from "@/lib/firebase/seed-data/ads.json";
 
-async function getAds(): Promise<Ad[]> {
-    const adsCol = collection(db, 'ads');
-    const adSnapshot = await getDocs(adsCol);
-    const adList = adSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Ad));
-    return adList;
+function getAds(): Ad[] {
+    // Simulating fetching from a local JSON file instead of Firestore
+    return adsData.map(ad => ({
+        ...ad,
+        expiresAt: new Date(ad.expiresAt).toISOString(),
+    }));
 }
 
-export default async function AdsManagementPage() {
-    const ads = await getAds();
+export default function AdsManagementPage() {
+    const ads = getAds();
 
     return (
         <div className="space-y-6">

@@ -10,9 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
 import { Skeleton } from "@/components/ui/skeleton";
+import allWorkoutsData from "@/lib/firebase/seed-data/workouts.json";
+
 
 export default function WorkoutsPage() {
   const [allWorkouts, setAllWorkouts] = useState<Workout[]>([]);
@@ -21,19 +21,9 @@ export default function WorkoutsPage() {
   const [levelFilter, setLevelFilter] = useState('all');
 
   useEffect(() => {
-    const fetchWorkouts = async () => {
-      setLoading(true);
-      try {
-        const querySnapshot = await getDocs(collection(db, "workouts"));
-        const workoutsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Workout[];
-        setAllWorkouts(workoutsData);
-      } catch (error) {
-        console.error("Error fetching workouts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchWorkouts();
+    // Simulate fetching data from a local file
+    setAllWorkouts(allWorkoutsData as Workout[]);
+    setLoading(false);
   }, []);
 
   const filteredWorkouts = allWorkouts.filter(workout => {
@@ -100,7 +90,7 @@ export default function WorkoutsPage() {
             </div>
           ) : (
              <div className="text-center py-16">
-              <p className="text-muted-foreground">Nenhum treino encontrado. Tente ajustar os filtros ou adicione treinos no Firestore.</p>
+              <p className="text-muted-foreground">Nenhum treino encontrado. Tente ajustar os filtros.</p>
             </div>
           )}
         </>

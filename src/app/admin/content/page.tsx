@@ -2,18 +2,16 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { ContentDataTable } from "@/components/content/content-data-table";
 import { Workout } from "@/lib/types";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
+import workoutsData from "@/lib/firebase/seed-data/workouts.json";
 
-async function getWorkouts(): Promise<Workout[]> {
-  const workoutsCol = collection(db, 'workouts');
-  const workoutSnapshot = await getDocs(workoutsCol);
-  const workoutList = workoutSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Workout));
-  return workoutList;
+
+function getWorkouts(): Workout[] {
+  // Simulating fetching from a local JSON file instead of Firestore
+  return workoutsData as Workout[];
 }
 
-export default async function ContentManagementPage() {
-    const workouts = await getWorkouts();
+export default function ContentManagementPage() {
+    const workouts = getWorkouts();
 
     return (
         <div className="space-y-6">

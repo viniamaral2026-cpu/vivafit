@@ -5,23 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, Crown, Dumbbell, Flame, Lock } from "lucide-react";
 import Link from "next/link";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
+import workoutsData from "@/lib/firebase/seed-data/workouts.json";
+
 
 // Placeholder for user subscription status. In a real app, this would come from an auth context.
 const isPremiumUser = true;
 
 async function getWorkout(id: string): Promise<Workout | null> {
-    try {
-        const workoutDoc = await getDoc(doc(db, "workouts", id));
-        if (workoutDoc.exists()) {
-            return { id: workoutDoc.id, ...workoutDoc.data() } as Workout;
-        }
-        return null;
-    } catch (error) {
-        console.error("Error fetching workout:", error);
-        return null;
-    }
+    // Simulating fetching from a local JSON file instead of Firestore
+    const workout = (workoutsData as Workout[]).find(w => w.id === id);
+    return workout || null;
 }
 
 
