@@ -13,6 +13,7 @@ import {
   Clapperboard,
   DollarSign,
   ChevronDown,
+  Settings,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -46,6 +47,7 @@ export default function AdminLayout({
     { href: "/admin/users", label: "Usuários", icon: Users },
     { href: "/admin/finances", label: "Finanças", icon: DollarSign },
     { href: "/admin/ads", label: "Anúncios", icon: Megaphone },
+    { href: "/admin/settings", label: "Configurações", icon: Settings },
   ];
 
   const contentMenuItems = [
