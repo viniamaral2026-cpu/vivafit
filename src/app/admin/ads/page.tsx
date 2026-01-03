@@ -4,10 +4,31 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Ad } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import adsData from "@/lib/firebase/seed-data/ads.json";
+
+// Mock data as seed file is removed. This should be replaced with a Supabase query.
+const adsData: Ad[] = [
+    {
+        "id": "ad1",
+        "company": "FitMeals Co.",
+        "title": "Entrega de Comida Saudável",
+        "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3Njc0MjE2MzF8MA&ixlib_rb-4.1.0&q=80&w=1080",
+        "imageHint": "healthy food",
+        "isActive": true,
+        "expiresAt": "2024-12-31T23:59:59Z"
+    },
+    {
+        "id": "ad2",
+        "company": "RunFast Shoes",
+        "title": "Tênis de Corrida de Última Geração",
+        "imageUrl": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxydW5uaW5nJTIwc2hvZXN8ZW58MHx8fHwxNzY3NDI5MTM2fDA&ixlib_rb-4.1.0&q=80&w=1080",
+        "imageHint": "running shoes",
+        "isActive": false,
+        "expiresAt": "2024-08-31T23:59:59Z"
+    }
+];
+
 
 function getAds(): Ad[] {
-    // Simulating fetching from a local JSON file instead of Firestore
     return adsData.map(ad => ({
         ...ad,
         expiresAt: new Date(ad.expiresAt).toISOString(),
@@ -67,7 +88,7 @@ export default function AdsManagementPage() {
                 )) : (
                     <Card>
                         <CardContent className="p-6 text-center text-muted-foreground">
-                            Nenhum anúncio encontrado. Adicione alguns à coleção 'ads' no Firestore.
+                            Nenhum anúncio encontrado.
                         </CardContent>
                     </Card>
                 )}
