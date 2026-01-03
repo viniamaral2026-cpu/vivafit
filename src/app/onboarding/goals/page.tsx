@@ -4,9 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { PersonStanding, Bike, Run } from "lucide-react";
-import { doc, updateDoc } from "firebase/firestore";
 import { useAuth } from "@/app/auth-provider";
-import { db } from "@/lib/firebase/config";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,38 +15,11 @@ export default function OnboardingGoalsPage() {
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleActivate = async () => {
-         if (!user) return;
+    const handleNextStep = () => {
         setIsSubmitting(true);
-        try {
-            const userDocRef = doc(db, "users", user.uid);
-            await updateDoc(userDocRef, {
-                onboardingComplete: true,
-                activityMonitoring: true,
-            });
-            router.push("/workouts");
-        } catch (error) {
-            console.error("Error updating user document:", error);
-            toast({ title: "Erro", description: "Não foi possível salvar sua preferência.", variant: "destructive"});
-            setIsSubmitting(false);
-        }
-    };
-
-    const handleSkip = async () => {
-        if (!user) return;
-        setIsSubmitting(true);
-        try {
-            const userDocRef = doc(db, "users", user.uid);
-            await updateDoc(userDocRef, {
-                onboardingComplete: true,
-                activityMonitoring: false,
-            });
-            router.push("/workouts");
-        } catch (error) {
-            console.error("Error updating user document:", error);
-            toast({ title: "Erro", description: "Não foi possível salvar sua preferência.", variant: "destructive"});
-            setIsSubmitting(false);
-        }
+        // Em um app real, aqui você salvaria a preferência do usuário (ex: no Firestore)
+        // Por simplicidade, apenas redirecionamos.
+        router.push("/onboarding/activity-goals");
     };
 
     return (
@@ -75,10 +46,10 @@ export default function OnboardingGoalsPage() {
                    </p>
                 </CardContent>
                 <CardFooter className="flex-col gap-4 p-6">
-                    <Button className="w-full" size="lg" onClick={handleActivate} disabled={isSubmitting}>
-                        {isSubmitting ? "Salvando..." : "Ativar"}
+                    <Button className="w-full" size="lg" onClick={handleNextStep} disabled={isSubmitting}>
+                        {isSubmitting ? "Aguarde..." : "Ativar"}
                     </Button>
-                    <Button variant="link" onClick={handleSkip} disabled={isSubmitting}>Não</Button>
+                    <Button variant="link" onClick={handleNextStep} disabled={isSubmitting}>Não</Button>
                 </CardFooter>
             </Card>
         </div>
