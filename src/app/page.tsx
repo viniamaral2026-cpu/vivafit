@@ -15,7 +15,7 @@ export default function Home() {
       <MainHeader />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32">
+        <section className="w-full py-20 md:py-32 lg:py-40">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_550px] lg:gap-12 xl:grid-cols-[1fr_650px]">
               <div className="flex flex-col justify-center space-y-6">
@@ -48,7 +48,7 @@ export default function Home() {
                     data-ai-hint={heroImage.imageHint}
                     width={650}
                     height={400}
-                    className="aspect-video object-cover"
+                    className="aspect-video object-contain"
                   />
                 </div>
               )}
