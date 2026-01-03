@@ -101,7 +101,7 @@ export default function DashboardLayout({
       { label: "Medidas", icon: Ruler, href: "/measurements" },
       { label: "Sinais vitais", icon: HeartPulse, href: "/vitals" },
       { label: "Sono", icon: Bed, href: "/sleep" },
-      { label: "Monitoramento de ciclo", icon: CalendarDays, href: "#" },
+      { label: "Monitoramento de ciclo", icon: CalendarDays, href: "/cycle-tracking" },
   ].filter(item => item.label.toLowerCase().includes(searchQuery.toLowerCase()));
   
   if (authLoading || !user) {
