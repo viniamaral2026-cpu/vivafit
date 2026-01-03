@@ -12,6 +12,10 @@ import { DailyGoalCard } from "@/components/dashboard/daily-goal-card";
 import { WeeklyGoalCard } from "@/components/dashboard/weekly-goal-card";
 import { Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { WeightTrendCard } from "@/components/dashboard/weight-trend-card";
+import { EnergyManagementCard } from "@/components/dashboard/energy-management-card";
+import { DiscoverCard } from "@/components/dashboard/discover-card";
+import { SleepNeedsCard, YourFitSleepCard } from "@/components/dashboard/sleep-cards";
 
 
 type UserData = {
@@ -117,6 +121,14 @@ export default function DashboardPage() {
         
         <DailyGoalCard />
         <WeeklyGoalCard />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <WeightTrendCard />
+          <EnergyManagementCard />
+          <DiscoverCard />
+          <SleepNeedsCard />
+          <YourFitSleepCard />
+        </div>
 
         {/* Speed Dial FAB */}
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-4">
