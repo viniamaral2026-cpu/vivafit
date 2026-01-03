@@ -136,6 +136,9 @@ export default function Home() {
           <Link href="#" className="text-xs hover:underline underline-offset-4">
             Privacidade
           </Link>
+          <Link href="/admin/dashboard" className="text-xs hover:underline underline-offset-4">
+            Entrar na administração
+          </Link>
         </nav>
       </footer>
     </div>
