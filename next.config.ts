@@ -28,6 +28,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'scontent.fpoa13-1.fna.fbcdn.net',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
 };
