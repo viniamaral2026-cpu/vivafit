@@ -7,34 +7,31 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Article } from "@/lib/types";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// Mock data as Firestore is disabled
-const mockArticles: Article[] = [
-    {
-        id: "article1",
-        title: "O Segredo do Jejum Intermitente",
-        author: "Dra. Luiza Mello",
-        publishedAt: "2024-07-30",
-        isPremium: true,
-        imageUrl: "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=1887&auto=format&fit=crop",
-        imageHint: "intermittent fasting food",
-        content: "Descubra como o tempo de alimentação afeta seu metabolismo...",
-        category: "NUTRIÇÃO"
-    },
-    {
-        id: "article2",
-        title: "10 Dicas para Manter a Motivação",
-        author: "Coach Rick",
-        publishedAt: "2024-07-28",
-        isPremium: false,
-        imageUrl: "https://images.unsplash.com/photo-1475666673248-340a5289d185?q=80&w=2070&auto=format&fit=crop",
-        imageHint: "motivation sunrise",
-        content: "Estratégias mentais para não desistir da sua jornada fitness...",
-        category: "MENTAL"
-    }
-];
 
 export default function ArticlesManagementPage() {
+    const [articles, setArticles] = useState<Article[]>([]);
+    const [loading, setLoading] = useState(true);
+    const supabase = createClient();
+
+    useEffect(() => {
+        const fetchArticles = async () => {
+            setLoading(true);
+            const { data, error } = await supabase.from('articles').select('*');
+            if (error) {
+                console.error("Error fetching articles:", error);
+            } else {
+                setArticles(data as Article[]);
+            }
+            setLoading(false);
+        };
+        fetchArticles();
+    }, [supabase]);
+
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -64,21 +61,33 @@ export default function ArticlesManagementPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {mockArticles.map(article => (
-                                <TableRow key={article.id}>
-                                    <TableCell className="font-medium">{article.title}</TableCell>
-                                    <TableCell>{article.author}</TableCell>
-                                    <TableCell>
-                                        <Badge variant={article.isPremium ? "default" : "secondary"}>
-                                            {article.isPremium ? "Premium" : "Grátis"}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>{new Date(article.publishedAt).toLocaleDateString()}</TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm">Editar</Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                             {loading ? (
+                                Array.from({ length: 2 }).map((_, i) => (
+                                    <TableRow key={i}>
+                                        <TableCell><Skeleton className="h-4 w-48" /></TableCell>
+                                        <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                                        <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+                                        <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                                        <TableCell className="text-right"><Skeleton className="h-8 w-16 ml-auto" /></TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                articles.map(article => (
+                                    <TableRow key={article.id}>
+                                        <TableCell className="font-medium">{article.title}</TableCell>
+                                        <TableCell>{article.author}</TableCell>
+                                        <TableCell>
+                                            <Badge variant={article.isPremium ? "default" : "secondary"}>
+                                                {article.isPremium ? "Premium" : "Grátis"}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>{new Date(article.publishedAt).toLocaleDateString()}</TableCell>
+                                        <TableCell className="text-right">
+                                            <Button variant="ghost" size="sm">Editar</Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>

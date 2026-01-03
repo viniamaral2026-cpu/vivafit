@@ -34,11 +34,11 @@ export type Payment = {
 
 export type User = {
   id: string;
-  name: string;
+  full_name: string;
   email: string;
   role: 'Admin' | 'User';
   subscription: 'Free' | 'Premium';
-  createdAt: any; // Can be a string or a Date object
+  created_at: any; // Can be a string or a Date object
 };
 
 export type Recipe = {
@@ -54,7 +54,7 @@ export type Recipe = {
 };
 
 export type Article = {
-  id: string;
+  id:string;
   title: string;
   author: string;
   publishedAt: string;

@@ -1,3 +1,4 @@
+
 "use client"
 import * as React from "react";
 import {
@@ -18,15 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { User } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-
-// Mock data since Firestore is disabled
-const mockUsers: User[] = [
-    { id: 'user1', name: 'Alice Johnson', email: 'alice@example.com', role: 'User', subscription: 'Premium', createdAt: new Date() },
-    { id: 'user2', name: 'Bob Williams', email: 'bob@example.com', role: 'User', subscription: 'Free', createdAt: new Date() },
-    { id: 'user3', name: 'Charlie Brown', email: 'charlie@example.com', role: 'Admin', subscription: 'Premium', createdAt: new Date() },
-    { id: 'user4', name: 'Diana Miller', email: 'diana@example.com', role: 'User', subscription: 'Free', createdAt: new Date() },
-];
-
+import { createClient } from "@/lib/supabase/client";
 
 export const columns: ColumnDef<User>[] = [
     {
@@ -47,17 +40,20 @@ export const columns: ColumnDef<User>[] = [
         ),
     },
     {
-        accessorKey: "name",
+        accessorKey: "full_name",
         header: "Nome",
-        cell: ({row}) => (
-            <div className="flex items-center gap-2">
-                <Avatar className="h-8 w-8">
-                    <AvatarImage src={`https://i.pravatar.cc/150?u=${row.original.id}`} />
-                    <AvatarFallback>{row.original.name?.split(" ").map(n => n[0]).join("")}</AvatarFallback>
-                </Avatar>
-                <span className="font-medium">{row.getValue("name")}</span>
-            </div>
-        )
+        cell: ({row}) => {
+            const user = row.original as any;
+            return (
+                <div className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.raw_user_meta_data?.avatar_url} />
+                        <AvatarFallback>{user.full_name?.split(" ").map(n => n[0]).join("")}</AvatarFallback>
+                    </Avatar>
+                    <span className="font-medium">{user.full_name || 'N/A'}</span>
+                </div>
+            )
+        }
     },
     {
         accessorKey: "email",
@@ -78,10 +74,10 @@ export const columns: ColumnDef<User>[] = [
         cell: ({row}) => <Badge variant={row.getValue("subscription") === "Premium" ? "default" : "outline"}>{row.getValue("subscription")}</Badge>
     },
     {
-        accessorKey: "createdAt",
+        accessorKey: "created_at",
         header: "Data de Inscrição",
         cell: ({row}) => {
-            const date = new Date(row.getValue("createdAt"));
+            const date = new Date(row.getValue("created_at"));
             return <div>{date ? date.toLocaleDateString() : 'N/D'}</div>
         }
     },
@@ -109,16 +105,23 @@ export const columns: ColumnDef<User>[] = [
 export default function UserManagementPage() {
     const [users, setUsers] = React.useState<User[]>([]);
     const [loading, setLoading] = React.useState(true);
-    const [sorting, setSorting] = React.useState<SortingState>([])
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const supabase = createClient();
 
     React.useEffect(() => {
-        setLoading(true);
-        // Simulate fetching users from a local source
-        setTimeout(() => {
-            setUsers(mockUsers);
+        const fetchUsers = async () => {
+            setLoading(true);
+            const { data, error } = await supabase.from('profiles').select('*');
+
+            if (error) {
+                console.error("Error fetching profiles:", error);
+            } else {
+                setUsers(data as User[]);
+            }
             setLoading(false);
-        }, 500);
-    }, []);
+        };
+        fetchUsers();
+    }, [supabase]);
 
     const table = useReactTable({
         data: users,

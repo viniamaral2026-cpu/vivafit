@@ -1,42 +1,34 @@
+
+"use client";
+
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Ad } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-
-// Mock data as seed file is removed. This should be replaced with a Supabase query.
-const adsData: Ad[] = [
-    {
-        "id": "ad1",
-        "company": "FitMeals Co.",
-        "title": "Entrega de Comida Saudável",
-        "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3Njc0MjE2MzF8MA&ixlib_rb-4.1.0&q=80&w=1080",
-        "imageHint": "healthy food",
-        "isActive": true,
-        "expiresAt": "2024-12-31T23:59:59Z"
-    },
-    {
-        "id": "ad2",
-        "company": "RunFast Shoes",
-        "title": "Tênis de Corrida de Última Geração",
-        "imageUrl": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxydW5uaW5nJTIwc2hvZXN8ZW58MHx8fHwxNzY3NDI5MTM2fDA&ixlib_rb-4.1.0&q=80&w=1080",
-        "imageHint": "running shoes",
-        "isActive": false,
-        "expiresAt": "2024-08-31T23:59:59Z"
-    }
-];
-
-
-function getAds(): Ad[] {
-    return adsData.map(ad => ({
-        ...ad,
-        expiresAt: new Date(ad.expiresAt).toISOString(),
-    }));
-}
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AdsManagementPage() {
-    const ads = getAds();
+    const [ads, setAds] = useState<Ad[]>([]);
+    const [loading, setLoading] = useState(true);
+    const supabase = createClient();
+
+    useEffect(() => {
+        const fetchAds = async () => {
+            setLoading(true);
+            const { data, error } = await supabase.from('ads').select('*');
+            if (error) {
+                console.error("Error fetching ads:", error);
+            } else {
+                setAds(data as Ad[]);
+            }
+            setLoading(false);
+        };
+        fetchAds();
+    }, [supabase]);
 
     return (
         <div className="space-y-6">
@@ -52,7 +44,16 @@ export default function AdsManagementPage() {
             </div>
             
             <div className="grid gap-6">
-                {ads.length > 0 ? ads.map(ad => (
+                {loading ? (
+                    Array.from({ length: 2 }).map((_, i) => (
+                        <Card key={i}>
+                            <CardHeader><Skeleton className="h-6 w-1/2" /></CardHeader>
+                            <CardContent>
+                                <Skeleton className="aspect-[4/1] w-full" />
+                            </CardContent>
+                        </Card>
+                    ))
+                ) : ads.length > 0 ? ads.map(ad => (
                     <Card key={ad.id}>
                         <CardHeader>
                             <div className="flex items-start justify-between">

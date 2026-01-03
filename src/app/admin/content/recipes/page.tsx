@@ -7,34 +7,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Recipe } from "@/lib/types";
-
-// Mock data as Firestore is disabled
-const mockRecipes: Recipe[] = [
-    {
-        id: "recipe1",
-        title: "Salada de Quinoa com Abacate",
-        category: "Almoço",
-        prepTime: 15,
-        cookTime: 20,
-        calories: 350,
-        isPremium: false,
-        imageUrl: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop",
-        imageHint: "quinoa salad"
-    },
-    {
-        id: "recipe2",
-        title: "Salmão Grelhado com Aspargos",
-        category: "Jantar",
-        prepTime: 10,
-        cookTime: 15,
-        calories: 550,
-        isPremium: true,
-        imageUrl: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=1887&auto=format&fit=crop",
-        imageHint: "grilled salmon"
-    }
-];
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function RecipesManagementPage() {
+    const [recipes, setRecipes] = useState<Recipe[]>([]);
+    const [loading, setLoading] = useState(true);
+    const supabase = createClient();
+
+    useEffect(() => {
+        const fetchRecipes = async () => {
+            setLoading(true);
+            const { data, error } = await supabase.from('recipes').select('*');
+            if (error) {
+                console.error("Error fetching recipes:", error);
+            } else {
+                setRecipes(data as Recipe[]);
+            }
+            setLoading(false);
+        };
+        fetchRecipes();
+    }, [supabase]);
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -64,21 +59,33 @@ export default function RecipesManagementPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {mockRecipes.map(recipe => (
-                                <TableRow key={recipe.id}>
-                                    <TableCell className="font-medium">{recipe.title}</TableCell>
-                                    <TableCell>{recipe.category}</TableCell>
-                                    <TableCell>
-                                        <Badge variant={recipe.isPremium ? "default" : "secondary"}>
-                                            {recipe.isPremium ? "Premium" : "Grátis"}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>{recipe.calories} kcal</TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm">Editar</Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {loading ? (
+                                Array.from({ length: 2 }).map((_, i) => (
+                                    <TableRow key={i}>
+                                        <TableCell><Skeleton className="h-4 w-40" /></TableCell>
+                                        <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                                        <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+                                        <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                                        <TableCell className="text-right"><Skeleton className="h-8 w-16 ml-auto" /></TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                recipes.map(recipe => (
+                                    <TableRow key={recipe.id}>
+                                        <TableCell className="font-medium">{recipe.title}</TableCell>
+                                        <TableCell>{recipe.category}</TableCell>
+                                        <TableCell>
+                                            <Badge variant={recipe.isPremium ? "default" : "secondary"}>
+                                                {recipe.isPremium ? "Premium" : "Grátis"}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>{recipe.calories} kcal</TableCell>
+                                        <TableCell className="text-right">
+                                            <Button variant="ghost" size="sm">Editar</Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>
