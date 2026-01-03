@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { ProgressRing } from "@/components/dashboard/progress-ring"
 import { StatsSummary } from "@/components/dashboard/stats-summary"
-import { Footprints, Heart, Plus, Scale, Pencil, Run, X, HeartPulse } from "lucide-react"
+import { Footprints, Heart, Plus, Scale, Pencil, Dumbbell, X, HeartPulse } from "lucide-react"
 import { useAuth } from "../auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DailyGoalCard } from "@/components/dashboard/daily-goal-card";
 import { WeeklyGoalCard } from "@/components/dashboard/weekly-goal-card";
-import { Dumbbell, Utensils } from "lucide-react";
+import { Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 
@@ -125,7 +125,7 @@ export default function DashboardPage() {
                     <div className="flex items-center gap-4">
                         <span className="bg-background/80 backdrop-blur-sm text-foreground text-sm font-semibold px-3 py-1.5 rounded-lg shadow-sm">Monitorar treino</span>
                         <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-white hover:bg-gray-100 text-gray-700">
-                            <Run className="h-6 w-6"/>
+                            <Dumbbell className="h-6 w-6"/>
                         </Button>
                     </div>
                      <div className="flex items-center gap-4">
