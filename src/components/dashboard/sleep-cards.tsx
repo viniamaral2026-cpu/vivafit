@@ -36,7 +36,6 @@ const SleepTentIllustration = () => (
         <path d="M26.5781 42L45.4922 20.625L64.4062 42" stroke="#A8A29E" strokeWidth="2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M51.3516 29.8125C51.3516 31.4326 50.0215 32.7627 48.4014 32.7627C46.7812 32.7627 45.4512 31.4326 45.4512 29.8125C45.4512 28.1924 46.7812 26.8623 48.4014 26.8623C50.0215 26.8623 51.3516 28.1924 51.3516 29.8125Z" fill="#BFDBFE"/>
         <path d="M68.5312 32.7627H30.4375V36.9502H68.5312V32.7627Z" fill="#BFDBFE"/>
-    </g>
     </svg>
 )
 
