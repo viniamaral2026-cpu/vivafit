@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import Link from "next/link";
@@ -96,7 +97,7 @@ export default function DashboardLayout({
   ];
 
   const searchResults = [
-      { label: "Atividades", icon: Activity, href: "#" },
+      { label: "Atividades", icon: Activity, href: "/activity" },
       { label: "Medidas", icon: Ruler, href: "#" },
       { label: "Sinais Vitais", icon: HeartPulse, href: "#" },
       { label: "Sono", icon: Bed, href: "#" },

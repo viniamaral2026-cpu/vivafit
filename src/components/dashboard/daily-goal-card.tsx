@@ -9,17 +9,9 @@ const days = ["D", "S", "T", "Q", "Q", "S", "S"]
 function DayProgress({ day, achieved }: { day: string; achieved: boolean }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div
-        className={`w-8 h-8 rounded-full border-2 ${
-          achieved ? "border-primary bg-primary/20" : "border-muted-foreground/20"
-        } flex items-center justify-center`}
-      >
-        <div
-          className={`w-6 h-6 rounded-full border-2 ${
-            achieved ? "border-primary bg-primary/20" : "border-muted-foreground/20"
-          }`}
-        />
-      </div>
+       <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${achieved ? "border-primary" : "border-muted-foreground/20"}`}>
+            {achieved && <div className="w-2 h-2 rounded-full bg-primary" />}
+        </div>
       <span className="text-xs font-medium text-muted-foreground">{day}</span>
     </div>
   )
@@ -39,7 +31,7 @@ export function DailyGoalCard() {
       </CardHeader>
       <CardContent>
         <div className="flex items-baseline gap-2">
-          <div className="text-lg font-bold text-primary">{achievedCount}/7</div>
+          <div className="text-lg font-bold text-blue-600">{achievedCount}/7</div>
           <span className="text-sm text-muted-foreground">Alcançadas</span>
         </div>
         <div className="mt-4 flex justify-between">
