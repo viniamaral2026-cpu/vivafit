@@ -17,22 +17,22 @@ export default function RegisterPage() {
        <div className="absolute top-4 left-4">
           <Button variant="ghost" asChild>
             <Link href="/">
-              &larr; Back to Home
+              &larr; Voltar para a Home
             </Link>
           </Button>
         </div>
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <Logo className="mx-auto" />
-          <CardTitle className="text-2xl font-headline mt-4">Create an account</CardTitle>
+          <CardTitle className="text-2xl font-headline mt-4">Crie sua conta</CardTitle>
           <CardDescription>
-            Enter your information to get started with VivaFit
+            Insira suas informações para começar com o VivaFit
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="full-name">Full Name</Label>
+              <Label htmlFor="full-name">Nome Completo</Label>
               <Input id="full-name" placeholder="Max Robinson" required />
             </div>
             <div className="grid gap-2">
@@ -45,20 +45,20 @@ export default function RegisterPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Senha</Label>
               <Input id="password" type="password" />
             </div>
             <Button type="submit" className="w-full">
-              Create an account
+              Criar conta
             </Button>
             <Button variant="outline" className="w-full">
-              Sign up with Google
+              Cadastrar com Google
             </Button>
           </div>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
+            Já tem uma conta?{" "}
             <Link href="/login" className="underline">
-              Sign in
+              Entrar
             </Link>
           </div>
         </CardContent>
