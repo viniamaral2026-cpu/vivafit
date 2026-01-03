@@ -1,9 +1,10 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { ChevronRight, Plus } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 
 export function WeeklyGoalCard() {
     return (
@@ -16,16 +17,11 @@ export function WeeklyGoalCard() {
                 <ChevronRight className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent className="pt-4">
-                <div className="flex items-center gap-4">
-                    <div className="w-full">
-                        <div className="flex justify-between items-baseline mb-1">
-                            <span className="text-lg font-bold text-primary">0 de 150</span>
-                        </div>
-                        <Progress value={0} className="h-2" />
+                <div className="w-full">
+                    <div className="flex justify-between items-baseline mb-1">
+                        <span className="text-lg font-bold text-primary">0 de 150</span>
                     </div>
-                    <Button size="icon" className="rounded-full h-12 w-12 flex-shrink-0">
-                        <Plus className="h-6 w-6" />
-                    </Button>
+                    <Progress value={(0/150)*100} className="h-2" />
                 </div>
                 <p className="mt-2 text-sm text-muted-foreground">
                     Conseguir 150 Pontos cardio por semana pode ajudar você a viver mais e melhor.

@@ -56,7 +56,7 @@ export default function DashboardLayout({
       return;
     }
 
-    if (isNewUser && pathname !== '/onboarding') {
+    if (isNewUser && pathname !== '/onboarding' && !pathname.startsWith('/onboarding/')) {
       router.push('/onboarding');
       return;
     }

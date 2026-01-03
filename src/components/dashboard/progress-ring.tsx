@@ -1,3 +1,4 @@
+
 "use client"
 
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
@@ -60,7 +61,7 @@ export function ProgressRing({ steps, stepGoal, cardioPoints, cardioGoal }: Prog
       </ResponsiveContainer>
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
         <div className="text-6xl font-bold text-accent">{cardioPoints}</div>
-        <div className="text-6xl font-bold text-primary mt-2">{steps}</div>
+        <div className="text-6xl font-bold text-primary">{steps}</div>
       </div>
     </div>
   )

@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -15,7 +16,7 @@ function DayProgress({ day, achieved }: { day: string; achieved: boolean }) {
       >
         <div
           className={`w-6 h-6 rounded-full border-2 ${
-            achieved ? "border-primary" : "border-muted-foreground/20"
+            achieved ? "border-primary bg-primary/20" : "border-muted-foreground/20"
           }`}
         />
       </div>
@@ -25,7 +26,7 @@ function DayProgress({ day, achieved }: { day: string; achieved: boolean }) {
 }
 
 export function DailyGoalCard() {
-  const achievedCount = 2 // Placeholder
+  const achievedCount = 0 // Placeholder
 
   return (
     <Card className="shadow-sm">
@@ -37,8 +38,8 @@ export function DailyGoalCard() {
         <ChevronRight className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div className="flex items-center gap-2">
-          <div className="text-2xl font-bold text-primary">{achievedCount}/7</div>
+        <div className="flex items-baseline gap-2">
+          <div className="text-lg font-bold text-primary">{achievedCount}/7</div>
           <span className="text-sm text-muted-foreground">Alcançadas</span>
         </div>
         <div className="mt-4 flex justify-between">
