@@ -12,6 +12,7 @@ import {
     Smartphone, 
     LogOut, 
     Info,
+    Clapperboard,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -80,6 +81,7 @@ export default function DashboardLayout({
     { href: "/workouts", label: "Treinos", icon: Dumbbell },
     { href: "/ai-coach", label: "AI Coach", icon: Bot },
     { href: "/premium", label: "Premium Hub", icon: Gem, isPremium: true },
+    { href: "/testimonials", label: "Depoimentos", icon: Clapperboard },
     { href: "/devices", label: "Dispositivos", icon: Smartphone },
   ];
   
