@@ -8,75 +8,101 @@ import { useAuth } from "../auth-provider";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
 
 type UserProfile = {
     name: string;
     username: string;
     email: string;
+    gender: string;
+    birthDate: string;
+    weight: string;
+    height: string;
+};
+
+type ActivityGoals = {
+    steps: string;
+    cardioPoints: string;
+}
+
+type SleepSchedule = {
+    enabled: boolean;
+    bedtime: string;
+    wakeup: string;
 }
 
 export default function AccountProfilePage() {
     const { user } = useAuth();
     const { toast } = useToast();
     const [profile, setProfile] = useState<UserProfile | null>(null);
-    const [loadingProfile, setLoadingProfile] = useState(true);
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
+    const [goals, setGoals] = useState<ActivityGoals | null>(null);
+    const [sleep, setSleep] = useState<SleepSchedule | null>(null);
+
+    const [loading, setLoading] = useState(true);
     
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    // Form state
+    const [gender, setGender] = useState("");
+    const [birthDate, setBirthDate] = useState("");
+    const [weight, setWeight] = useState("");
+    const [height, setHeight] = useState("");
+    const [steps, setSteps] = useState("10000");
+    const [cardioPoints, setCardioPoints] = useState("40");
+    const [sleepEnabled, setSleepEnabled] = useState(false);
+    const [bedtime, setBedtime] = useState("23:00");
+    const [wakeup, setWakeup] = useState("07:00");
 
 
      useEffect(() => {
         if (user) {
-            setLoadingProfile(true);
-            // Simulate fetching profile data
+            setLoading(true);
+            // Simulate fetching all data
             setTimeout(() => {
                 const userProfile = {
                     name: user.displayName || 'Usuário de Teste',
                     username: user.displayName?.toLowerCase().replace(' ', '') || 'usertest',
-                    email: user.email || 'Não informado'
+                    email: user.email || 'Não informado',
+                    gender: "other",
+                    birthDate: "1990-09-28",
+                    weight: "130",
+                    height: "175",
                 };
+                const userGoals = { steps: "10000", cardioPoints: "40" };
+                const userSleep = { enabled: false, bedtime: "23:00", wakeup: "07:00" };
+                
                 setProfile(userProfile);
-                setName(userProfile.name);
-                setUsername(userProfile.username);
-                setLoadingProfile(false);
+                setGoals(userGoals);
+                setSleep(userSleep);
+
+                // Set form state
+                setGender(userProfile.gender);
+                setBirthDate(userProfile.birthDate);
+                setWeight(userProfile.weight);
+                setHeight(userProfile.height);
+                setSteps(userGoals.steps);
+                setCardioPoints(userGoals.cardioPoints);
+                setSleepEnabled(userSleep.enabled);
+                setBedtime(userSleep.bedtime);
+                setWakeup(userSleep.wakeup);
+
+                setLoading(false);
             }, 500);
         } else {
-            setLoadingProfile(false);
+            setLoading(false);
         }
     }, [user]);
 
-    const handleUpdateProfile = async () => {
+    const handleUpdate = async () => {
         if (!user || !profile) return;
         // Simulate update
-        setProfile({...profile, name, username});
         toast({
             title: "Sucesso!",
-            description: "Seu perfil foi atualizado (simulação)."
+            description: "Suas configurações foram atualizadas (simulação)."
         });
     }
-    
-    const handleUpdatePassword = async () => {
-        if (!user) return;
-        if (newPassword !== confirmPassword) {
-            toast({ title: "Erro", description: "As novas senhas não correspondem.", variant: "destructive" });
-            return;
-        }
-        if (!currentPassword || !newPassword) {
-            toast({ title: "Erro", description: "Por favor, preencha todos os campos de senha.", variant: "destructive" });
-            return;
-        }
-        
-        toast({ title: "Sucesso!", description: "Sua senha foi alterada (simulação)." });
-        setCurrentPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
-    }
 
-    if (loadingProfile) return (
+    if (loading) return (
         <div className="space-y-6">
             <div>
                 <Skeleton className="h-8 w-1/4" />
@@ -85,84 +111,146 @@ export default function AccountProfilePage() {
             <Card>
                 <CardHeader>
                     <Skeleton className="h-6 w-1/3" />
-                    <Skeleton className="h-4 w-2/3 mt-2" />
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="grid gap-2">
-                        <Skeleton className="h-4 w-1/4" />
+                    <div className="grid grid-cols-2 gap-4">
+                        <Skeleton className="h-10 w-full" />
                         <Skeleton className="h-10 w-full" />
                     </div>
-                    <div className="grid gap-2">
-                        <Skeleton className="h-4 w-1/4" />
+                     <div className="flex justify-between items-center">
+                         <Skeleton className="h-6 w-48" />
+                         <Skeleton className="h-6 w-12 rounded-full" />
+                     </div>
+                     <div className="grid grid-cols-2 gap-4">
                         <Skeleton className="h-10 w-full" />
-                    </div>
-                     <div className="grid gap-2">
-                        <Skeleton className="h-4 w-1/4" />
                         <Skeleton className="h-10 w-full" />
                     </div>
                 </CardContent>
-                <CardFooter className="border-t px-6 py-4">
-                    <Skeleton className="h-10 w-32" />
-                </CardFooter>
             </Card>
+            <Card>
+                 <CardHeader>
+                    <Skeleton className="h-6 w-1/3" />
+                </CardHeader>
+                 <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-10 w-full" />
+                    </div>
+                     <div className="grid grid-cols-2 gap-4">
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-10 w-full" />
+                    </div>
+                </CardContent>
+            </Card>
+            <div className="flex justify-end">
+                <Skeleton className="h-10 w-32" />
+            </div>
         </div>
     )
 
-    if (!profile) return null;
+    if (!profile || !goals || !sleep) return null;
 
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold font-headline">Perfil</h1>
-                <p className="text-muted-foreground">Gerencie suas informações pessoais.</p>
+                <h1 className="text-2xl font-bold font-headline">Perfil e Metas</h1>
+                <p className="text-muted-foreground">Gerencie suas informações e objetivos pessoais.</p>
             </div>
             <Card>
                 <CardHeader>
-                    <CardTitle>Seus Detalhes</CardTitle>
-                    <CardDescription>Atualize seu nome, nome de usuário e endereço de e-mail.</CardDescription>
+                    <CardTitle>Metas de atividade</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="name">Nome Completo</Label>
-                        <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
-                    </div>
-                     <div className="grid gap-2">
-                        <Label htmlFor="username">Nome de usuário</Label>
-                        <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" value={profile.email} disabled />
-                    </div>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                         <div className="grid gap-2">
+                            <Label htmlFor="steps">Passos</Label>
+                             <Select onValueChange={setSteps} value={steps}>
+                                <SelectTrigger id="steps">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="5000">5.000</SelectItem>
+                                    <SelectItem value="7500">7.500</SelectItem>
+                                    <SelectItem value="10000">10.000</SelectItem>
+                                     <SelectItem value="12500">12.500</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="grid gap-2">
+                             <Label htmlFor="cardio-points">Pontos cardio</Label>
+                             <Select onValueChange={setCardioPoints} value={cardioPoints}>
+                                <SelectTrigger id="cardio-points">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="10">10</SelectItem>
+                                    <SelectItem value="20">20</SelectItem>
+                                    <SelectItem value="30">30</SelectItem>
+                                    <SelectItem value="40">40</SelectItem>
+                                    <SelectItem value="50">50</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                     </div>
+                     <div className="flex items-center justify-between pt-4">
+                        <Label htmlFor="sleep-schedule" className="font-semibold">Programação da hora de dormir</Label>
+                        <Switch id="sleep-schedule" checked={sleepEnabled} onCheckedChange={setSleepEnabled} />
+                     </div>
+                     {sleepEnabled && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="bedtime">Ir para a cama</Label>
+                                <Input id="bedtime" type="time" value={bedtime} onChange={e => setBedtime(e.target.value)} />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="wakeup">Acordar</Label>
+                                <Input id="wakeup" type="time" value={wakeup} onChange={e => setWakeup(e.target.value)} />
+                            </div>
+                        </div>
+                     )}
                 </CardContent>
-                <CardFooter className="border-t px-6 py-4">
-                    <Button onClick={handleUpdateProfile}>Salvar Alterações</Button>
-                </CardFooter>
             </Card>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Alterar Senha</CardTitle>
-                    <CardDescription>Atualize a senha da sua conta.</CardDescription>
+                    <CardTitle>Sobre você</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="current-password">Senha Atual</Label>
-                        <Input id="current-password" type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="gender">Gênero</Label>
+                            <Select onValueChange={setGender} value={gender}>
+                                <SelectTrigger id="gender">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="male">Masculino</SelectItem>
+                                    <SelectItem value="female">Feminino</SelectItem>
+                                    <SelectItem value="other">Outro</SelectItem>
+                                    <SelectItem value="unspecified">Prefiro não dizer</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="birthDate">Data de nascimento</Label>
+                            <Input id="birthDate" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
+                        </div>
                     </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="new-password">Nova Senha</Label>
-                        <Input id="new-password" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
-                    </div>
-                     <div className="grid gap-2">
-                        <Label htmlFor="confirm-password">Confirme a Nova Senha</Label>
-                        <Input id="confirm-password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+                     <div className="grid grid-cols-2 gap-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="weight">Peso (kg)</Label>
+                            <Input id="weight" type="number" placeholder="ex: 70" value={weight} onChange={(e) => setWeight(e.target.value)} />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="height">Altura (cm)</Label>
+                            <Input id="height" type="number" placeholder="ex: 175" value={height} onChange={(e) => setHeight(e.target.value)} />
+                        </div>
                     </div>
                 </CardContent>
-                <CardFooter className="border-t px-6 py-4">
-                    <Button onClick={handleUpdatePassword}>Atualizar Senha</Button>
-                </CardFooter>
             </Card>
+            <div className="flex justify-end">
+                <Button onClick={handleUpdate}>Salvar Alterações</Button>
+            </div>
         </div>
     )
 }
