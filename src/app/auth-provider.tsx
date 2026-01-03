@@ -2,17 +2,18 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { User } from 'firebase/auth';
+import type { User } from '@supabase/supabase-js';
 import { Skeleton } from '@/components/ui/skeleton';
 import { usePathname, useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 
-// Define a mock user type that is compatible with Firebase's User
-export type MockUser = Pick<User, 'uid' | 'displayName' | 'email' | 'photoURL'> & {
+// Define a user type that is compatible with Supabase's User
+export type AppUser = User & {
   subscription: 'Free' | 'Premium';
 };
 
 interface AuthContextType {
-  user: MockUser | null;
+  user: AppUser | null;
   loading: boolean;
   isPremium: boolean;
 }
@@ -23,27 +24,47 @@ const AuthContext = createContext<AuthContextType>({ user: null, loading: true, 
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<MockUser | null>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const supabase = createClient();
   
   useEffect(() => {
-    // Simulate fetching user data
-    setTimeout(() => {
-      const sessionUserStr = typeof window !== 'undefined' ? window.sessionStorage.getItem('vivafit-user') : null;
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       
-      if (sessionUserStr) {
-        const sessionUser = JSON.parse(sessionUserStr);
-         // Ensure subscription status is part of the user object, default to 'Free' if not present
-        if (!sessionUser.subscription) {
-            sessionUser.subscription = 'Free';
-        }
-        setUser(sessionUser);
+      if (session?.user) {
+        // Here you might fetch additional user profile data from your 'profiles' table
+        const appUser: AppUser = {
+          ...session.user,
+          // This is a mock value. You should fetch this from your database.
+          subscription: session.user.user_metadata?.subscription || 'Free',
+        };
+        setUser(appUser);
       } else {
-        setUser(null); 
+        setUser(null);
       }
       setLoading(false);
-    }, 500);
-  }, []);
+    };
+
+    getSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (session?.user) {
+           const appUser: AppUser = {
+            ...session.user,
+            subscription: session.user.user_metadata?.subscription || 'Free',
+          };
+          setUser(appUser);
+        } else {
+          setUser(null);
+        }
+        setLoading(false);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [supabase.auth]);
 
   const isPremium = user?.subscription === 'Premium';
   

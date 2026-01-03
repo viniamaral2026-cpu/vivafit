@@ -18,24 +18,18 @@ import { Logo } from "@/components/icons/logo";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/app/auth-provider";
-
-// Mock user for development
-const mockUser = {
-  uid: 'mock-user-123',
-  displayName: 'Usuário de Teste',
-  email: 'teste@vivafit.com',
-  photoURL: 'https://i.pravatar.cc/150?u=mock-user-123',
-};
+import { createClient } from "@/lib/supabase/client";
 
 export default function AuthPage() {
   const router = useRouter();
   const { toast } = useToast();
   const { user, loading } = useAuth();
   const [isClient, setIsClient] = useState(false);
+  const supabase = createClient();
 
   // State for Login
   const [loginEmail, setLoginEmail] = useState("teste@vivafit.com");
-  const [loginPassword, setLoginPassword] = useState("password");
+  const [loginPassword, setLoginPassword] = useState("password123");
 
   // State for Register
   const [registerName, setRegisterName] = useState("");
@@ -50,56 +44,73 @@ export default function AuthPage() {
     }
   }, [user, loading, router]);
   
-  const handleSignIn = () => {
-    // Simulate a successful login
-     if (typeof window !== 'undefined') {
-        window.sessionStorage.setItem('vivafit-user', JSON.stringify(mockUser));
-     }
-     toast({
-        title: `Login de simulação bem-sucedido!`,
+  const handleSignIn = async () => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password: loginPassword,
+    });
+
+    if (error) {
+      toast({
+        title: "Erro de Login",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Login bem-sucedido!",
         description: "Você será redirecionado...",
       });
-    // A real app would re-render AuthProvider, but here we force a reload
-    // to simulate the session change.
-    setTimeout(() => {
-       router.push("/dashboard");
-       // A soft reload might be needed if the provider doesn't update across layouts
-       setTimeout(() => window.location.reload(), 500);
-    }, 1000);
+      router.push("/dashboard");
+      router.refresh();
+    }
   }
 
-  const handleSignUp = () => {
-    if (!registerName || !registerEmail || !registerPassword) {
-      toast({
-        title: "Campos incompletos",
-        description: "Por favor, preencha todos os campos para criar a conta.",
-        variant: "destructive"
-      });
-      return;
-    }
-    // Simulate a successful registration
-    const newUser = {
-      uid: `mock-${Date.now()}`,
-      displayName: registerName,
+  const handleSignUp = async () => {
+    const { data, error } = await supabase.auth.signUp({
       email: registerEmail,
-      photoURL: `https://i.pravatar.cc/150?u=${registerEmail}`
-    };
-
-    if (typeof window !== 'undefined') {
-      window.sessionStorage.setItem('vivafit-user', JSON.stringify(newUser));
-      // Mark this as a new user for onboarding
-      window.sessionStorage.setItem('vivafit-new-user', 'true');
-    }
-    toast({
-      title: `Conta criada para ${registerName}!`,
-      description: "Registro de simulação bem-sucedido. Você será redirecionado para o onboarding...",
+      password: registerPassword,
+      options: {
+        data: {
+          full_name: registerName,
+          // You can add other metadata here
+        },
+      },
     });
-    
-    setTimeout(() => {
-       router.push("/onboarding");
-       setTimeout(() => window.location.reload(), 500);
-    }, 1000);
+
+    if (error) {
+      toast({
+        title: "Erro no Registro",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else if (data.user) {
+        toast({
+            title: `Conta criada para ${registerName}!`,
+            description: "Bem-vindo! Você será redirecionado...",
+        });
+        // You might want to create a profile entry in your database here
+        router.push("/onboarding");
+        router.refresh();
+    }
   }
+
+  const handleOAuthSignIn = async (provider: 'google' | 'facebook') => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+    if (error) {
+       toast({
+        title: `Erro de login com ${provider}`,
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
 
   if (!isClient || loading || user) return null;
 
@@ -173,10 +184,10 @@ export default function AuthPage() {
           </div>
           
           <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" onClick={handleSignIn}>
+              <Button variant="outline" onClick={() => handleOAuthSignIn('google')}>
                   Google
               </Button>
-               <Button variant="outline" onClick={handleSignIn}>
+               <Button variant="outline" onClick={() => handleOAuthSignIn('facebook')}>
                   Facebook
               </Button>
           </div>

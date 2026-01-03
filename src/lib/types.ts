@@ -1,3 +1,4 @@
+
 export type Workout = {
   id: string;
   title: string;
@@ -37,7 +38,7 @@ export type User = {
   email: string;
   role: 'Admin' | 'User';
   subscription: 'Free' | 'Premium';
-  createdAt: any; // Firestore Timestamp
+  createdAt: any; // Can be a string or a Date object
 };
 
 export type Recipe = {
