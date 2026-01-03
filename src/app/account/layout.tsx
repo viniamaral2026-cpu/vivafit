@@ -58,9 +58,37 @@ export default function AccountLayout({
                 <Skeleton className="h-10 w-full" />
             </div>
         </div>
-        <div className="flex-1 p-8">
-            <Skeleton className="h-8 w-1/4 mb-4" />
-            <Skeleton className="h-40 w-full" />
+        <div className="flex-1">
+           <header className="flex h-14 items-center justify-end border-b bg-background px-4 sticky top-0 z-40">
+              <Skeleton className="h-8 w-8 rounded-full" />
+           </header>
+           <main className="flex-1 overflow-auto p-4 md:p-6">
+             <div className="space-y-6">
+                <div>
+                    <Skeleton className="h-8 w-1/4" />
+                    <Skeleton className="h-4 w-1/2 mt-2" />
+                </div>
+                <Card>
+                    <CardHeader>
+                        <Skeleton className="h-6 w-1/3" />
+                        <Skeleton className="h-4 w-2/3 mt-2" />
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="grid gap-2">
+                            <Skeleton className="h-4 w-1/4" />
+                            <Skeleton className="h-10 w-full" />
+                        </div>
+                        <div className="grid gap-2">
+                            <Skeleton className="h-4 w-1/4" />
+                            <Skeleton className="h-10 w-full" />
+                        </div>
+                    </CardContent>
+                    <CardFooter className="border-t px-6 py-4">
+                        <Skeleton className="h-10 w-32" />
+                    </CardFooter>
+                </Card>
+            </div>
+           </main>
         </div>
       </div>
     );

@@ -20,7 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 
 
 export function UserNav() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -42,6 +42,10 @@ export function UserNav() {
     }
   };
 
+  if (loading) {
+    return null;
+  }
+  
   if (!user) {
     return null;
   }
@@ -52,7 +56,7 @@ export function UserNav() {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9">
             <AvatarImage src={user.photoURL!} alt={user.displayName!} />
-            <AvatarFallback>{user.displayName?.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{user.displayName?.charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase/config';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface AuthContextType {
@@ -21,27 +21,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setLoading(true);
       if (user) {
-        // User is signed in.
         const userRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(userRef);
-        if (docSnap.exists()) {
-          // User exists, just set it
-          setUser(user);
-        } else {
+        if (!docSnap.exists()) {
           // New user, create a document
-          await setDoc(userRef, {
-            name: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-            createdAt: new Date(),
-            subscription: "Free",
-            role: "User"
-          });
-          setUser(user);
+          try {
+            await setDoc(userRef, {
+              name: user.displayName || 'Novo Usuário',
+              email: user.email,
+              photoURL: user.photoURL,
+              createdAt: serverTimestamp(),
+              subscription: "Free",
+              role: "User"
+            });
+          } catch (error) {
+            console.error("Error creating user document:", error);
+          }
         }
+        setUser(user);
       } else {
-        // User is signed out.
         setUser(null);
       }
       setLoading(false);
@@ -58,7 +58,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             <div className="space-y-4">
               <Skeleton className="h-12 w-1/2" />
               <Skeleton className="h-6 w-3/4" />
-              <div className="grid grid-cols-2 gap-4 pt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
+                  <Skeleton className="h-40" />
                   <Skeleton className="h-40" />
                   <Skeleton className="h-40" />
               </div>

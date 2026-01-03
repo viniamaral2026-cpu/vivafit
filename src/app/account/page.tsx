@@ -18,10 +18,12 @@ type UserProfile = {
 export default function AccountProfilePage() {
     const { user } = useAuth();
     const [profile, setProfile] = useState<UserProfile | null>(null);
+    const [loadingProfile, setLoadingProfile] = useState(true);
 
      useEffect(() => {
         if (user) {
             const fetchProfile = async () => {
+                setLoadingProfile(true);
                 const userDoc = await getDoc(doc(db, "users", user.uid));
                 if (userDoc.exists()) {
                     setProfile(userDoc.data() as UserProfile);
@@ -32,12 +34,15 @@ export default function AccountProfilePage() {
                         email: user.email || 'Não informado'
                     });
                 }
+                setLoadingProfile(false);
             };
             fetchProfile();
+        } else {
+            setLoadingProfile(false);
         }
     }, [user]);
 
-    if (!profile) return (
+    if (loadingProfile) return (
         <div className="space-y-6">
             <div>
                 <Skeleton className="h-8 w-1/4" />
@@ -64,6 +69,8 @@ export default function AccountProfilePage() {
             </Card>
         </div>
     )
+
+    if (!profile) return null;
 
     return (
         <div className="space-y-6">
