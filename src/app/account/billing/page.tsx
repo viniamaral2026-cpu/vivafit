@@ -6,28 +6,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/app/auth-provider";
 import { CheckCircle, Crown, Star } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-
-type SubscriptionStatus = 'Free' | 'Premium';
 
 export default function BillingPage() {
-    const { user } = useAuth();
-    const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (user) {
-            setLoading(true);
-            // Simulate fetching subscription status
-            setTimeout(() => {
-                 // You can change this to 'Free' to test the other state
-                setSubscription('Premium');
-                setLoading(false);
-            }, 500);
-        } else {
-            setLoading(false);
-        }
-    }, [user]);
+    const { user, loading, isPremium } = useAuth();
 
     if (loading) {
         return (
@@ -65,7 +46,7 @@ export default function BillingPage() {
                 <p className="text-muted-foreground">Gerencie sua cobrança e plano de assinatura.</p>
             </div>
 
-            {subscription === 'Premium' ? (
+            {isPremium ? (
                 <Card className="border-primary border-2">
                     <CardHeader className="flex flex-row items-center justify-between">
                         <div>

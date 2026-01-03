@@ -5,101 +5,50 @@ import { useEffect, useState } from "react";
 import { Workout } from "@/lib/types";
 import { WorkoutCard } from "@/components/content/workout-card";
 import { Skeleton } from "@/components/ui/skeleton";
-import allWorkoutsData from "@/lib/firebase/seed-data/workouts.json";
 import { Button } from "@/components/ui/button";
 import { Gem, Crown, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { createClient } from "@/lib/supabase/client";
 
 
 const categories = ["Todos", "Cardio", "Força", "Flexibilidade", "Abdômen"];
 
-const masterclassWorkouts: Workout[] = [
-    {
-        id: "hiit-express",
-        title: "HIIT Express",
-        category: "Cardio",
-        duration: 15,
-        level: "Advanced", // Corresponds to HIGH
-        isPremium: false,
-        videoUrl: "",
-        thumbnailUrl: "https://scontent.fpoa13-1.fna.fbcdn.net/v/t39.30808-6/610776226_122094250413204574_3447186860395560382_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=uAPIqEeV8rEQ7kNvwErGvdr&_nc_oc=AdmojXGFJMImfmkx-SyecWayH4RjotRlN2U24mx_OQLTNTHhL2x-t96GaeaUQEqIi7ptAqkPbyRbeUPajpDIlWkU&_nc_zt=23&_nc_ht=scontent.fpoa13-1.fna&_nc_gid=PCg1f1GLhWjb7qWO_hgemA&oh=00_AfqCpYQG4SeSckTh3mcE9f4PeHYYKV_mZ5YKBMlrTCu6Ag&oe=695ED3E7",
-        thumbnailHint: "man lifting weights"
-    },
-    {
-        id: "yoga-matinal",
-        title: "Yoga Matinal",
-        category: "Yoga", // Should be Flexibility based on image filters, but using existing category
-        duration: 20,
-        level: "Beginner", // Corresponds to LOW
-        isPremium: false,
-        videoUrl: "",
-        thumbnailUrl: "https://scontent.fpoa13-1.fna.fbcdn.net/v/t39.30808-6/611263422_122094244149204574_2843972870277414775_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_ohc=4USiOEABauwQ7kNvwErTUaD&_nc_oc=Adn2nzaSLXyOFRWypjUJzhF7ABC1JhV9Dzxhbaws6VINfbSSsCVMxUIOe6WwCuC2ZHxs1FyDsh--OpxzSL6-n9fN&_nc_zt=23&_nc_ht=scontent.fpoa13-1.fna&_nc_gid=atYY1D9e8SFdalYlvJn_-g&oh=00_AfpJJzkrNQMc1REJc_y9p9j2xloJkwT8jcUcmqrxSBsQ-g&oe=695EE0B0",
-        thumbnailHint: "woman doing yoga sunset"
-    },
-     {
-        id: "treino-de-forca",
-        title: "Treino de Força",
-        category: "Weightlifting", // Corresponds to Strength
-        duration: 45,
-        level: "Intermediate", // Corresponds to MEDIUM
-        isPremium: true,
-        videoUrl: "",
-        thumbnailUrl: "https://scontent.fpoa13-1.fna.fbcdn.net/v/t39.30808-6/610660601_122094250269204574_1400262102073866173_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=f6t67t3E7q4Q7kNvwFf2t9d&_nc_oc=Adg69J23_iP9w_Vvj1s12_wAUnbL6iG3Jc48l6dJ1b36k_V2m6N_Vq8yGf11mJ3-r8vY-3q1qCg4P-tI5Jk9jX5dM&_nc_zt=23&_nc_ht=scontent.fpoa13-1.fna&_nc_gid=A_V0S3C2xS-aF1lB-b1z6w&oh=00_AfrfHq9zYy-u6_xQG67h6v5mO5Z4b1t8w5tXy3mZ5oI6Ag&oe=695EDA2B",
-        thumbnailHint: "gym weights rack"
-    },
-    {
-        id: 'power-lifting-pro',
-        title: 'Power Lifting Pro',
-        category: 'Weightlifting',
-        duration: 60,
-        level: 'Advanced',
-        isPremium: true,
-        videoUrl: '',
-        thumbnailUrl: 'https://scontent.fpoa13-1.fna.fbcdn.net/v/t39.30808-6/610776226_122094250413204574_3447186860395560382_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=uAPIqEeV8rEQ7kNvwErGvdr&_nc_oc=AdmojXGFJMImfmkx-SyecWayH4RjotRlN2U24mx_OQLTNTHhL2x-t96GaeaUQEqIi7ptAqkPbyRbeUPajpDIlWkU&_nc_zt=23&_nc_ht=scontent.fpoa13-1.fna&_nc_gid=PCg1f1GLhWjb7qWO_hgemA&oh=00_AfqCpYQG4SeSckTh3mcE9f4PeHYYKV_mZ5YKBMlrTCu6Ag&oe=695ED3E7',
-        thumbnailHint: 'powerlifting person'
-    },
-    {
-        id: 'core-avancado',
-        title: 'Core Avançado',
-        category: 'Pilates', // Corresponds to Abs
-        duration: 25,
-        level: 'Intermediate',
-        isPremium: true,
-        videoUrl: '',
-        thumbnailUrl: 'https://scontent.fpoa13-1.fna.fbcdn.net/v/t39.30808-6/610815124_122094249821204574_8683515086815594966_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=d4h_4g-bN8sQ7kNvwH_7_aK&_nc_oc=AdhrAfrq6nJkI4y5y6T4Gk1nJj2N_1e63SjP0g8R1uY-9U1p2p3W1o5g9X6v4o0u5Zc&_nc_zt=23&_nc_ht=scontent.fpoa13-1.fna&_nc_gid=AR52gGjV0fIaq2S1jXw2Cg&oh=00_AfB75xG7m3g8v1s2n9f5q4f6Y5k2w2N7V9x6x7Y6j3z_ZQ&oe=695ED7F7',
-        thumbnailHint: 'person doing crunches'
-    }
-];
-
 export default function WorkoutsPage() {
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('Todos');
+  const supabase = createClient();
 
   useEffect(() => {
-    // Simulate data fetching
-    setTimeout(() => {
-        setLoading(false);
-    }, 500);
-  }, []);
-  
-  const categoryMap: { [key: string]: string | string[] } = {
-    "Todos": ["Cardio", "Weightlifting", "Yoga", "Pilates"],
-    "Cardio": "Cardio",
-    "Força": "Weightlifting",
-    "Flexibilidade": "Yoga",
-    "Abdômen": "Pilates",
-  };
+    const fetchWorkouts = async () => {
+        setLoading(true);
+        let query = supabase.from('workouts').select('*');
 
-  const filteredWorkouts = masterclassWorkouts.filter(workout => {
-    if (activeCategory === 'Todos') return true;
-    const targetCategory = categoryMap[activeCategory];
-    if (Array.isArray(targetCategory)) {
-        return targetCategory.includes(workout.category);
+        const categoryMap: { [key: string]: string } = {
+            "Força": "Weightlifting",
+            "Flexibilidade": "Yoga",
+            "Abdômen": "Pilates",
+        };
+
+        if (activeCategory !== 'Todos') {
+            const supabaseCategory = categoryMap[activeCategory] || activeCategory;
+            query = query.eq('category', supabaseCategory);
+        }
+        
+        const { data, error } = await query;
+
+        if (error) {
+            console.error(error);
+        } else {
+            setWorkouts(data as Workout[]);
+        }
+        setLoading(false);
     }
-    return workout.category === targetCategory;
-  });
+    fetchWorkouts();
+  }, [activeCategory, supabase]);
+  
 
   return (
     <div className="p-4 md:p-8">
@@ -150,9 +99,9 @@ export default function WorkoutsPage() {
         </div>
       ) : (
         <>
-          {filteredWorkouts.length > 0 ? (
+          {workouts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredWorkouts.map(workout => (
+              {workouts.map(workout => (
                 <WorkoutCard key={workout.id} workout={workout} />
               ))}
             </div>

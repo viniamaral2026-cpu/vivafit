@@ -11,21 +11,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
+import { createClient } from "@/lib/supabase/client";
 
 type UserProfile = {
-    name: string;
+    id: string;
+    full_name: string;
     username: string;
-    email: string;
     gender: string;
-    birthDate: string;
-    weight: string;
-    height: string;
+    birth_date: string;
+    weight: number;
+    height: number;
 };
 
 type ActivityGoals = {
-    steps: string;
-    cardioPoints: string;
+    steps: number;
+    cardio_points: number;
 }
 
 type SleepSchedule = {
@@ -37,6 +37,8 @@ type SleepSchedule = {
 export default function AccountProfilePage() {
     const { user } = useAuth();
     const { toast } = useToast();
+    const supabase = createClient();
+
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [goals, setGoals] = useState<ActivityGoals | null>(null);
     const [sleep, setSleep] = useState<SleepSchedule | null>(null);
@@ -44,6 +46,7 @@ export default function AccountProfilePage() {
     const [loading, setLoading] = useState(true);
     
     // Form state
+    const [name, setName] = useState("");
     const [gender, setGender] = useState("");
     const [birthDate, setBirthDate] = useState("");
     const [weight, setWeight] = useState("");
@@ -57,50 +60,71 @@ export default function AccountProfilePage() {
 
      useEffect(() => {
         if (user) {
-            setLoading(true);
-            // Simulate fetching all data
-            setTimeout(() => {
-                const userProfile = {
-                    name: user.displayName || 'Usuário de Teste',
-                    username: user.displayName?.toLowerCase().replace(' ', '') || 'usertest',
-                    email: user.email || 'Não informado',
-                    gender: "other",
-                    birthDate: "1990-09-28",
-                    weight: "130",
-                    height: "175",
-                };
-                const userGoals = { steps: "10000", cardioPoints: "40" };
-                const userSleep = { enabled: false, bedtime: "23:00", wakeup: "07:00" };
+            const fetchProfile = async () => {
+                setLoading(true);
                 
-                setProfile(userProfile);
-                setGoals(userGoals);
-                setSleep(userSleep);
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
 
-                // Set form state
-                setGender(userProfile.gender);
-                setBirthDate(userProfile.birthDate);
-                setWeight(userProfile.weight);
-                setHeight(userProfile.height);
-                setSteps(userGoals.steps);
-                setCardioPoints(userGoals.cardioPoints);
-                setSleepEnabled(userSleep.enabled);
-                setBedtime(userSleep.bedtime);
-                setWakeup(userSleep.wakeup);
-
+                if (error) {
+                    toast({ title: "Erro ao buscar perfil", description: error.message, variant: "destructive" });
+                    setLoading(false);
+                    return;
+                }
+                
+                if (data) {
+                    setProfile(data);
+                    // Set form state from fetched data
+                    setName(data.full_name || '');
+                    setGender(data.gender || '');
+                    setBirthDate(data.birth_date || '');
+                    setWeight(data.weight?.toString() || '');
+                    setHeight(data.height?.toString() || '');
+                    // Mock goals and sleep for now as they are not in profiles table
+                    const userGoals = { steps: 10000, cardio_points: 40 };
+                    const userSleep = { enabled: false, bedtime: "23:00", wakeup: "07:00" };
+                    setGoals(userGoals);
+                    setSleep(userSleep);
+                    setSteps(userGoals.steps.toString());
+                    setCardioPoints(userGoals.cardio_points.toString());
+                    setSleepEnabled(userSleep.enabled);
+                    setBedtime(userSleep.bedtime);
+                    setWakeup(userSleep.wakeup);
+                }
                 setLoading(false);
-            }, 500);
+            }
+            fetchProfile();
         } else {
             setLoading(false);
         }
-    }, [user]);
+    }, [user, supabase, toast]);
 
     const handleUpdate = async () => {
         if (!user || !profile) return;
-        // Simulate update
-        toast({
-            title: "Sucesso!",
-            description: "Suas configurações foram atualizadas (simulação)."
-        });
+        
+        const { error } = await supabase
+            .from('profiles')
+            .update({
+                full_name: name,
+                gender: gender,
+                birth_date: birthDate,
+                weight: parseFloat(weight),
+                height: parseInt(height),
+                // Note: goals and sleep are not part of the 'profiles' table schema
+            })
+            .eq('id', user.id);
+
+        if (error) {
+            toast({ title: "Erro ao atualizar", description: error.message, variant: "destructive" });
+        } else {
+            toast({
+                title: "Sucesso!",
+                description: "Suas configurações foram atualizadas."
+            });
+        }
     }
 
     if (loading) return (
@@ -217,6 +241,10 @@ export default function AccountProfilePage() {
                     <CardTitle>Sobre você</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                     <div className="grid gap-2">
+                        <Label htmlFor="name">Nome</Label>
+                        <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                    </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="gender">Gênero</Label>

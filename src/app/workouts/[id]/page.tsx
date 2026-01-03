@@ -11,66 +11,34 @@ import Link from "next/link";
 import { useAuth } from "@/app/auth-provider";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-
-// Mock data as seed file is removed. This should be replaced with a Supabase query.
-const workoutsData: Workout[] = [
-    {
-        "id": "hiit-express",
-        "title": "HIIT Express",
-        "category": "Cardio",
-        "duration": 15,
-        "level": "Advanced",
-        "isPremium": false,
-        "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "thumbnailUrl": "https://images.unsplash.com/photo-1758875569612-94d5e0f1a35f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjYXJkaW8lMjBjbGFzc3xlbnwwfHx8fDE3Njc0MzU5NTR8MA&ixlib-rb-4.1.0&q=80&w=1080",
-        "thumbnailHint": "cardio class"
-    },
-    {
-        "id": "yoga-matinal",
-        "title": "Yoga Matinal",
-        "category": "Yoga",
-        "duration": 20,
-        "level": "Beginner",
-        "isPremium": false,
-        "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "thumbnailUrl": "https://images.unsplash.com/photo-1564282350350-a8355817fd2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvdXRkb29yJTIweW9nYXxlbnwwfHx8fDE3Njc0MzU5NTR8MA&ixlib_rb-4.1.0&q=80&w=1080",
-        "thumbnailHint": "outdoor yoga"
-    },
-    {
-        "id": "treino-de-forca",
-        "title": "Treino de Força",
-        "category": "Weightlifting",
-        "duration": 45,
-        "level": "Intermediate",
-        "isPremium": true,
-        "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "thumbnailUrl": "https://images.unsplash.com/photo-1722925541321-f52d45b29c17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZWlnaHRsaWZ0aW5nJTIwZ3ltfGVufDB8fHx8MTc2NzMyMTU2OXww&ixlib-rb-4.1.0&q=80&w=1080",
-        "thumbnailHint": "weightlifting gym"
-    }
-];
-
-
-async function getWorkout(id: string): Promise<Workout | null> {
-    const workout = (workoutsData as Workout[]).find(w => w.id === id);
-    await new Promise(resolve => setTimeout(resolve, 300)); // Simulate network delay
-    return workout || null;
-}
+import { createClient } from "@/lib/supabase/client";
 
 
 export default function WorkoutDetailPage({ params }: { params: { id: string } }) {
   const { isPremium, loading: authLoading } = useAuth();
   const [workout, setWorkout] = useState<Workout | null>(null);
   const [loadingWorkout, setLoadingWorkout] = useState(true);
+  const supabase = createClient();
 
   useEffect(() => {
     async function fetchWorkout() {
         setLoadingWorkout(true);
-        const fetchedWorkout = await getWorkout(params.id);
-        setWorkout(fetchedWorkout);
+        const { data, error } = await supabase
+            .from('workouts')
+            .select('*')
+            .eq('id', params.id)
+            .single();
+
+        if (error) {
+            console.error("Error fetching workout", error);
+            setWorkout(null);
+        } else {
+            setWorkout(data as Workout);
+        }
         setLoadingWorkout(false);
     }
     fetchWorkout();
-  }, [params.id]);
+  }, [params.id, supabase]);
 
 
   if (loadingWorkout || authLoading) {
