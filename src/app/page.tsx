@@ -118,7 +118,7 @@ export default function Home() {
                             <p className="text-sm text-gray-400">Cancele quando quiser</p>
                         </div>
                         <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white" size="lg" asChild>
-                            <Link href="/subscribe">Seja Premium Agora</Link>
+                            <Link href="/auth">Seja Premium Agora</Link>
                         </Button>
                     </div>
                 </CardContent>
