@@ -32,6 +32,16 @@ export default function AuthPage() {
   const { user, loading } = useAuth();
   const [isClient, setIsClient] = useState(false);
 
+  // State for Login
+  const [loginEmail, setLoginEmail] = useState("teste@vivafit.com");
+  const [loginPassword, setLoginPassword] = useState("password");
+
+  // State for Register
+  const [registerName, setRegisterName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+
+
   useEffect(() => {
     setIsClient(true);
     if (!loading && user) {
@@ -53,6 +63,37 @@ export default function AuthPage() {
     setTimeout(() => {
        router.push("/dashboard");
        // A soft reload might be needed if the provider doesn't update across layouts
+       setTimeout(() => window.location.reload(), 500);
+    }, 1000);
+  }
+
+  const handleSignUp = () => {
+    if (!registerName || !registerEmail || !registerPassword) {
+      toast({
+        title: "Campos incompletos",
+        description: "Por favor, preencha todos os campos para criar a conta.",
+        variant: "destructive"
+      });
+      return;
+    }
+    // Simulate a successful registration
+    const newUser = {
+      uid: `mock-${Date.now()}`,
+      displayName: registerName,
+      email: registerEmail,
+      photoURL: `https://i.pravatar.cc/150?u=${registerEmail}`
+    };
+
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.setItem('vivafit-user', JSON.stringify(newUser));
+    }
+    toast({
+      title: `Conta criada para ${registerName}!`,
+      description: "Registro de simulação bem-sucedido. Você será redirecionado...",
+    });
+    
+    setTimeout(() => {
+       router.push("/dashboard");
        setTimeout(() => window.location.reload(), 500);
     }, 1000);
   }
@@ -85,33 +126,33 @@ export default function AuthPage() {
                 <div className="grid gap-4 py-4">
                   <div className="grid gap-2">
                     <Label htmlFor="login-email">Email</Label>
-                    <Input id="login-email" type="email" placeholder="m@exemplo.com" required defaultValue="teste@vivafit.com"/>
+                    <Input id="login-email" type="email" placeholder="m@exemplo.com" required value={loginEmail} onChange={e => setLoginEmail(e.target.value)} />
                   </div>
                   <div className="grid gap-2">
                      <div className="flex items-center">
                         <Label htmlFor="login-password">Senha</Label>
                         <Link href="#" className="ml-auto inline-block text-sm underline">Esqueceu sua senha?</Link>
                      </div>
-                    <Input id="login-password" type="password" required defaultValue="password" />
+                    <Input id="login-password" type="password" required value={loginPassword} onChange={e => setLoginPassword(e.target.value)} />
                   </div>
                   <Button type="submit" className="w-full">Entrar</Button>
                 </div>
               </form>
             </TabsContent>
             <TabsContent value="register">
-              <form onSubmit={(e) => { e.preventDefault(); handleSignIn(); }}>
+              <form onSubmit={(e) => { e.preventDefault(); handleSignUp(); }}>
                 <div className="grid gap-4 py-4">
                     <div className="grid gap-2">
                         <Label htmlFor="register-name">Nome Completo</Label>
-                        <Input id="register-name" placeholder="Seu Nome" required />
+                        <Input id="register-name" placeholder="Seu Nome" required value={registerName} onChange={e => setRegisterName(e.target.value)} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="register-email">Email</Label>
-                        <Input id="register-email" type="email" placeholder="seunome@exemplo.com" required />
+                        <Input id="register-email" type="email" placeholder="seunome@exemplo.com" required value={registerEmail} onChange={e => setRegisterEmail(e.target.value)} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="register-password">Senha</Label>
-                        <Input id="register-password" type="password" required />
+                        <Input id="register-password" type="password" required value={registerPassword} onChange={e => setRegisterPassword(e.target.value)} />
                     </div>
                     <Button type="submit" className="w-full">Criar conta</Button>
                 </div>
