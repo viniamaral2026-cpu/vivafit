@@ -3,7 +3,7 @@
     {
       "id": "hero-fitness",
       "description": "A diverse group of people in a fitness class",
-      "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmaXRuZXNzJTIwY2xhc3N8ZW58MHx8fHwxNzY3NTk0NjUxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1591258370814-01609b341790?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmaXRuZXNzJTIwY2xhc3N8ZW58MHx8fHwxNzY3NDE2NTk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fitness class"
     },
     {
@@ -27,7 +27,7 @@
     {
       "id": "workout-4",
       "description": "A woman performing a pilates exercise on a mat",
-      "imageUrl": "https://images.unsplash.com/photo-1754257319723-6a775bedb0fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGlsYXRlcyUyMGV4ZXJjaXNlfGVufDB8fHx8MTc2NzQzNTk1NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1754257319723-6a775bedb0fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGlsYXRlcyUyMGV4ZXJjaXNlfGVufDB8fHx8MTc2NzQzNTk1NHww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "pilates exercise"
     },
     {
@@ -45,7 +45,7 @@
     {
       "id": "ad-1",
       "description": "A display of healthy food products",
-      "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3Njc0MjE2MzF8MA&ixlib_rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3Njc0MjE2MzF8MA&ixlib_rb_4.1.0&q=80&w=1080",
       "imageHint": "healthy food"
     },
     {
