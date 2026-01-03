@@ -6,9 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "../auth-provider";
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db, auth } from "@/lib/firebase/config";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
+import { updateProfile, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+
 
 type UserProfile = {
     name: string;
@@ -17,22 +20,34 @@ type UserProfile = {
 
 export default function AccountProfilePage() {
     const { user } = useAuth();
+    const { toast } = useToast();
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [loadingProfile, setLoadingProfile] = useState(true);
+    const [name, setName] = useState('');
+    
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
 
      useEffect(() => {
         if (user) {
             const fetchProfile = async () => {
                 setLoadingProfile(true);
-                const userDoc = await getDoc(doc(db, "users", user.uid));
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+
                 if (userDoc.exists()) {
-                    setProfile(userDoc.data() as UserProfile);
+                    const userData = userDoc.data() as UserProfile;
+                    setProfile(userData);
+                    setName(userData.name);
                 } else {
-                    // Fallback for new users who might not have a doc yet
-                    setProfile({
+                    const fallbackProfile = {
                         name: user.displayName || 'Usuário',
                         email: user.email || 'Não informado'
-                    });
+                    };
+                    setProfile(fallbackProfile);
+                    setName(fallbackProfile.name);
                 }
                 setLoadingProfile(false);
             };
@@ -41,6 +56,57 @@ export default function AccountProfilePage() {
             setLoadingProfile(false);
         }
     }, [user]);
+
+    const handleUpdateProfile = async () => {
+        if (!user || !profile) return;
+
+        try {
+            const userDocRef = doc(db, "users", user.uid);
+            await updateDoc(userDocRef, { name });
+            if(auth.currentUser) {
+                await updateProfile(auth.currentUser, { displayName: name });
+            }
+            setProfile({...profile, name});
+            toast({
+                title: "Sucesso!",
+                description: "Seu perfil foi atualizado."
+            });
+        } catch (error) {
+            console.error("Erro ao atualizar perfil:", error);
+             toast({
+                title: "Erro",
+                description: "Não foi possível atualizar seu perfil. Tente novamente.",
+                variant: "destructive"
+            });
+        }
+    }
+    
+    const handleUpdatePassword = async () => {
+        if (!user) return;
+        if (newPassword !== confirmPassword) {
+            toast({ title: "Erro", description: "As novas senhas não correspondem.", variant: "destructive" });
+            return;
+        }
+        if (!currentPassword || !newPassword) {
+            toast({ title: "Erro", description: "Por favor, preencha todos os campos de senha.", variant: "destructive" });
+            return;
+        }
+
+        try {
+            if (user.email) {
+                const credential = EmailAuthProvider.credential(user.email, currentPassword);
+                await reauthenticateWithCredential(user, credential);
+                await updatePassword(user, newPassword);
+                toast({ title: "Sucesso!", description: "Sua senha foi alterada." });
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
+            }
+        } catch (error) {
+             console.error("Erro ao alterar senha:", error);
+             toast({ title: "Erro", description: "Não foi possível alterar sua senha. Verifique sua senha atual.", variant: "destructive" });
+        }
+    }
 
     if (loadingProfile) return (
         <div className="space-y-6">
@@ -86,15 +152,15 @@ export default function AccountProfilePage() {
                 <CardContent className="space-y-4">
                     <div className="grid gap-2">
                         <Label htmlFor="name">Nome Completo</Label>
-                        <Input id="name" defaultValue={profile.name} />
+                        <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" defaultValue={profile.email} disabled />
+                        <Input id="email" type="email" value={profile.email} disabled />
                     </div>
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
-                    <Button>Salvar Alterações</Button>
+                    <Button onClick={handleUpdateProfile}>Salvar Alterações</Button>
                 </CardFooter>
             </Card>
 
@@ -106,19 +172,19 @@ export default function AccountProfilePage() {
                 <CardContent className="space-y-4">
                     <div className="grid gap-2">
                         <Label htmlFor="current-password">Senha Atual</Label>
-                        <Input id="current-password" type="password" />
+                        <Input id="current-password" type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="new-password">Nova Senha</Label>
-                        <Input id="new-password" type="password" />
+                        <Input id="new-password" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
                     </div>
                      <div className="grid gap-2">
                         <Label htmlFor="confirm-password">Confirme a Nova Senha</Label>
-                        <Input id="confirm-password" type="password" />
+                        <Input id="confirm-password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
                     </div>
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
-                    <Button>Atualizar Senha</Button>
+                    <Button onClick={handleUpdatePassword}>Atualizar Senha</Button>
                 </CardFooter>
             </Card>
         </div>

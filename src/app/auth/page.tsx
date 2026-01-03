@@ -11,6 +11,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/icons/logo";
-import { auth } from "@/lib/firebase/config";
+import { auth, db } from "@/lib/firebase/config";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -51,11 +52,27 @@ export default function AuthPage() {
       variant: "destructive",
     });
   };
+  
+  const createOrUpdateUserDocument = async (user: import("firebase/auth").User) => {
+    const userRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(userRef);
+    if (!docSnap.exists()) {
+      await setDoc(userRef, {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        createdAt: serverTimestamp(),
+        subscription: "Free",
+        role: "User",
+      });
+    }
+  }
 
   const handleOAuthSignIn = async (provider: GoogleAuthProvider | FacebookAuthProvider) => {
     const providerName = provider.providerId.replace('.com', '').charAt(0).toUpperCase() + provider.providerId.replace('.com', '').slice(1);
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      await createOrUpdateUserDocument(result.user);
       handleSuccess(providerName);
     } catch (error) {
       handleError(providerName, error);
@@ -88,6 +105,7 @@ export default function AuthPage() {
       await updateProfile(userCredential.user, {
         displayName: registerName,
       });
+      await createOrUpdateUserDocument(userCredential.user);
 
       toast({
         title: "Cadastro bem-sucedido!",

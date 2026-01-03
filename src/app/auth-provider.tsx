@@ -21,35 +21,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setLoading(true);
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(userRef);
-        if (!docSnap.exists()) {
-          // New user, create a document
-          try {
-            await setDoc(userRef, {
-              name: user.displayName || 'Novo Usuário',
-              email: user.email,
-              photoURL: user.photoURL,
-              createdAt: serverTimestamp(),
-              subscription: "Free",
-              role: "User"
-            });
-          } catch (error) {
-            console.error("Error creating user document:", error);
-          }
-        }
-        setUser(user);
-      } else {
-        setUser(null);
-      }
+      setUser(user);
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
-
+  
   if (loading) {
       return (
         <div className="flex flex-col min-h-screen">
@@ -68,6 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         </div>
       )
   }
+
 
   return (
     <AuthContext.Provider value={{ user, loading }}>
