@@ -119,7 +119,7 @@ export default function AccountProfilePage() {
             <Card>
                 <CardHeader>
                     <CardTitle>Seus Detalhes</CardTitle>
-                    <CardDescription>Atualize seu nome e endereço de e-mail.</CardDescription>
+                    <CardDescription>Atualize seu nome, nome de usuário e endereço de e-mail.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid gap-2">
