@@ -13,6 +13,7 @@ import {
     LogOut, 
     Info,
     Clapperboard,
+    Home,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -76,7 +77,8 @@ export default function DashboardLayout({
   };
 
   const menuItems = [
-    { href: "/dashboard", label: "Diário", icon: Newspaper },
+    { href: "/dashboard", label: "Início", icon: Home },
+    { href: "/journal", label: "Diário", icon: Newspaper },
     { href: "/recipes", label: "Alimentação", icon: Utensils },
     { href: "/workouts", label: "Treinos", icon: Dumbbell },
     { href: "/ai-coach", label: "AI Coach", icon: Bot },
