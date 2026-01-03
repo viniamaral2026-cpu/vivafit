@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { ProgressRing } from "@/components/dashboard/progress-ring"
 import { StatsSummary } from "@/components/dashboard/stats-summary"
-import { Footprints, Heart, Plus } from "lucide-react"
+import { Footprints, Heart, Plus, Dumbbell, HeartPulse, Utensils } from "lucide-react"
 import { useAuth } from "../auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 type UserData = {
     name: string;
@@ -103,9 +104,27 @@ export default function DashboardPage() {
       />
 
       <div className="fixed bottom-6 right-6">
-         <Button size="icon" className="rounded-full h-14 w-14 shadow-lg">
-            <Plus className="h-8 w-8" />
-         </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="icon" className="rounded-full h-14 w-14 shadow-lg">
+                <Plus className="h-8 w-8" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" side="top" className="w-64 mb-2">
+             <DropdownMenuItem className="py-3">
+                <Dumbbell className="mr-3" />
+                <span>Adicionar Atividade</span>
+             </DropdownMenuItem>
+             <DropdownMenuItem className="py-3">
+                <HeartPulse className="mr-3" />
+                <span>Adicionar Medição</span>
+             </DropdownMenuItem>
+             <DropdownMenuItem className="py-3">
+                <Utensils className="mr-3" />
+                <span>Registrar Refeição</span>
+             </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   )
