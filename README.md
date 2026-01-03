@@ -1,4 +1,5 @@
 # VivaFit - README Técnico
+# VivaFit - README Técnico
 
 Este documento fornece uma visão geral técnica do protótipo do aplicativo VivaFit, seu estado atual e os próximos passos.
 
