@@ -18,6 +18,7 @@ import { UserNav } from "@/components/layout/user-nav";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "../auth-provider";
 import { useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardLayout({
   children,
@@ -48,9 +49,29 @@ export default function DashboardLayout({
   
   if (loading || !user || isOnboardingComplete === null) {
     return (
-       <div className="flex min-h-screen items-center justify-center">
-            Carregando...
-       </div>
+       <div className="flex min-h-screen">
+        <div className="hidden md:block md:w-64 border-r p-4">
+          <Skeleton className="h-8 w-24 mb-8" />
+          <div className="space-y-2">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        </div>
+        <div className="flex-1">
+           <header className="flex h-14 items-center justify-between border-b bg-background px-4 sticky top-0 z-40">
+              <Skeleton className="h-10 w-10 md:hidden"/>
+              <div className="ml-auto">
+                <Skeleton className="h-8 w-8 rounded-full" />
+              </div>
+           </header>
+           <main className="flex-1 overflow-auto p-4 md:p-6 bg-muted/40">
+            {/* Loading skeleton for dashboard content */}
+           </main>
+        </div>
+      </div>
     );
   }
 
@@ -59,7 +80,9 @@ export default function DashboardLayout({
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Logo className="w-24" />
+             <Link href="/dashboard">
+              <Logo className="w-24" />
+            </Link>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -68,7 +91,7 @@ export default function DashboardLayout({
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname.startsWith(item.href)}
+                  isActive={pathname.startsWith(item.href) && (item.href !== '/dashboard' || pathname === '/dashboard')}
                   tooltip={{ children: item.label }}
                 >
                   <Link href={item.href}>

@@ -5,7 +5,6 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase/config';
 import { doc, getDoc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
   user: User | null;
@@ -21,7 +20,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -31,8 +29,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const userDocRef = doc(db, "users", user.uid);
         try {
           const userDoc = await getDoc(userDocRef);
-          const isComplete = userDoc.exists() && userDoc.data().onboardingComplete;
-          setIsOnboardingComplete(isComplete);
+          if (userDoc.exists()) {
+             const isComplete = userDoc.data().onboardingComplete || false;
+             setIsOnboardingComplete(isComplete);
+          } else {
+            // This might happen briefly before the user document is created.
+            // Consider user not onboarded.
+            setIsOnboardingComplete(false);
+          }
         } catch (error) {
           console.error("Failed to fetch user onboarding status:", error);
           // Consider user as not onboarded if there's an error

@@ -37,8 +37,12 @@ export default function AccountLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && (!user || !isOnboardingComplete)) {
-      router.push('/auth');
+    if (!loading) {
+      if (!user) {
+        router.push('/auth');
+      } else if (!isOnboardingComplete) {
+         router.push('/onboarding');
+      }
     }
   }, [user, loading, isOnboardingComplete, router]);
 
@@ -48,7 +52,7 @@ export default function AccountLayout({
     { href: "/account/settings", label: "Configurações", icon: Settings },
   ];
   
-  if (loading || !user) {
+  if (loading || !user || isOnboardingComplete === null) {
      return (
       <div className="flex min-h-screen">
         <div className="hidden md:block w-64 border-r p-4">
@@ -100,7 +104,7 @@ export default function AccountLayout({
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Link href="/">
+            <Link href="/dashboard">
               <Logo className="w-24" />
             </Link>
           </div>

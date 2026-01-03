@@ -35,23 +35,6 @@ export default function AuthPage() {
   const [registerPassword, setRegisterPassword] = useState("");
   const router = useRouter();
   const { toast } = useToast();
-
-  const handleSuccess = (providerName: string) => {
-    toast({
-      title: `Login com ${providerName} bem-sucedido!`,
-      description: "Você será redirecionado para a plataforma.",
-    });
-    router.push("/workouts");
-  };
-
-  const handleError = (providerName: string, error: any) => {
-    console.error(`Erro no login com ${providerName}:`, error);
-    toast({
-      title: `Erro no login com ${providerName}`,
-      description: `Não foi possível fazer login com ${providerName}. Tente novamente.`,
-      variant: "destructive",
-    });
-  };
   
   const createOrUpdateUserDocument = async (user: import("firebase/auth").User) => {
     const userRef = doc(db, "users", user.uid);
@@ -69,7 +52,7 @@ export default function AuthPage() {
        router.push("/onboarding");
     } else {
       if(docSnap.data().onboardingComplete) {
-         router.push("/workouts");
+         router.push("/dashboard");
       } else {
          router.push("/onboarding");
       }
@@ -85,8 +68,19 @@ export default function AuthPage() {
         title: `Login com ${providerName} bem-sucedido!`,
         description: "Você será redirecionado...",
       });
-    } catch (error) {
-      handleError(providerName, error);
+    } catch (error: any) {
+      console.error(`Erro no login com ${providerName}:`, error);
+      let description = `Não foi possível fazer login com ${providerName}. Tente novamente.`;
+      if (error.code === 'auth/account-exists-with-different-credential') {
+        description = 'Já existe uma conta com este e-mail. Tente fazer login com um método diferente.';
+      } else if (error.code === 'auth/popup-closed-by-user') {
+        description = 'A janela de login foi fechada antes da conclusão. Por favor, tente novamente.';
+      }
+      toast({
+        title: `Erro no login com ${providerName}`,
+        description: description,
+        variant: "destructive",
+      });
     }
   };
 
@@ -120,7 +114,13 @@ export default function AuthPage() {
       await updateProfile(userCredential.user, {
         displayName: registerName,
       });
-      await createOrUpdateUserDocument(userCredential.user);
+      // Pass the updated user object to createOrUpdateUserDocument
+      const userWithProfile = {
+        ...userCredential.user,
+        displayName: registerName,
+      };
+      // We need to cast here because updateProfile doesn't change the type of the original object
+      await createOrUpdateUserDocument(userWithProfile as import("firebase/auth").User);
 
       toast({
         title: "Cadastro bem-sucedido!",

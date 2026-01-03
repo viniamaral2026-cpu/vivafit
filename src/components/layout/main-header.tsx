@@ -8,32 +8,12 @@ import { UserNav } from "./user-nav";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "@/app/auth-provider";
 import { usePathname } from "next/navigation";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarProvider,
-  SidebarTrigger,
-} from "../ui/sidebar";
-import { Home, Dumbbell, User, Bot, Utensils } from "lucide-react";
 
 
 const navLinks = [
   { href: "/#features", label: "Funcionalidades" },
   { href: "/#pricing", label: "Preços" },
   { href: "/workouts", label: "Treinos" },
-];
-
-const dashboardLinks = [
-    { href: "/dashboard", label: "Início", icon: Home },
-    { href: "/workouts", label: "Treinos", icon: Dumbbell },
-    { href: "/recipes", label: "Receitas", icon: Utensils },
-    { href: "/ai-coach", label: "IA Coach", icon: Bot },
-    { href: "/account", label: "Perfil", icon: User },
 ];
 
 export function MainHeader() {
@@ -43,11 +23,8 @@ export function MainHeader() {
   const isAuthPage = pathname === '/auth' || pathname.startsWith('/onboarding');
   const showDashboardNav = user && isOnboardingComplete;
 
-  if (isAuthPage) return null;
+  if (isAuthPage || showDashboardNav) return null;
   
-  if (showDashboardNav) return null;
-
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -76,8 +53,8 @@ export function MainHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
-            <SheetHeader className="sr-only">
-              <SheetTitle>Menu</SheetTitle>
+            <SheetHeader>
+              <SheetTitle className="sr-only">Menu</SheetTitle>
             </SheetHeader>
             <Link href="/" className="mr-6 flex items-center space-x-2">
               <Logo />
