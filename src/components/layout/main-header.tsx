@@ -37,7 +37,7 @@ export function MainHeader() {
       <div className="container flex h-16 items-center">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center">
-            <Logo className="h-8 w-auto"/>
+            <Logo className="h-10 w-32"/>
           </Link>
         </div>
         

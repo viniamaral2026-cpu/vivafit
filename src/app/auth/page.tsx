@@ -112,7 +112,7 @@ export default function AuthPage() {
       </div>
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <Logo className="mx-auto" />
+          <Logo className="mx-auto h-12 w-auto" />
           <CardTitle className="text-2xl font-headline mt-4">Acesse sua Conta</CardTitle>
           <CardDescription>
             Use uma das opções abaixo para entrar ou criar seu acesso.

@@ -110,9 +110,9 @@ export default function AccountLayout({
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 p-2">
             <Link href="/dashboard">
-              <Logo className="w-24" />
+              <Logo className="h-10 w-32" />
             </Link>
           </div>
         </SidebarHeader>

@@ -62,8 +62,8 @@ export default function AdminLayout({
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <Logo className="w-28" />
+          <div className="flex items-center gap-2 p-2">
+            <Logo className="h-10 w-32" />
           </div>
         </SidebarHeader>
         <SidebarContent>

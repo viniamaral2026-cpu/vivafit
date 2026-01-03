@@ -68,7 +68,7 @@ export default function OnboardingPage() {
         <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
             <Card className="w-full max-w-md">
                 <CardHeader className="items-center text-center">
-                    <Logo className="w-28 mb-4" />
+                    <Logo className="w-auto h-12 mb-4" />
                     <CardTitle className="text-2xl font-headline">Sobre você</CardTitle>
                     <CardDescription>
                         Essas informações permitem que o Fit calcule as calorias, a distância e a intensidade da sua atividade.
