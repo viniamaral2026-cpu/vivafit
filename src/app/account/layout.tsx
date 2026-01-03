@@ -25,6 +25,7 @@ import { Logo } from "@/components/icons/logo";
 import { useAuth } from "../auth-provider";
 import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
 export default function AccountLayout({
   children,
@@ -37,7 +38,7 @@ export default function AccountLayout({
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/login');
+      router.push('/auth');
     }
   }, [user, loading, router]);
 
@@ -50,7 +51,7 @@ export default function AccountLayout({
   if (loading || !user) {
      return (
       <div className="flex min-h-screen">
-        <div className="w-64 border-r p-4 hidden md:block">
+        <div className="hidden md:block w-64 border-r p-4">
             <Skeleton className="h-8 w-24 mb-8" />
             <div className="space-y-2">
                 <Skeleton className="h-10 w-full" />

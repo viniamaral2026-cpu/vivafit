@@ -19,7 +19,7 @@ export function MainHeader() {
   const { user, loading } = useAuth();
   const pathname = usePathname();
 
-  const isAuthPage = pathname === '/login' || pathname === '/register';
+  const isAuthPage = pathname === '/auth';
 
   if (isAuthPage) return null;
 
@@ -70,11 +70,11 @@ export function MainHeader() {
             <UserNav />
           ) : (
             <>
-              <Link href="/login" className="hidden md:inline-flex text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60">
+              <Link href="/auth" className="hidden md:inline-flex text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60">
                 Entrar
               </Link>
               <Button asChild>
-                <Link href="/register">Começar no app</Link>
+                <Link href="/auth">Começar no app</Link>
               </Button>
             </>
           )}
