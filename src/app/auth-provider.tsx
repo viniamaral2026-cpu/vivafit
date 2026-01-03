@@ -9,31 +9,30 @@ import { Skeleton } from '@/components/ui/skeleton';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  isOnboardingComplete: boolean | null; // This will now be managed by layouts
+  // This function will be used by layouts to check onboarding status when needed
   checkOnboardingStatus: () => Promise<boolean>;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true, isOnboardingComplete: null, checkOnboardingStatus: async () => false });
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true, checkOnboardingStatus: async () => false });
 
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
 
-
+  // This function is now exposed via context, so layouts can call it.
+  // This prevents calling Firestore on every single route change from the provider.
   const checkOnboardingStatus = async (): Promise<boolean> => {
     if (!auth.currentUser) return false;
     const userDocRef = doc(db, "users", auth.currentUser.uid);
     try {
         const userDoc = await getDoc(userDocRef);
-        const isComplete = userDoc.exists() && userDoc.data().onboardingComplete;
-        setIsOnboardingComplete(isComplete);
-        return isComplete;
+        return userDoc.exists() && userDoc.data().onboardingComplete;
     } catch (error) {
         console.error("Failed to fetch user onboarding status:", error);
-        setIsOnboardingComplete(false);
+        // This can happen if user is offline or firestore rules deny access.
+        // Treat as not onboarded to be safe.
         return false;
     }
   };
@@ -43,12 +42,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setLoading(true);
       setUser(user);
-      if (user) {
-        // We still check it here once to set an initial state, but layouts will re-check.
-        await checkOnboardingStatus();
-      } else {
-        setIsOnboardingComplete(null);
-      }
+      // We no longer check onboarding status here to prevent race conditions.
+      // Layouts are now responsible for this check.
       setLoading(false);
     });
 
@@ -77,7 +72,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = {
     user,
     loading,
-    isOnboardingComplete,
     checkOnboardingStatus
   };
 

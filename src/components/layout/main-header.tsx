@@ -20,10 +20,11 @@ export function MainHeader() {
   const { user, loading } = useAuth();
   const pathname = usePathname();
 
-  const isAuthPage = pathname === '/auth' || pathname.startsWith('/onboarding');
-  const showDashboardNav = user && !loading;
+  const isAuthPage = pathname === '/auth';
+  const isDashboardOrAccount = pathname.startsWith('/dashboard') || pathname.startsWith('/account');
 
-  if (isAuthPage || showDashboardNav) return null;
+  // Do not render the main header on auth pages, or on protected routes that have their own sidebar layout.
+  if (isAuthPage || isDashboardOrAccount) return null;
   
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -53,7 +54,7 @@ export function MainHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
-            <SheetHeader>
+             <SheetHeader className="p-4">
                <SheetTitle className="sr-only">Menu</SheetTitle>
             </SheetHeader>
             <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -70,7 +71,7 @@ export function MainHeader() {
         </Sheet>
 
         <div className="flex flex-1 items-center justify-end space-x-4">
-          {!loading && user ? (
+          {loading ? null : user ? (
             <UserNav />
           ) : (
             <>
