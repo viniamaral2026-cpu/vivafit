@@ -61,4 +61,5 @@ export type Article = {
   imageUrl: string;
   imageHint: string;
   content: string;
+  category?: 'NUTRIÇÃO' | 'MENTAL'
 };
