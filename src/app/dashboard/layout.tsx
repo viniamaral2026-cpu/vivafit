@@ -98,7 +98,7 @@ export default function DashboardLayout({
 
   const searchResults = [
       { label: "Atividades", icon: Activity, href: "/activity" },
-      { label: "Medidas", icon: Ruler, href: "#" },
+      { label: "Medidas", icon: Ruler, href: "/measurements" },
       { label: "Sinais Vitais", icon: HeartPulse, href: "#" },
       { label: "Sono", icon: Bed, href: "#" },
       { label: "Monitoramento de ciclo", icon: CalendarDays, href: "#" },
