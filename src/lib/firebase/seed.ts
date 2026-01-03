@@ -1,5 +1,5 @@
 import { db } from './config';
-import { collection, doc, setDoc, getDocs, writeBatch } from 'firebase/firestore';
+import { collection, doc, setDoc, getDocs, writeBatch, Timestamp } from 'firebase/firestore';
 import workouts from './seed-data/workouts.json';
 import ads from './seed-data/ads.json';
 
@@ -35,7 +35,7 @@ async function seedDatabase() {
                 const adData = {
                     ...ad,
                     // Garante que a data de expiração seja um objeto Timestamp
-                    expiresAt: new Date(ad.expiresAt),
+                    expiresAt: Timestamp.fromDate(new Date(ad.expiresAt)),
                 };
                 const docRef = doc(adsCollection, ad.id);
                 batch.set(docRef, adData);
@@ -47,6 +47,7 @@ async function seedDatabase() {
         }
         
         console.log('\nProcesso de semeadura concluído com sucesso!');
+        process.exit(0);
 
     } catch (error) {
         console.error('Ocorreu um erro durante a semeadura do banco de dados:', error);

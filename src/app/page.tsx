@@ -28,7 +28,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col gap-4 min-[400px]:flex-row">
                   <Button size="lg" asChild>
-                    <Link href="/register">
+                    <Link href="/auth">
                       Começar Gratuitamente
                     </Link>
                   </Button>
@@ -40,14 +40,14 @@ export default function Home() {
                 </div>
               </div>
               {heroImage && (
-                <div className="relative">
+                <div className="relative mx-auto overflow-hidden rounded-xl sm:w-full">
                   <Image
                     src={heroImage.imageUrl}
                     alt={heroImage.description}
                     data-ai-hint={heroImage.imageHint}
                     width={526}
                     height={296}
-                    className="mx-auto overflow-hidden rounded-xl sm:w-full"
+                    className="aspect-video object-cover"
                   />
                 </div>
               )}

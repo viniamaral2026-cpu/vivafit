@@ -20,11 +20,12 @@ export function MainHeader() {
   const { user, loading } = useAuth();
   const pathname = usePathname();
 
-  const isAuthPage = pathname === '/auth';
-  const isDashboardOrAccount = pathname.startsWith('/dashboard') || pathname.startsWith('/account');
+  const isAuthPage = pathname === '/auth' || pathname === '/subscribe' || pathname.startsWith('/onboarding');
+  const isProtectedPage = pathname.startsWith('/dashboard') || pathname.startsWith('/account') || pathname.startsWith('/admin') || pathname.startsWith('/ai-coach') || pathname.startsWith('/workouts');
+  
 
-  // Do not render the main header on auth pages, or on protected routes that have their own sidebar layout.
-  if (isAuthPage || isDashboardOrAccount) return null;
+  if (isAuthPage) return null;
+  if (!loading && user && isProtectedPage) return null;
   
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -57,10 +58,10 @@ export function MainHeader() {
              <SheetHeader className="p-4">
                <SheetTitle className="sr-only">Menu</SheetTitle>
             </SheetHeader>
-            <Link href="/" className="mr-6 flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2 p-4">
               <Logo />
             </Link>
-            <div className="flex flex-col space-y-3 pt-6">
+            <div className="flex flex-col space-y-3 pt-6 px-4">
               {navLinks.map(link => (
                 <Link key={link.href} href={link.href} className="text-foreground">
                   {link.label}
