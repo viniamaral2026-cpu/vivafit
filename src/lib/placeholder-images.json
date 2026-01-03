@@ -3,19 +3,19 @@
     {
       "id": "hero-fitness",
       "description": "A diverse group of people in a fitness class",
-      "imageUrl": "/logo-viva-fit.png",
+      "imageUrl": "https://images.unsplash.com/photo-1517130038641-a774d04afb3c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaXRuZXNzJTIwY2xhc3N8ZW58MHx8fHwxNzY3NDE2NTk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fitness class"
     },
     {
       "id": "workout-1",
       "description": "A person doing yoga in a bright studio",
-      "imageUrl": "/imagem-promocional.png",
+      "imageUrl": "https://images.unsplash.com/photo-1705360315268-5e1ae3d43f61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx5b2dhJTIwZml0bmVzc3xlbnwwfHx8fDE3NjczNTQ0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "yoga fitness"
     },
     {
       "id": "workout-2",
       "description": "A person lifting weights in a modern gym",
-      "imageUrl": "/imagem-promocional.png",
+      "imageUrl": "https://images.unsplash.com/photo-1722925541321-f52d45b29c17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZWlnaHRsaWZ0aW5nJTIwZ3ltfGVufDB8fHx8MTc2NzMyMTU2OXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "weightlifting gym"
     },
     {
@@ -45,7 +45,7 @@
     {
       "id": "ad-1",
       "description": "A display of healthy food products",
-      "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3Njc0MjE2MzF8MA&ixlib_rb_4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3Njc0MjE2MzF8MA&ixlib_rb-4.1.0&q=80&w=1080",
       "imageHint": "healthy food"
     },
     {
