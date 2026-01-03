@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { UserNav } from "./user-nav";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "@/app/auth-provider";
@@ -76,6 +76,9 @@ export function MainHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
+            <SheetHeader className="sr-only">
+              <SheetTitle>Menu</SheetTitle>
+            </SheetHeader>
             <Link href="/" className="mr-6 flex items-center space-x-2">
               <Logo />
             </Link>
