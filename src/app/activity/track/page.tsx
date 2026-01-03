@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ArrowLeft, Battery, Play, PersonStanding, ChevronDown, Pause } from "lucide-react";
+import { ArrowLeft, Battery, Play, PersonStanding, ChevronDown, Pause, Square } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +15,7 @@ export default function TrackActivityPage() {
     const [isCountingDown, setIsCountingDown] = useState(false);
     const [countdown, setCountdown] = useState(3);
     const [isTracking, setIsTracking] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
     const [elapsedTime, setElapsedTime] = useState(0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -68,16 +69,32 @@ export default function TrackActivityPage() {
     };
 
     const handlePauseWorkout = () => {
+        setIsPaused(true);
         if (timerRef.current) {
             clearInterval(timerRef.current);
             timerRef.current = null;
-            // Here you would also update the UI to show a "Resume" button
         }
+    };
+    
+    const handleResumeWorkout = () => {
+        setIsPaused(false);
+        // The useEffect for isTracking will restart the timer
+    };
+
+    const handleStopWorkout = () => {
+        setIsTracking(false);
+        setIsPaused(false);
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+        }
+        // Redirect to summary page
+        // In a real app, you'd save the workout and pass its ID
+        router.push(`/activity/summary-mock`);
     };
 
 
      useEffect(() => {
-        if (isTracking) {
+        if (isTracking && !isPaused) {
             timerRef.current = setInterval(() => {
                 setElapsedTime(prev => prev + 1);
                 // Simulate data changing over time
@@ -95,7 +112,7 @@ export default function TrackActivityPage() {
                 clearInterval(timerRef.current);
             }
         };
-    }, [isTracking]);
+    }, [isTracking, isPaused]);
 
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -147,10 +164,21 @@ export default function TrackActivityPage() {
                     </div>
                 </main>
                 
-                <footer className="w-full flex justify-center">
-                    <Button variant="default" size="icon" className="w-16 h-16 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg" onClick={handlePauseWorkout}>
-                        <Pause className="h-8 w-8 text-white fill-white" />
-                    </Button>
+                <footer className="w-full flex justify-center items-center gap-8">
+                    {isPaused ? (
+                        <>
+                            <Button variant="destructive" size="icon" className="w-16 h-16 rounded-lg shadow-lg" onClick={handleStopWorkout}>
+                                <Square className="h-8 w-8 text-white fill-white" />
+                            </Button>
+                             <Button variant="default" className="w-32 h-16 rounded-lg shadow-lg bg-blue-600 hover:bg-blue-700" onClick={handleResumeWorkout}>
+                                Retomar
+                            </Button>
+                        </>
+                    ) : (
+                        <Button variant="default" size="icon" className="w-16 h-16 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg" onClick={handlePauseWorkout}>
+                            <Pause className="h-8 w-8 text-white fill-white" />
+                        </Button>
+                    )}
                 </footer>
             </div>
         )
@@ -201,5 +229,7 @@ export default function TrackActivityPage() {
         </div>
     );
 }
+
+    
 
     
