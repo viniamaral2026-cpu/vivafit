@@ -17,9 +17,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { User } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
 import { Skeleton } from "@/components/ui/skeleton";
+
+// Mock data since Firestore is disabled
+const mockUsers: User[] = [
+    { id: 'user1', name: 'Alice Johnson', email: 'alice@example.com', role: 'User', subscription: 'Premium', createdAt: new Date() },
+    { id: 'user2', name: 'Bob Williams', email: 'bob@example.com', role: 'User', subscription: 'Free', createdAt: new Date() },
+    { id: 'user3', name: 'Charlie Brown', email: 'charlie@example.com', role: 'Admin', subscription: 'Premium', createdAt: new Date() },
+    { id: 'user4', name: 'Diana Miller', email: 'diana@example.com', role: 'User', subscription: 'Free', createdAt: new Date() },
+];
+
 
 export const columns: ColumnDef<User>[] = [
     {
@@ -74,7 +81,7 @@ export const columns: ColumnDef<User>[] = [
         accessorKey: "createdAt",
         header: "Joined Date",
         cell: ({row}) => {
-            const date = (row.getValue("createdAt") as any)?.toDate();
+            const date = new Date(row.getValue("createdAt"));
             return <div>{date ? date.toLocaleDateString() : 'N/A'}</div>
         }
     },
@@ -105,19 +112,12 @@ export default function UserManagementPage() {
     const [sorting, setSorting] = React.useState<SortingState>([])
 
     React.useEffect(() => {
-        const fetchUsers = async () => {
-            setLoading(true);
-            try {
-                const querySnapshot = await getDocs(collection(db, "users"));
-                const usersData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
-                setUsers(usersData);
-            } catch (error) {
-                console.error("Error fetching users:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchUsers();
+        setLoading(true);
+        // Simulate fetching users from a local source
+        setTimeout(() => {
+            setUsers(mockUsers);
+            setLoading(false);
+        }, 500);
     }, []);
 
     const table = useReactTable({

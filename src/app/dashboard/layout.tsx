@@ -12,7 +12,6 @@ import {
     LogOut, 
     Gem,
     Info,
-    Plug,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -75,7 +74,6 @@ export default function DashboardLayout({
     { href: "/premium", label: "Premium Hub", icon: Star, isPremium: true },
     { href: "/ai-coach", label: "AI Coach", icon: Bot },
     { href: "/devices", label: "Dispositivos", icon: Smartphone },
-    { href: "/connect-data", label: "Data Connect", icon: Plug },
   ];
   
   if (authLoading || !user) {
