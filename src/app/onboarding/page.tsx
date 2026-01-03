@@ -45,11 +45,10 @@ export default function OnboardingPage() {
                 birthDate,
                 weight: Number(weight),
                 height: Number(height),
-                onboardingComplete: true,
             });
 
             toast({ title: "Sucesso!", description: "Suas informações foram salvas." });
-            router.push("/workouts");
+            router.push("/onboarding/goals");
 
         } catch (error) {
             console.error("Erro ao salvar informações de onboarding:", error);
