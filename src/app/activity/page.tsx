@@ -2,15 +2,38 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Plus, MoreVertical } from "lucide-react";
+import { ArrowLeft, Plus, MoreVertical, ChevronRight } from "lucide-react";
 import { DailyGoalCard } from "@/components/dashboard/daily-goal-card";
 import { WeeklyGoalCard } from "@/components/dashboard/weekly-goal-card";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EnergyManagementCard } from "@/components/dashboard/energy-management-card";
 
+
+const ActivityDataRow = ({ label }: { label: string }) => (
+    <Card className="shadow-sm">
+        <CardContent className="p-4 flex justify-between items-center">
+            <div>
+                <p className="font-semibold">{label}</p>
+                <p className="text-sm text-muted-foreground">Não há dados recentes</p>
+            </div>
+            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+        </CardContent>
+    </Card>
+);
+
 export default function ActivityPage() {
     const router = useRouter();
+
+    const recentDataItems = [
+        "Pontos cardio",
+        "Distância",
+        "Minutos em movimento",
+        "Cadência de passos",
+        "Cadência no ciclismo",
+        "Velocidade da roda",
+        "Velocidade",
+    ];
 
     return (
         <div className="flex flex-col min-h-screen bg-background">
@@ -41,6 +64,15 @@ export default function ActivityPage() {
                  <div className="space-y-2">
                     <h2 className="text-sm font-semibold text-muted-foreground px-2">DADOS</h2>
                     <EnergyManagementCard />
+                </div>
+
+                <div className="space-y-2">
+                    <h2 className="text-sm font-semibold text-muted-foreground px-2">SEM DADOS RECENTES</h2>
+                    <div className="grid gap-4">
+                        {recentDataItems.map((item) => (
+                            <ActivityDataRow key={item} label={item} />
+                        ))}
+                    </div>
                 </div>
             </main>
         </div>
