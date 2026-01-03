@@ -1,247 +1,65 @@
-Fite# Firebase Studio
+# VivaFit - README Técnico
 
-VivaFit – README Completo
-📌 Sobre o Projeto
+Este documento fornece uma visão geral técnica do protótipo do aplicativo VivaFit, seu estado atual e os próximos passos.
 
-VivaFit é um sistema completo de emagrecimento e vida saudável que combina:
+## Visão Geral do Projeto
 
-Controle de alimentação e calorias
+O VivaFit é uma aplicação completa de saúde e bem-estar projetada para ajudar os usuários na perda de peso e na adoção de um estilo de vida mais saudável. O protótipo foi construído usando Next.js, React, Tailwind CSS e componentes de UI da ShadCN.
 
-Planejamento de treinos e exercícios físicos
+### Tecnologias Principais
 
-Monitoramento de hábitos e metas diárias
-
-Receitas e planejamento de refeições
-
-Acompanhamento psicológico e motivacional
-
-Gamificação e progresso visual
-
-Monetização via anúncios (Google AdSense / AdMob)
-
-Assinatura Premium: R$ 9,99/mês (sem anúncios e conteúdos exclusivos)
-
-Painel Administrativo para gestão completa do sistema
-
-O objetivo é oferecer uma experiência motivadora, moderna e segura, acessível por site, Web App, app mobile e administradores via painel web.
-
-📱 Plataformas e Prioridade
-
-Site Próprio – Informações, blog, marketing e cadastro/login
-
-Login / Autenticação – Centraliza conta do usuário
-
-Web App Responsivo – Funcionalidades completas no navegador
-
-App Mobile (iOS/Android) – Offline, gamificação, integração wearables
-
-Painel Administrativo – Gerenciamento completo de usuários, conteúdos, assinaturas e anúncios
-
-⚙ Funcionalidades
-Para Usuários
-
-Dashboard com progresso, gráficos e gamificação
-
-Alimentação: diário alimentar, contador de calorias/macros, ingestão de água
-
-Treinos: exercícios rápidos, personalizados, vídeos demonstrativos
-
-Hábitos e Motivação: checklists, alertas, desafios, conteúdos educativos
-
-Receitas: filtráveis, listas de compras, favoritas
-
-Progresso: gráficos detalhados, histórico completo, exportação
-
-Configurações: perfil, metas, notificações, integração com wearables
-
-Premium: R$ 9,99/mês via PagSeguro, sem anúncios e conteúdos exclusivos
-
-Monetização: anúncios para usuários gratuitos
-
-Para Administradores (Painel Admin)
-
-Dashboard geral: usuários, Premium, conteúdo e estatísticas
-
-Gerenciamento de usuários: ativar/desativar, editar perfil, monitorar progresso
-
-Pagamentos: histórico de assinaturas Premium, cancelamentos, relatórios
-
-Conteúdos: adicionar/editar/deletar receitas, treinos, artigos e vídeos
-
-Anúncios: configurar AdSense e AdMob
-
-Configurações do sistema: integrações, logs, backups
-
-Relatórios: exportação de dados e métricas
-
-💻 Tecnologias Utilizadas
-Plataforma	Tecnologia
-Site	Next.js/Gatsby, React.js, Tailwind CSS, hospedagem Vercel/Netlify/AWS
-Web App	React.js SPA, REST API/GraphQL
-App Mobile	React Native ou Flutter, offline, integração backend e wearables
-Backend	Node.js + Express, MongoDB Atlas, JWT/OAuth, integração PagSeguro
-Painel Admin	React.js SPA, dashboards interativos, autenticação JWT
-Monetização	Google AdSense (site), Google AdMob (app), PagSeguro (Premium)
-🗂 Estrutura de Pastas
-/viva-fit
-│
-├── /site
-├── /web-app
-│   └── /src/pages/premium
-├── /mobile-app
-│   └── /src/screens/Premium
-├── /backend
-│   └── /src
-│       ├── /controllers/premiumController.js
-│       ├── /routes/premiumRoutes.js
-│       └── /services/pagseguroService.js
-├── /admin
-│   └── /src/pages
-│       ├── Dashboard.js
-│       ├── Users.js
-│       ├── Payments.js
-│       ├── Contents.js
-│       ├── Ads.js
-│       └── Settings.js
-├── /shared
-├── docker-compose.yml
-├── README.md
-└── .gitignore
-
-🎨 Planejamento e UI/UX
-
-Paleta de cores: Verde (#28A745), Azul (#007BFF), Laranja (#FFA500), Cinza (#F0F0F0), Branco (#FFFFFF)
-
-Tipografia: Poppins Bold (cabeçalhos), Roboto Regular (textos e botões)
-
-Interatividade: Cards, barras de progresso, badges e gamificação
-
-Responsividade: Site, Web App e App Mobile adaptáveis a desktop, tablet e smartphone
-
-Painel Admin: dashboards interativos, tabelas filtráveis, alertas de operação
-
-💰 Monetização
-
-Grátis: anúncios via AdSense (site) e AdMob (app mobile)
-
-Premium: R$ 9,99/mês via PagSeguro Checkout
-
-Sem anúncios
-
-Conteúdos exclusivos
-
-Badge Premium no dashboard
-
-Histórico de pagamentos
-
-🔒 Segurança
-
-HTTPS em todas as plataformas
-
-Criptografia AES-256 para dados sensíveis
-
-Validação de webhook PagSeguro
-
-Controle de acesso admin com permissões
-
-LGPD, backups automáticos e logs de atividade
-
-📅 Cronograma Sugerido
-Etapa	Duração
-Planejamento e UI/UX	1 semana
-Desenvolvimento Site	2 semanas
-Backend + Login + PagSeguro	3 semanas
-Web App	3 semanas
-App Mobile	4 semanas
-Painel Administrativo	2 semanas
-Integração e testes finais	2 semanas
-Lançamento beta	1 semana
-Lançamento oficial	Após ajustes do beta
-📈 Resumo Final
-
-VivaFit é um app completo de emagrecimento, gamificação e monitoramento de saúde
-
-Plataformas integradas: Site → Login → Web App → App Mobile → Painel Admin
-
-Monetização híbrida: anúncios para usuários gratuitos e assinatura Premium R$ 9,99/mês via PagSeguro
-
-Painel Admin controla usuários, conteúdos, assinaturas, anúncios e relatórios
-
-UI/UX moderna, responsiva e motivadora
-
-Backend seguro, escalável e pronto para integração com APIs externas
-
-# VivaFit – Sistema de Emagrecimento Completo
-
-## 🌐 Visão Geral
-
-VivaFit é um ecossistema completo de emagrecimento e vida saudável, com:
-
-- Site, Web App e App Mobile  
-- Painel Administrativo  
-- Monetização híbrida: anúncios gratuitos + assinatura Premium  
+- **Frontend:** Next.js 15 (App Router), React 19, TypeScript
+- **Estilização:** Tailwind CSS, ShadCN UI
+- **IA Generativa:** Genkit para o AI Coach
+- **Autenticação e Banco de Dados (Simulados):** A lógica de autenticação e banco de dados está atualmente simulada usando `sessionStorage` e arquivos JSON locais para permitir o desenvolvimento rápido da UI.
 
 ---
 
-## 🔄 Fluxo de Usuário (Mermaid)
+## Estado Atual do Protótipo
 
-```mermaid
-flowchart LR
-    A[Site / Landing Page] --> B[Login / Cadastro]
-    B --> C[Web App]
-    B --> D[App Mobile]
-    C --> E[Dashboard do Usuário]
-    D --> E
-    E --> F[Alimentação / Diário]
-    E --> G[Treinos / Exercícios]
-    E --> H[Hábitos e Motivação]
-    E --> I[Receitas e Planejamento]
-    E --> J[Progresso / Estatísticas]
-    E --> K[Assinatura Premium?]
-    K -->|Sim| L[Conteúdo Premium / Sem anúncios]
-    K -->|Não| M[Conteúdo Gratuito + Anúncios]
-flowchart TD
-    Admin[Administrador] --> AD1[Dashboard Geral]
-    Admin --> AD2[Gerenciamento de Usuários]
-    Admin --> AD3[Assinaturas / Pagamentos]
-    Admin --> AD4[Conteúdos (Receitas / Treinos / Artigos)]
-    Admin --> AD5[Anúncios (AdSense / AdMob)]
-    Admin --> AD6[Configurações do Sistema]
-    Admin --> AD7[Relatórios / Exportação de Dados]
-flowchart LR
-    U[Usuário] -->|Grátis| G[Anúncios: AdSense (site) / AdMob (app)]
-    U -->|Premium: R$9,99/mês| P[Conteúdo Exclusivo + Sem anúncios]
-    P -->|Pagamento via| PS[PagSeguro Checkout]
-    PS -->|Webhook| Backend[Backend Node.js + MongoDB]
-/viva-fit
-├── /site
-├── /web-app/src/pages/premium
-├── /mobile-app/src/screens/Premium
-├── /backend/src/controllers/premiumController.js
-├── /backend/src/routes/premiumRoutes.js
-├── /backend/src/services/pagseguroService.js
-├── /admin/src/pages/Dashboard.js
-├── /admin/src/pages/Users.js
-├── /admin/src/pages/Payments.js
-├── /admin/src/pages/Contents.js
-├── /admin/src/pages/Ads.js
-├── /admin/src/pages/Settings.js
-├── /shared
-├── docker-compose.yml
-├── README.md
-└── .gitignore
+O protótipo atual é focado na interface do usuário (UI) e na experiência do usuário (UX), com muitas funcionalidades simuladas.
+
+### Funcionalidades Implementadas (UI e Simulação)
+
+- **Fluxo de Autenticação:** Páginas de login, criação de conta e recuperação de senha. A autenticação do usuário é simulada via `sessionStorage`.
+- **Onboarding de Usuário:** Um fluxo de várias etapas para coletar informações básicas do usuário e definir metas iniciais.
+- **Dashboard Principal:** Painel central com resumo das atividades diárias e semanais, tendências de peso e energia, e sugestões de conteúdo.
+- **Navegação Completa:** Layouts de barra lateral para o painel do usuário e para o painel administrativo.
+- **Gerenciamento de Conta:** Seção onde os usuários podem gerenciar perfil, assinatura (simulada), pagamentos (simulados) e configurações.
+- **Páginas de Conteúdo:**
+  - **Treinos:** Listagem e página de detalhes dos vídeos de treino.
+  - **Premium Hub:** Página de conteúdo exclusivo para assinantes.
+  - **Depoimentos:** Galeria de histórias de sucesso de usuários.
+- **AI Coach:** Interface de chat funcional conectada a um fluxo Genkit para conselhos de saúde.
+- **Painel Administrativo:**
+  - Dashboard com estatísticas (mock).
+  - Gerenciamento de usuários, conteúdo (treinos, receitas, artigos), anúncios e finanças (com dados mock).
+  - Página de configurações para integrações de serviços.
+
+### Funcionalidades Pendentes e Próximos Passos
+
+A principal prioridade é substituir os dados simulados por uma integração real com o Firebase.
+
+1.  **Integração com Firebase:**
+    - **Firestore:** Substituir todos os dados mock (arquivos `.json` em `/src/lib/firebase/seed-data`) por chamadas reais ao Firestore para treinos, usuários, artigos, etc.
+    - **Firebase Authentication:** Implementar o provedor de autenticação real do Firebase para substituir a simulação com `sessionStorage`.
+    - **Cloud Functions / Backend:** Criar funções de backend para lidar com lógica de negócios, como processamento de pagamentos e gerenciamento de assinaturas.
+
+2.  **Lógica de Backend:**
+    - **Pagamentos:** Integrar com um gateway de pagamento (ex: PagSeguro, Stripe) para gerenciar assinaturas Premium.
+    - **Anúncios:** Implementar a lógica para exibir anúncios do AdSense e AdMob para usuários gratuitos.
+    - **Notificações:** Configurar um sistema de notificações (ex: via Firebase Cloud Messaging).
+
+3.  **Refinamento de Funcionalidades:**
+    - Conectar os formulários do painel administrativo para efetivamente criar, editar e deletar conteúdo no banco de dados.
+    - Desenvolver a lógica do "Planejador Semanal IA" na página Premium.
 
 ---
 
-✅ **Vantagens do README Visual**
+## Como Acessar o Painel Administrativo
 
-- Diagramas Mermaid claros para fluxo de usuário, admin e monetização  
-- Estrutura de pastas completa  
-- Informações de UI/UX, segurança e cronograma resumidas  
-- Pronto para apresentar para equipe de desenvolvimento ou investidores  
+O painel administrativo é onde todo o conteúdo e os usuários são gerenciados.
 
----
+- **Link de Acesso:** [**`/admin/dashboard`**](/admin/dashboard)
 
-Se você quiser, posso **gerar uma versão ainda mais visual**, com **diagramas gráficos estilo mapa mental ou infográfico**, pronta para colocar no **site do projeto ou apresentação**.  
-
-Quer que eu faça isso?
+Para acessar, navegue diretamente para o URL acima. Atualmente, o acesso não é restrito por autenticação, mas isso deve ser implementado junto com a integração do Firebase Auth, atribuindo uma "role" de administrador a usuários específicos.
