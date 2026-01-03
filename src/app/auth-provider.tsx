@@ -33,11 +33,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (session?.user) {
-        // Here you might fetch additional user profile data from your 'profiles' table
+        // Fetch additional user profile data from your 'profiles' table
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('subscription')
+          .eq('id', session.user.id)
+          .single();
+
         const appUser: AppUser = {
           ...session.user,
-          // This is a mock value. You should fetch this from your database.
-          subscription: session.user.user_metadata?.subscription || 'Free',
+          subscription: profile?.subscription || 'Free',
         };
         setUser(appUser);
       } else {
@@ -49,11 +54,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     getSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      async (_event, session) => {
         if (session?.user) {
+            const { data: profile } = await supabase
+            .from('profiles')
+            .select('subscription')
+            .eq('id', session.user.id)
+            .single();
+
            const appUser: AppUser = {
             ...session.user,
-            subscription: session.user.user_metadata?.subscription || 'Free',
+            subscription: profile?.subscription || 'Free',
           };
           setUser(appUser);
         } else {
@@ -64,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
 
     return () => subscription.unsubscribe();
-  }, [supabase.auth]);
+  }, [supabase, supabase.auth]);
 
   const isPremium = user?.subscription === 'Premium';
   
@@ -99,3 +110,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
+
+    

@@ -14,7 +14,59 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Crown, QrCode, ClipboardCopy } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
+import { createClient } from "@/lib/supabase/client";
+import { useAuth } from "../auth-provider";
+import { useState } from "react";
+
+async function upgradeToPremium(userId: string): Promise<{ success: boolean; error?: any }> {
+    'use server';
+    // This is a server action. It will only run on the server.
+    // In a real-world scenario, you would have your payment logic here.
+    // After a successful payment, you update the user's profile.
+    
+    // We need to create a server-side Supabase client to perform admin-level tasks
+    // or to securely update user data. For this prototype, we'll use the service_role key
+    // if available, but this is a placeholder for a proper secure backend function.
+    
+    // The following is a simplified example. A real implementation would require
+    // a secure way to instantiate a Supabase client with admin privileges.
+    // For now, we will simulate this by directly calling from a server context.
+    
+    try {
+        const { createServerClient, type CookieOptions } = await import('@supabase/ssr');
+        const { cookies } = await import('next/headers');
+        
+        const cookieStore = cookies();
+        const supabase = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    get(name: string) {
+                        return cookieStore.get(name)?.value
+                    },
+                },
+            }
+        );
+
+        const { error } = await supabase
+            .from('profiles')
+            .update({ subscription: 'Premium' })
+            .eq('id', userId);
+
+        if (error) {
+            console.error("Supabase error:", error);
+            return { success: false, error: error };
+        }
+
+        return { success: true };
+
+    } catch (e) {
+        console.error("Upgrade error:", e);
+        return { success: false, error: e };
+    }
+}
+
 
 const paymentSchema = z.object({
     cardName: z.string().min(3, "Nome no cartão é obrigatório"),
@@ -27,6 +79,8 @@ const paymentSchema = z.object({
 export default function SubscribePage() {
     const router = useRouter();
     const { toast } = useToast();
+    const { user } = useAuth();
+    const [isLoading, setIsLoading] = useState(false);
     const pixCode = "00020126360014br.gov.bcb.pix0114+551199999999952040000530398654059.995802BR5913NOME DO LOJISTA6009SAO PAULO62070503***6304E2B1";
 
     const form = useForm<z.infer<typeof paymentSchema>>({
@@ -39,26 +93,35 @@ export default function SubscribePage() {
         },
     });
 
-    const onPaymentSuccess = () => {
-         toast({
-            title: "Pagamento bem-sucedido!",
-            description: "Você agora é um membro Premium. Bem-vindo!",
-        });
-
-        // Simulate updating user session/status
-        if (typeof window !== 'undefined') {
-            const userStr = window.sessionStorage.getItem('vivafit-user');
-            if (userStr) {
-                const user = JSON.parse(userStr);
-                user.subscription = 'Premium';
-                window.sessionStorage.setItem('vivafit-user', JSON.stringify(user));
-            }
+    const onPaymentSuccess = async () => {
+        if (!user) {
+            toast({ title: "Erro", description: "Você precisa estar logado para assinar.", variant: "destructive" });
+            return;
         }
-        router.push("/account/billing");
+        setIsLoading(true);
+
+        const result = await upgradeToPremium(user.id);
+        
+        if (result.success) {
+            toast({
+                title: "Pagamento bem-sucedido!",
+                description: "Você agora é um membro Premium. Bem-vindo!",
+            });
+            // Refresh the page to make sure the AuthProvider picks up the new role
+            router.push("/account/billing");
+            router.refresh();
+        } else {
+             toast({
+                title: "Erro na Assinatura",
+                description: "Não foi possível atualizar seu plano. Por favor, tente novamente.",
+                variant: "destructive"
+            });
+        }
+        setIsLoading(false);
     }
 
     const onCardSubmit = (values: z.infer<typeof paymentSchema>) => {
-        console.log("Detalhes do cartão:", values);
+        console.log("Detalhes do cartão (simulação):", values);
         onPaymentSuccess();
     }
 
@@ -68,14 +131,16 @@ export default function SubscribePage() {
             title: "Código PIX copiado!",
             description: "Use o código no seu app de banco para pagar.",
         });
+        // Simulate PIX payment success after a delay
+        setTimeout(() => onPaymentSuccess(), 3000);
     }
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
              <div className="absolute top-4 left-4">
                 <Button variant="ghost" asChild>
-                    <Link href="/">
-                    &larr; Voltar para a Home
+                    <Link href="/dashboard">
+                    &larr; Voltar para o Dashboard
                     </Link>
                 </Button>
              </div>
@@ -175,16 +240,16 @@ export default function SubscribePage() {
                                                     )}
                                                 />
                                             </div>
-                                            <Button type="submit" className="w-full" size="lg" disabled={form.formState.isSubmitting}>
+                                            <Button type="submit" className="w-full" size="lg" disabled={isLoading || form.formState.isSubmitting}>
                                                 <Crown className="mr-2 h-5 w-5"/>
-                                                {form.formState.isSubmitting ? "Processando..." : "Pagar com Cartão (R$ 9,99)"}
+                                                {isLoading ? "Processando..." : "Pagar com Cartão (R$ 9,99)"}
                                             </Button>
                                         </form>
                                     </Form>
                                 </TabsContent>
                                  <TabsContent value="pix" className="pt-4">
                                     <div className="flex flex-col items-center justify-center space-y-4">
-                                        <p className="text-sm text-muted-foreground text-center">Escaneie o código QR com seu app de banco para pagar.</p>
+                                        <p className="text-sm text-muted-foreground text-center">Escaneie o código QR ou copie o código para pagar.</p>
                                         <div className="p-2 border rounded-md">
                                             <QrCode className="h-40 w-40" />
                                         </div>
@@ -203,3 +268,5 @@ export default function SubscribePage() {
         </div>
     )
 }
+
+    
