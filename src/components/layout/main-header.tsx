@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UserNav } from "./user-nav";
 import { Logo } from "@/components/icons/logo";
+import { useAuth } from "@/app/auth-provider";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/#features", label: "Funcionalidades" },
@@ -14,6 +16,14 @@ const navLinks = [
 ];
 
 export function MainHeader() {
+  const { user, loading } = useAuth();
+  const pathname = usePathname();
+
+  const isAuthPage = pathname === '/login' || pathname === '/register';
+
+  if (isAuthPage) return null;
+
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -56,12 +66,18 @@ export function MainHeader() {
         </Sheet>
 
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <Link href="/login" className="hidden md:inline-flex text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60">
-            Entrar
-          </Link>
-          <Button asChild>
-            <Link href="/register">Começar no app</Link>
-          </Button>
+          {!loading && user ? (
+            <UserNav />
+          ) : (
+            <>
+              <Link href="/login" className="hidden md:inline-flex text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60">
+                Entrar
+              </Link>
+              <Button asChild>
+                <Link href="/register">Começar no app</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>

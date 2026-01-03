@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,30 +13,53 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CreditCard, LayoutDashboard, LogOut, Settings, User } from "lucide-react";
+import { CreditCard, LayoutDashboard, LogOut, User as UserIcon } from "lucide-react";
+import { useAuth } from "@/app/auth-provider";
+import { auth } from "@/lib/firebase/config";
+import { useToast } from "@/hooks/use-toast";
+
 
 export function UserNav() {
-  // In a real app, you'd get user info from a session or context
-  const user = {
-    name: "Admin User",
-    email: "admin@vivafit.app",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
+  const { user } = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    try {
+      await auth.signOut();
+      toast({
+        title: "Você saiu!",
+        description: "Esperamos te ver novamente em breve.",
+      });
+      router.push("/");
+    } catch (error) {
+       console.error("Erro ao fazer logout:", error);
+       toast({
+         title: "Erro",
+         description: "Não foi possível fazer logout. Tente novamente.",
+         variant: "destructive",
+       });
+    }
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9">
-            <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            <AvatarImage src={user.photoURL!} alt={user.displayName!} />
+            <AvatarFallback>{user.displayName?.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.name}</p>
+            <p className="text-sm font-medium leading-none">{user.displayName}</p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}
             </p>
@@ -43,14 +69,14 @@ export function UserNav() {
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link href="/account">
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+              <UserIcon className="mr-2 h-4 w-4" />
+              <span>Perfil</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/account/subscription">
               <CreditCard className="mr-2 h-4 w-4" />
-              <span>Subscription</span>
+              <span>Assinatura</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
@@ -61,11 +87,9 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-           <Link href="/">
+        <DropdownMenuItem onClick={handleSignOut}>
             <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
-          </Link>
+            <span>Sair</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

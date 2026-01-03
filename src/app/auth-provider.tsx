@@ -1,0 +1,76 @@
+"use client";
+
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { auth, db } from '@/lib/firebase/config';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { Skeleton } from '@/components/ui/skeleton';
+
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+}
+
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+
+export const useAuth = () => useContext(AuthContext);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // User is signed in.
+        const userRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(userRef);
+        if (docSnap.exists()) {
+          // User exists, just set it
+          setUser(user);
+        } else {
+          // New user, create a document
+          await setDoc(userRef, {
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            createdAt: new Date(),
+            subscription: "Free",
+            role: "User"
+          });
+          setUser(user);
+        }
+      } else {
+        // User is signed out.
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) {
+      return (
+        <div className="flex flex-col min-h-screen">
+          <header className="sticky top-0 z-50 w-full border-b h-16 flex items-center px-4"><Skeleton className="w-24 h-8" /></header>
+          <main className="flex-1 p-8">
+            <div className="space-y-4">
+              <Skeleton className="h-12 w-1/2" />
+              <Skeleton className="h-6 w-3/4" />
+              <div className="grid grid-cols-2 gap-4 pt-4">
+                  <Skeleton className="h-40" />
+                  <Skeleton className="h-40" />
+              </div>
+            </div>
+          </main>
+        </div>
+      )
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
