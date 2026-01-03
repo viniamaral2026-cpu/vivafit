@@ -29,7 +29,7 @@ export default function OnboardingActivityGoalsPage() {
                 title: "Tudo pronto!",
                 description: "Seu perfil foi configurado com sucesso. Bem-vindo(a)!",
             });
-            router.push("/workouts");
+            router.push("/dashboard");
         } catch (error) {
             console.error("Error updating user document:", error);
             toast({ title: "Erro", description: "Não foi possível finalizar a configuração.", variant: "destructive"});
@@ -60,7 +60,7 @@ export default function OnboardingActivityGoalsPage() {
                 </CardContent>
                 <CardFooter className="flex-col gap-4 p-6">
                     <Button className="w-full" size="lg" onClick={handleCompleteOnboarding} disabled={isSubmitting}>
-                        {isSubmitting ? "Finalizando..." : "Avançar"}
+                        {isSubmitting ? "Finalizando..." : "Concluir"}
                     </Button>
                 </CardFooter>
             </Card>

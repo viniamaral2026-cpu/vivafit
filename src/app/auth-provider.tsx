@@ -10,29 +10,33 @@ import { useRouter } from 'next/navigation';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  isOnboardingComplete: boolean | null;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true, isOnboardingComplete: null });
 
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        setUser(user);
         const userDocRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists() && userDoc.data().onboardingComplete) {
-            setUser(user);
-        } else {
+        const isComplete = userDoc.exists() && userDoc.data().onboardingComplete;
+        setIsOnboardingComplete(isComplete);
+        if (!isComplete) {
             router.push('/onboarding');
         }
       } else {
         setUser(null);
+        setIsOnboardingComplete(null);
       }
       setLoading(false);
     });
@@ -59,9 +63,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       )
   }
 
-
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, isOnboardingComplete }}>
       {children}
     </AuthContext.Provider>
   );

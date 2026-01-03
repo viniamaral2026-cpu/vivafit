@@ -33,14 +33,14 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const { user, loading, isOnboardingComplete } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && (!user || !isOnboardingComplete)) {
       router.push('/auth');
     }
-  }, [user, loading, router]);
+  }, [user, loading, isOnboardingComplete, router]);
 
   const menuItems = [
     { href: "/account", label: "Perfil", icon: User },
@@ -125,8 +125,8 @@ export default function AccountLayout({
         </SidebarContent>
         <SidebarFooter>
             <Button variant="ghost" className="w-full justify-start" asChild>
-                <Link href="/workouts">
-                    &larr; Voltar para os Treinos
+                <Link href="/dashboard">
+                    &larr; Voltar para o Dashboard
                 </Link>
             </Button>
         </SidebarFooter>

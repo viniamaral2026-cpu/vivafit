@@ -16,12 +16,14 @@ const navLinks = [
 ];
 
 export function MainHeader() {
-  const { user, loading } = useAuth();
+  const { user, loading, isOnboardingComplete } = useAuth();
   const pathname = usePathname();
 
   const isAuthPage = pathname === '/auth';
+  const showDashboardNav = user && isOnboardingComplete;
 
   if (isAuthPage) return null;
+  if (showDashboardNav) return null;
 
 
   return (
