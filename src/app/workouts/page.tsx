@@ -101,9 +101,9 @@ export default function WorkoutsPage() {
     <div className="p-4 md:p-8">
       <div className="mb-4">
         <Button variant="ghost" asChild>
-            <Link href="/">
+            <Link href="/journal">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Voltar para a Home
+                Voltar para o Diário
             </Link>
         </Button>
       </div>

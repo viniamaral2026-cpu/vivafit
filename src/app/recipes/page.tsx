@@ -67,9 +67,9 @@ export default function RecipesPage() {
             <div className="max-w-4xl mx-auto">
                 <div className="mb-4">
                     <Button variant="ghost" asChild>
-                        <Link href="/">
+                        <Link href="/journal">
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Voltar para a Home
+                            Voltar para o Diário
                         </Link>
                     </Button>
                 </div>

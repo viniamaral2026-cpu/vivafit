@@ -65,9 +65,9 @@ export default function PremiumHubPage() {
     <div className="bg-muted/30">
         <div className="container px-4 md:px-6 pt-6">
             <Button variant="ghost" asChild>
-                <Link href="/">
+                <Link href="/journal">
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Voltar para a Home
+                    Voltar para o Diário
                 </Link>
             </Button>
         </div>

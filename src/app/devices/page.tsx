@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Disc3, Cloudy, Zap, Plus, RefreshCw, ArrowLeft } from "lucide-react";
+import { Disc3, Cloudy, Zap, Plus, RefreshCw, ArrowLeft, PersonStanding, Bike } from "lucide-react";
 import Link from "next/link";
 
 export default function DevicesPage() {
@@ -33,9 +33,9 @@ export default function DevicesPage() {
             <div className="max-w-5xl mx-auto">
                  <div className="mb-4">
                     <Button variant="ghost" asChild>
-                        <Link href="/">
+                        <Link href="/journal">
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Voltar para a Home
+                            Voltar para o Diário
                         </Link>
                     </Button>
                 </div>
