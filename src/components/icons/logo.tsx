@@ -5,7 +5,7 @@ export function Logo(props: React.ComponentProps<"div">) {
   return (
     <div {...props}>
       <Image
-        src="https://scontent.fpoa13-1.fna.fbcdn.net/v/t39.30808-6/610776226_122094250413204574_3447186860395560382_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=uAPIqEeV8rEQ7kNvwErGvdr&_nc_oc=AdmojXGFJMImfmkx-SyecWayH4RjotRlN2U24mx_OQLTNTHhL2x-t96GaeaUQEqIi7ptAqkPbyRbeUPajpDIlWkU&_nc_zt=23&_nc_ht=scontent.fpoa13-1.fna&_nc_gid=fGu3FmTJ6PTnlOnKz4MMcA&oh=00_AfqIxwQ4H0vZZtOPKbDOaeFj_QLv4IQm1uZUnSmHln7pyw&oe=695F4467"
+        src="https://scontent.fpoa13-1.fna.fbcdn.net/v/t39.30808-6/611147366_122094480705204574_1697207361115252820_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=b8278c&_nc_ohc=YPFSw8Ff4SMQ7kNvwETveXy&_nc_oc=Adkrxe-9GvEtKmMrZ9ZNbeEjXf1Aor4Vv38XcF7ddbnAk8E-nh4Yqdgx2PFavNJUjuQmOjyQAVvp_nENs76B8CwA&_nc_zt=23&_nc_ht=scontent.fpoa13-1.fna&_nc_gid=bMIOpDWjQAXaRGn-9H1r3w&oh=00_AfrhgiuLN8CaBqMw4yxt7AJKHWTbgdbYBLCduZ7sCz6OJw&oe=695F18F3"
         alt="VivaFit Logo"
         width={150}
         height={40}
