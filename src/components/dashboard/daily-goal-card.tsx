@@ -28,7 +28,7 @@ export function DailyGoalCard() {
   const achievedCount = 2 // Placeholder
 
   return (
-    <Card>
+    <Card className="shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div>
           <CardTitle className="text-lg font-semibold">Suas metas diárias</CardTitle>

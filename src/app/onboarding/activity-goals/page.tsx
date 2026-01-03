@@ -19,7 +19,7 @@ export default function OnboardingActivityGoalsPage() {
             title: "Tudo pronto!",
             description: "Seu perfil foi configurado com sucesso. Bem-vindo(a)!",
         });
-        router.push("/dashboard");
+        router.push("/journal");
     };
 
     return (

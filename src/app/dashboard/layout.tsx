@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { 
-    Home, 
+    Newspaper, 
     Dumbbell, 
     Bot, 
     Utensils, 
@@ -68,7 +68,7 @@ export default function DashboardLayout({
   };
 
   const menuItems = [
-    { href: "/dashboard", label: "Dashboard", icon: Home },
+    { href: "/journal", label: "Diário", icon: Newspaper },
     { href: "/recipes", label: "Alimentação", icon: Utensils },
     { href: "/workouts", label: "Treinos", icon: Dumbbell },
     { href: "/premium", label: "Premium Hub", icon: Star, isPremium: true },
@@ -128,7 +128,7 @@ export default function DashboardLayout({
       <Sidebar>
         <SidebarHeader className="p-4">
           <Card className="shadow-md">
-            <Link href="/dashboard" className="block p-2">
+            <Link href="/journal" className="block p-2">
               <Logo className="w-full" />
             </Link>
           </Card>
@@ -139,9 +139,9 @@ export default function DashboardLayout({
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname.startsWith(item.href) && (item.href === '/dashboard' ? pathname === item.href : true)}
-                  variant={pathname.startsWith(item.href) && (item.href === '/dashboard' ? pathname === item.href : true) ? 'default' : 'ghost'}
-                  className={`w-full justify-start ${pathname.startsWith(item.href) && (item.href === '/dashboard' ? pathname === item.href : true) ? 'bg-primary text-primary-foreground' : ''}`}
+                  isActive={pathname.startsWith(item.href) && (item.href === '/journal' ? pathname === item.href : true)}
+                  variant={pathname.startsWith(item.href) && (item.href === '/journal' ? pathname === item.href : true) ? 'default' : 'ghost'}
+                  className={`w-full justify-start ${pathname.startsWith(item.href) && (item.href === '/journal' ? pathname === item.href : true) ? 'bg-primary text-primary-foreground' : ''}`}
                   tooltip={{ children: item.label }}
                 >
                   <Link href={item.href} className="flex items-center">
@@ -177,7 +177,7 @@ export default function DashboardLayout({
                 <UserNav />
             </div>
         </header>
-        <main className="flex-1 overflow-auto bg-background">{children}</main>
+        <main className="flex-1 overflow-auto bg-muted/20">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

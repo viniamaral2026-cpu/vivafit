@@ -45,7 +45,7 @@ export default function AuthPage() {
   useEffect(() => {
     setIsClient(true);
     if (!loading && user) {
-      router.push('/dashboard');
+      router.push('/journal');
     }
   }, [user, loading, router]);
   
@@ -61,7 +61,7 @@ export default function AuthPage() {
     // A real app would re-render AuthProvider, but here we force a reload
     // to simulate the session change.
     setTimeout(() => {
-       router.push("/dashboard");
+       router.push("/journal");
        // A soft reload might be needed if the provider doesn't update across layouts
        setTimeout(() => window.location.reload(), 500);
     }, 1000);
@@ -93,7 +93,7 @@ export default function AuthPage() {
     });
     
     setTimeout(() => {
-       router.push("/dashboard");
+       router.push("/journal");
        setTimeout(() => window.location.reload(), 500);
     }, 1000);
   }

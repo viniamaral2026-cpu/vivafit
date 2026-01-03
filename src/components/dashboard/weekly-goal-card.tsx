@@ -7,7 +7,7 @@ import { ChevronRight, Plus } from "lucide-react"
 
 export function WeeklyGoalCard() {
     return (
-        <Card>
+        <Card className="shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <div>
                     <CardTitle className="text-lg font-semibold">Sua meta semanal</CardTitle>
