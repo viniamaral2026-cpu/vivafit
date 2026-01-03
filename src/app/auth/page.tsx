@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/app/auth-provider";
 import { createClient } from "@/lib/supabase/client";
+import { Provider } from "@supabase/supabase-js";
 
 export default function AuthPage() {
   const router = useRouter();
@@ -85,9 +86,13 @@ export default function AuthPage() {
         variant: "destructive",
       });
     } else if (data.user) {
+        // This marks the user as new to trigger the onboarding flow
+        if (typeof window !== 'undefined') {
+            window.sessionStorage.setItem('vivafit-new-user', 'true');
+        }
         toast({
             title: `Conta criada para ${registerName}!`,
-            description: "Bem-vindo! Você será redirecionado...",
+            description: "Bem-vindo! Vamos configurar seu perfil.",
         });
         // You might want to create a profile entry in your database here
         router.push("/onboarding");
@@ -95,7 +100,7 @@ export default function AuthPage() {
     }
   }
 
-  const handleOAuthSignIn = async (provider: 'google' | 'facebook') => {
+  const handleOAuthSignIn = async (provider: Provider) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
