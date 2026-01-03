@@ -7,10 +7,9 @@ import {
     Dumbbell, 
     Bot, 
     Utensils, 
-    Star, 
+    Gem,
     Smartphone, 
     LogOut, 
-    Gem,
     Info,
 } from "lucide-react";
 import {
@@ -71,8 +70,8 @@ export default function DashboardLayout({
     { href: "/journal", label: "Diário", icon: Newspaper },
     { href: "/recipes", label: "Alimentação", icon: Utensils },
     { href: "/workouts", label: "Treinos", icon: Dumbbell },
-    { href: "/premium", label: "Premium Hub", icon: Star, isPremium: true },
     { href: "/ai-coach", label: "AI Coach", icon: Bot },
+    { href: "/premium", label: "Premium Hub", icon: Gem, isPremium: true },
     { href: "/devices", label: "Dispositivos", icon: Smartphone },
   ];
   
@@ -81,7 +80,7 @@ export default function DashboardLayout({
        <div className="flex min-h-screen bg-background">
         <div className="hidden md:block md:w-64 border-r p-4">
             <div className="p-4 mb-4">
-                <Skeleton className="h-14 w-14 rounded-lg" />
+                <Skeleton className="h-10 w-28" />
             </div>
             <div className="space-y-1 p-2">
                 <Skeleton className="h-10 w-full" />
@@ -90,33 +89,22 @@ export default function DashboardLayout({
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
-                 <Skeleton className="h-10 w-full" />
             </div>
             <div className="p-2 mt-auto">
-                 <Skeleton className="h-20 w-full" />
+                 <Skeleton className="h-16 w-full" />
                  <Skeleton className="h-10 w-full mt-4" />
             </div>
         </div>
         <div className="flex-1">
            <header className="flex h-16 items-center justify-between border-b bg-background px-4 sticky top-0 z-40">
               <Skeleton className="h-10 w-10 md:hidden"/>
-              <div className="ml-auto flex items-center gap-2">
+              <div className="ml-auto flex items-center gap-4">
                 <Skeleton className="h-8 w-8 rounded-full" />
-                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="h-10 w-10 rounded-full" />
               </div>
            </header>
-           <main className="flex-1 overflow-auto bg-background p-4 md:p-6">
-                <div className="flex flex-col items-center justify-center h-full">
-                    <div className="relative w-64 h-64">
-                         <Skeleton className="w-64 h-64 rounded-full"/>
-                    </div>
-                    <div className="mt-8">
-                        <Skeleton className="h-4 w-48"/>
-                    </div>
-                    <div className="fixed bottom-8 w-full max-w-md p-4">
-                        <Skeleton className="h-24 w-full rounded-xl"/>
-                    </div>
-                </div>
+           <main className="flex-1 overflow-auto bg-muted/20 p-4 md:p-6">
+                <Skeleton className="h-full w-full"/>
            </main>
         </div>
       </div>
@@ -141,13 +129,13 @@ export default function DashboardLayout({
                   asChild
                   isActive={pathname.startsWith(item.href) && (item.href === '/journal' ? pathname === item.href : true)}
                   variant={pathname.startsWith(item.href) && (item.href === '/journal' ? pathname === item.href : true) ? 'default' : 'ghost'}
-                  className={`w-full justify-start ${pathname.startsWith(item.href) && (item.href === '/journal' ? pathname === item.href : true) ? 'bg-primary text-primary-foreground' : ''}`}
+                  className="w-full justify-start"
                   tooltip={{ children: item.label }}
                 >
                   <Link href={item.href} className="flex items-center">
                     <item.icon className="w-5 h-5 mr-3" />
                     <span>{item.label}</span>
-                    {item.isPremium && <Gem className="ml-auto h-4 w-4 text-yellow-500" />}
+                    {item.isPremium && <Gem className="ml-auto h-4 w-4 text-yellow-400" />}
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -157,7 +145,7 @@ export default function DashboardLayout({
         <SidebarFooter className="flex flex-col gap-2 p-4">
             <Card className="bg-primary/10 border-primary/20">
                 <div className="p-3 text-center">
-                    <p className="font-semibold text-sm">Plano Premium</p>
+                    <p className="font-semibold text-sm text-primary">Plano Premium</p>
                     <p className="text-xs text-muted-foreground">MEMBRO VITALÍCIO</p>
                 </div>
             </Card>
