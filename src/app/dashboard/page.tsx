@@ -13,8 +13,7 @@ import { WeeklyGoalCard } from "@/components/dashboard/weekly-goal-card";
 import { cn } from "@/lib/utils";
 import { WeightTrendCard } from "@/components/dashboard/weight-trend-card";
 import { EnergyManagementCard } from "@/components/dashboard/energy-management-card";
-import { DiscoverCard } from "@/components/dashboard/discover-card";
-import { SleepNeedsCard, YourFitSleepCard } from "@/components/dashboard/sleep-cards";
+import { SleepNeedsCard, YourFitSleepCard, PacedWalkingCard } from "@/components/dashboard/sleep-cards";
 
 
 type UserData = {
@@ -130,9 +129,9 @@ export default function DashboardPage() {
         </div>
 
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <DiscoverCard />
+        <div className="grid grid-cols-1 gap-6">
           <SleepNeedsCard />
+          <PacedWalkingCard />
           <YourFitSleepCard />
         </div>
 
@@ -180,4 +179,3 @@ export default function DashboardPage() {
     </div>
   )
 }
-
