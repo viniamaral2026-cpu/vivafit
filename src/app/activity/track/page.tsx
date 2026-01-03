@@ -2,12 +2,47 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ArrowLeft, Battery, Play, PersonStanding, ChevronDown } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function TrackActivityPage() {
     const router = useRouter();
+    const { toast } = useToast();
+
+    useEffect(() => {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Permissão concedida
+                    console.log("Localização obtida:", position);
+                    toast({
+                        title: "Permissão de localização concedida.",
+                        description: "O monitoramento de treino está pronto.",
+                    });
+                },
+                (error) => {
+                    // Permissão negada ou erro
+                    console.error("Erro de geolocalização:", error);
+                     if (error.code === error.PERMISSION_DENIED) {
+                        toast({
+                            variant: "destructive",
+                            title: "Permissão de localização negada",
+                            description: "Para monitorar treinos, por favor, habilite a localização nas configurações do seu navegador.",
+                        });
+                    }
+                }
+            );
+        } else {
+             toast({
+                variant: "destructive",
+                title: "Geolocalização não suportada",
+                description: "Seu navegador não suporta o monitoramento de localização.",
+            });
+        }
+    }, [toast]);
 
     return (
         <div className="flex flex-col min-h-screen bg-background">
