@@ -9,7 +9,7 @@ export function Logo(props: React.ComponentProps<"div">) {
         alt="VivaFit Logo"
         width={150}
         height={40}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain"
         unoptimized
       />
     </div>
