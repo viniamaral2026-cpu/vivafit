@@ -116,9 +116,12 @@ export function ContentDataTable({ data }: { data: Workout[] }) {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const handleCopy = () => {
+        const handleCopy = async () => {
           try {
-            navigator.clipboard.writeText(row.original.id);
+            if (!navigator.clipboard) {
+              throw new Error("Clipboard API not available");
+            }
+            await navigator.clipboard.writeText(row.original.id);
             toast({
               title: "Copiado!",
               description: "O ID do treino foi copiado para a área de transferência.",

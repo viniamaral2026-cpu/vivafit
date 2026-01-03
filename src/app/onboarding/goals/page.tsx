@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { PersonStanding, Bike, Run } from "lucide-react";
+import { PersonStanding, Bike, Zap } from "lucide-react";
 import { useAuth } from "@/app/auth-provider";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -38,7 +38,7 @@ export default function OnboardingGoalsPage() {
                    </p>
                     <div className="flex justify-center gap-8 py-4">
                         <PersonStanding className="h-10 w-10 text-blue-500" />
-                        <Run className="h-10 w-10 text-blue-500" />
+                        <Zap className="h-10 w-10 text-blue-500" />
                         <Bike className="h-10 w-10 text-blue-500" />
                     </div>
                    <p>
