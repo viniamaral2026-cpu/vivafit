@@ -7,6 +7,7 @@ import { ChevronRight, MoreVertical } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
 
 const SettingsSection = ({ title, children, noBorder = false }: { title: string, children: React.ReactNode, noBorder?: boolean }) => (
     <div>
