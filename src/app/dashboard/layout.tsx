@@ -12,6 +12,7 @@ import {
     LogOut, 
     Gem,
     Info,
+    Plug,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -74,6 +75,7 @@ export default function DashboardLayout({
     { href: "/premium", label: "Premium Hub", icon: Star, isPremium: true },
     { href: "/ai-coach", label: "AI Coach", icon: Bot },
     { href: "/devices", label: "Dispositivos", icon: Smartphone },
+    { href: "/connect-data", label: "Data Connect", icon: Plug },
   ];
   
   if (authLoading || !user) {
@@ -90,6 +92,7 @@ export default function DashboardLayout({
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
+                 <Skeleton className="h-10 w-full" />
             </div>
             <div className="p-2 mt-auto">
                  <Skeleton className="h-20 w-full" />
