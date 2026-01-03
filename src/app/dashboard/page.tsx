@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { WeightTrendCard } from "@/components/dashboard/weight-trend-card";
 import { EnergyManagementCard } from "@/components/dashboard/energy-management-card";
 import { SleepNeedsCard, YourFitSleepCard, PacedWalkingCard } from "@/components/dashboard/sleep-cards";
+import { AddBloodPressureDialog } from "@/components/dashboard/add-blood-pressure-dialog";
 
 
 type UserData = {
@@ -157,12 +158,14 @@ export default function DashboardPage() {
                             <Scale className="h-6 w-6"/>
                         </Button>
                     </div>
-                     <div className="flex items-center gap-4">
-                        <span className="bg-background/80 backdrop-blur-sm text-foreground text-sm font-semibold px-3 py-1.5 rounded-lg shadow-sm">Adicionar pressão arterial</span>
-                        <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-white hover:bg-gray-100 text-gray-700">
-                            <HeartPulse className="h-6 w-6"/>
-                        </Button>
-                    </div>
+                    <AddBloodPressureDialog>
+                         <div className="flex items-center gap-4 cursor-pointer">
+                            <span className="bg-background/80 backdrop-blur-sm text-foreground text-sm font-semibold px-3 py-1.5 rounded-lg shadow-sm">Adicionar pressão arterial</span>
+                            <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-white hover:bg-gray-100 text-gray-700">
+                                <HeartPulse className="h-6 w-6"/>
+                            </Button>
+                        </div>
+                    </AddBloodPressureDialog>
                 </div>
             )}
              <Button 
