@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 type SubscriptionStatus = 'Free' | 'Premium';
 
-export default function SubscriptionPage() {
+export default function BillingPage() {
     const { user } = useAuth();
     const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null);
     const [loading, setLoading] = useState(true);

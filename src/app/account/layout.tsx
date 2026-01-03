@@ -7,6 +7,7 @@ import {
   User,
   CreditCard,
   Settings,
+  Wallet,
 } from "lucide-react";
 import {
   SidebarProvider,
@@ -46,7 +47,8 @@ export default function AccountLayout({
 
   const menuItems = [
     { href: "/account", label: "Perfil", icon: User },
-    { href: "/account/subscription", label: "Assinatura", icon: CreditCard },
+    { href: "/account/billing", label: "Assinatura", icon: CreditCard },
+    { href: "/account/payments", label: "Pagamentos", icon: Wallet },
     { href: "/account/settings", label: "Configurações", icon: Settings },
   ];
   
@@ -56,6 +58,7 @@ export default function AccountLayout({
         <div className="hidden md:block w-64 border-r p-4">
             <Skeleton className="h-8 w-24 mb-8" />
             <div className="space-y-2">
+                <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
