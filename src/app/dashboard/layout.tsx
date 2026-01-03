@@ -28,12 +28,13 @@ import {
 import { UserNav } from "@/components/layout/user-nav";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "../auth-provider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { auth } from "@/lib/firebase/config";
+import { auth, db } from "@/lib/firebase/config";
+import { doc, getDoc } from "firebase/firestore";
 
 export default function DashboardLayout({
   children,
@@ -41,14 +42,25 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user, loading: authLoading, checkOnboardingStatus } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isReady, setIsReady] = useState(false);
 
+  const checkOnboardingStatus = useCallback(async () => {
+    if (!auth.currentUser) return false;
+    const userDocRef = doc(db, "users", auth.currentUser.uid);
+    try {
+        const userDoc = await getDoc(userDocRef);
+        return userDoc.exists() && userDoc.data().onboardingComplete;
+    } catch (error) {
+        console.error("Failed to fetch user onboarding status:", error);
+        return false;
+    }
+  }, []);
 
   useEffect(() => {
-    if (authLoading) return; // Wait for firebase auth to be ready
+    if (authLoading) return; 
 
     if (!user) {
       router.push('/auth');
@@ -63,7 +75,7 @@ export default function DashboardLayout({
       }
     });
 
-  }, [user, authLoading, router, checkOnboardingStatus]);
+  }, [authLoading, router, checkOnboardingStatus, user]);
 
   const handleSignOut = async () => {
     try {
@@ -113,7 +125,7 @@ export default function DashboardLayout({
             </div>
         </div>
         <div className="flex-1">
-           <header className="flex h-14 items-center justify-between border-b bg-background px-4 sticky top-0 z-40">
+           <header className="flex h-16 items-center justify-between border-b bg-background px-4 sticky top-0 z-40">
               <Skeleton className="h-10 w-10 md:hidden"/>
               <div className="ml-auto flex items-center gap-2">
                 <Skeleton className="h-8 w-8 rounded-full" />

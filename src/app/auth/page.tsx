@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
@@ -26,6 +26,7 @@ import { Logo } from "@/components/icons/logo";
 import { auth, db } from "@/lib/firebase/config";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from "@/app/auth-provider";
 
 export default function AuthPage() {
   const [loginEmail, setLoginEmail] = useState("");
@@ -35,6 +36,13 @@ export default function AuthPage() {
   const [registerPassword, setRegisterPassword] = useState("");
   const router = useRouter();
   const { toast } = useToast();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, loading, router]);
   
   const createOrUpdateUserDocument = async (user: import("firebase/auth").User) => {
     const userRef = doc(db, "users", user.uid);
@@ -114,12 +122,11 @@ export default function AuthPage() {
       await updateProfile(userCredential.user, {
         displayName: registerName,
       });
-      // Pass the updated user object to createOrUpdateUserDocument
       const userWithProfile = {
         ...userCredential.user,
         displayName: registerName,
+        photoURL: null // Ensure photoURL is part of the object
       };
-      // We need to cast here because updateProfile doesn't change the type of the original object
       await createOrUpdateUserDocument(userWithProfile as import("firebase/auth").User);
 
       toast({
@@ -141,6 +148,8 @@ export default function AuthPage() {
       });
     }
   };
+
+  if(loading || user) return null;
 
 
   return (

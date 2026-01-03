@@ -23,9 +23,11 @@ import { UserNav } from "@/components/layout/user-nav";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "../auth-provider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase/config";
 
 export default function AccountLayout({
   children,
@@ -33,12 +35,24 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user, loading: authLoading, checkOnboardingStatus } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
 
+  const checkOnboardingStatus = useCallback(async () => {
+    if (!user) return false;
+    const userDocRef = doc(db, "users", user.uid);
+    try {
+        const userDoc = await getDoc(userDocRef);
+        return userDoc.exists() && userDoc.data().onboardingComplete;
+    } catch (error) {
+        console.error("Failed to fetch user onboarding status:", error);
+        return false;
+    }
+  }, [user]);
+
   useEffect(() => {
-    if (authLoading) return; // Wait for firebase auth to be ready
+    if (authLoading) return;
 
     if (!user) {
       router.push('/auth');
@@ -53,7 +67,7 @@ export default function AccountLayout({
       }
     });
 
-  }, [user, authLoading, router, checkOnboardingStatus]);
+  }, [authLoading, router, checkOnboardingStatus, user]);
 
 
   const menuItems = [

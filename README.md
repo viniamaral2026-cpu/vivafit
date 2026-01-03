@@ -1,4 +1,4 @@
-# Firebase Studio
+Fite# Firebase Studio
 
 VivaFit – README Completo
 📌 Sobre o Projeto

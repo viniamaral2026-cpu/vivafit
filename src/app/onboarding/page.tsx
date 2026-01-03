@@ -28,12 +28,13 @@ export default function OnboardingPage() {
 
     const handleOnboardingSubmit = async () => {
         if (!user) {
-            toast({ title: "Erro", description: "Você precisa estar logado.", variant: "destructive" });
+            toast({ title: "Erro", description: "Sessão de usuário não encontrada. Por favor, faça login novamente.", variant: "destructive" });
+            router.push('/auth');
             return;
         }
 
         if (!gender || !birthDate || !weight || !height) {
-            toast({ title: "Erro", description: "Por favor, preencha todos os campos.", variant: "destructive" });
+            toast({ title: "Campos incompletos", description: "Por favor, preencha todos os campos para continuar.", variant: "destructive" });
             return;
         }
         
@@ -47,7 +48,7 @@ export default function OnboardingPage() {
                 height: Number(height),
             });
 
-            toast({ title: "Sucesso!", description: "Suas informações foram salvas." });
+            toast({ title: "Informações salvas!", description: "Vamos para o próximo passo." });
             router.push("/onboarding/goals");
 
         } catch (error) {
