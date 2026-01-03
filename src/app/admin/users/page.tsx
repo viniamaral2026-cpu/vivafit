@@ -17,14 +17,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { User } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-const users: User[] = [
-  { id: "USR001", name: "John Doe", email: "john.d@example.com", role: "Admin", subscription: "Premium", joinedDate: "2023-01-15" },
-  { id: "USR002", name: "Jane Smith", email: "jane.s@example.com", role: "User", subscription: "Premium", joinedDate: "2023-02-20" },
-  { id: "USR003", name: "Sam Wilson", email: "sam.w@example.com", role: "User", subscription: "Free", joinedDate: "2023-03-10" },
-  { id: "USR004", name: "Emily Brown", email: "emily.b@example.com", role: "User", subscription: "Premium", joinedDate: "2023-04-05" },
-  { id: "USR005", name: "Michael Johnson", email: "michael.j@example.com", role: "User", subscription: "Free", joinedDate: "2023-05-12" },
-];
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase/config";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const columns: ColumnDef<User>[] = [
     {
@@ -51,7 +46,7 @@ export const columns: ColumnDef<User>[] = [
             <div className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
                     <AvatarImage src={`https://i.pravatar.cc/150?u=${row.original.id}`} />
-                    <AvatarFallback>{row.original.name.split(" ").map(n => n[0]).join("")}</AvatarFallback>
+                    <AvatarFallback>{row.original.name?.split(" ").map(n => n[0]).join("")}</AvatarFallback>
                 </Avatar>
                 <span className="font-medium">{row.getValue("name")}</span>
             </div>
@@ -76,9 +71,12 @@ export const columns: ColumnDef<User>[] = [
         cell: ({row}) => <Badge variant={row.getValue("subscription") === "Premium" ? "default" : "outline"}>{row.getValue("subscription")}</Badge>
     },
     {
-        accessorKey: "joinedDate",
+        accessorKey: "createdAt",
         header: "Joined Date",
-        cell: ({row}) => <div>{new Date(row.getValue("joinedDate")).toLocaleDateString()}</div>
+        cell: ({row}) => {
+            const date = (row.getValue("createdAt") as any)?.toDate();
+            return <div>{date ? date.toLocaleDateString() : 'N/A'}</div>
+        }
     },
     {
         id: "actions",
@@ -102,7 +100,26 @@ export const columns: ColumnDef<User>[] = [
 ];
 
 export default function UserManagementPage() {
+    const [users, setUsers] = React.useState<User[]>([]);
+    const [loading, setLoading] = React.useState(true);
     const [sorting, setSorting] = React.useState<SortingState>([])
+
+    React.useEffect(() => {
+        const fetchUsers = async () => {
+            setLoading(true);
+            try {
+                const querySnapshot = await getDocs(collection(db, "users"));
+                const usersData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
+                setUsers(usersData);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchUsers();
+    }, []);
+
     const table = useReactTable({
         data: users,
         columns,
@@ -135,7 +152,19 @@ export default function UserManagementPage() {
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {loading ? (
+                             Array.from({ length: 5 }).map((_, i) => (
+                                <TableRow key={i}>
+                                    <TableCell><Skeleton className="h-4 w-4" /></TableCell>
+                                    <TableCell><div className="flex items-center gap-2"><Skeleton className="h-8 w-8 rounded-full" /><Skeleton className="h-4 w-32" /></div></TableCell>
+                                    <TableCell><Skeleton className="h-4 w-48" /></TableCell>
+                                    <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+                                    <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+                                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                                    <TableCell><Skeleton className="h-8 w-8" /></TableCell>
+                                </TableRow>
+                            ))
+                        ) : table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                                     {row.getVisibleCells().map((cell) => (
@@ -145,7 +174,7 @@ export default function UserManagementPage() {
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">No results.</TableCell>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">No users found.</TableCell>
                             </TableRow>
                         )}
                     </TableBody>

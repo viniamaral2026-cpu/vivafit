@@ -37,7 +37,7 @@ export type User = {
   email: string;
   role: 'Admin' | 'User';
   subscription: 'Free' | 'Premium';
-  joinedDate: string;
+  createdAt: any; // Firestore Timestamp
 };
 
 export type Recipe = {

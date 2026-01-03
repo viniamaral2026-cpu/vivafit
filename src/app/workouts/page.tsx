@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Workout } from "@/lib/types";
-import placeholderImages from "@/lib/placeholder-images.json";
 import { WorkoutCard } from "@/components/content/workout-card";
 import {
   Select,
@@ -10,20 +9,32 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-
-const allWorkouts: Workout[] = [
-  { id: "WK001", title: "Morning Yoga Flow", category: "Yoga", duration: 30, level: 'Beginner', isPremium: true, videoUrl: "#", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-1')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-1')?.imageHint || '' },
-  { id: "WK002", title: "HIIT Cardio Blast", category: "Cardio", duration: 20, level: 'Intermediate', isPremium: true, videoUrl: "#", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-2')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-2')?.imageHint || '' },
-  { id: "WK003", title: "Full Body Strength", category: "Weightlifting", duration: 45, level: 'Advanced', isPremium: true, videoUrl: "#", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-3')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-3')?.imageHint || '' },
-  { id: "WK004", title: "Core Sculpt Pilates", category: "Pilates", duration: 35, level: 'Intermediate', isPremium: true, videoUrl: "#", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-4')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-4')?.imageHint || '' },
-  { id: "WK005", title: "Beginner's Cardio", category: "Cardio", duration: 25, level: 'Beginner', isPremium: false, videoUrl: "#", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-5')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-5')?.imageHint || '' },
-  { id: "WK006", title: "Peaceful Outdoor Yoga", category: "Yoga", duration: 40, level: 'Beginner', isPremium: false, videoUrl: "#", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-6')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-6')?.imageHint || '' },
-];
+} from "@/components/ui/select";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase/config";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function WorkoutsPage() {
+  const [allWorkouts, setAllWorkouts] = useState<Workout[]>([]);
+  const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [levelFilter, setLevelFilter] = useState('all');
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      setLoading(true);
+      try {
+        const querySnapshot = await getDocs(collection(db, "workouts"));
+        const workoutsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Workout[];
+        setAllWorkouts(workoutsData);
+      } catch (error) {
+        console.error("Error fetching workouts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchWorkouts();
+  }, []);
 
   const filteredWorkouts = allWorkouts.filter(workout => {
     const categoryMatch = categoryFilter === 'all' || workout.category === categoryFilter;
@@ -63,16 +74,36 @@ export default function WorkoutsPage() {
             </SelectContent>
         </Select>
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredWorkouts.map(workout => (
-          <WorkoutCard key={workout.id} workout={workout} />
-        ))}
-      </div>
-      {filteredWorkouts.length === 0 && (
-        <div className="text-center py-16">
-          <p className="text-muted-foreground">Nenhum treino encontrado com os filtros selecionados.</p>
+      
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <Card key={i} className="overflow-hidden">
+              <Skeleton className="aspect-video w-full" />
+              <CardContent className="p-4">
+                  <div className="flex justify-between items-center text-sm text-muted-foreground">
+                       <Skeleton className="h-5 w-1/4" />
+                       <Skeleton className="h-5 w-1/4" />
+                       <Skeleton className="h-5 w-1/4" />
+                  </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
+      ) : (
+        <>
+          {filteredWorkouts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredWorkouts.map(workout => (
+                <WorkoutCard key={workout.id} workout={workout} />
+              ))}
+            </div>
+          ) : (
+             <div className="text-center py-16">
+              <p className="text-muted-foreground">Nenhum treino encontrado. Tente ajustar os filtros ou adicione treinos no Firestore.</p>
+            </div>
+          )}
+        </>
       )}
     </div>
   )

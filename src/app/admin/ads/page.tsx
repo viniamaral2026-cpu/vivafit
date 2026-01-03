@@ -4,15 +4,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Ad } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import placeholderImages from "@/lib/placeholder-images.json";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase/config";
 
-const ads: Ad[] = [
-    { id: "AD001", company: "FitGear", title: "Summer Sportswear Sale", imageUrl: placeholderImages.placeholderImages[7].imageUrl, imageHint: "healthy food", isActive: true, expiresAt: "2024-12-31" },
-    { id: "AD002", company: "NutriBoost", title: "New Protein Shakes", imageUrl: placeholderImages.placeholderImages[8].imageUrl, imageHint: "running shoes", isActive: true, expiresAt: "2024-11-30" },
-    { id: "AD003", company: "YogaMats+", title: "Eco-friendly Mats", imageUrl: "https://picsum.photos/seed/vivafitad3/800/200", imageHint: "yoga mat", isActive: false, expiresAt: "2024-06-30" },
-];
+async function getAds(): Promise<Ad[]> {
+    const adsCol = collection(db, 'ads');
+    const adSnapshot = await getDocs(adsCol);
+    const adList = adSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Ad));
+    return adList;
+}
 
-export default function AdsManagementPage() {
+export default async function AdsManagementPage() {
+    const ads = await getAds();
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -27,7 +31,7 @@ export default function AdsManagementPage() {
             </div>
             
             <div className="grid gap-6">
-                {ads.map(ad => (
+                {ads.length > 0 ? ads.map(ad => (
                     <Card key={ad.id}>
                         <CardHeader>
                             <div className="flex items-start justify-between">
@@ -60,7 +64,13 @@ export default function AdsManagementPage() {
                             </div>
                         </CardContent>
                     </Card>
-                ))}
+                )) : (
+                    <Card>
+                        <CardContent className="p-6 text-center text-muted-foreground">
+                            No ads found. Add some to the 'ads' collection in Firestore.
+                        </CardContent>
+                    </Card>
+                )}
             </div>
         </div>
     );

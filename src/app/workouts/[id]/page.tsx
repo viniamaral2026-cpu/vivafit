@@ -1,26 +1,32 @@
 import { MainHeader } from "@/components/layout/main-header";
 import { Workout } from "@/lib/types";
-import placeholderImages from "@/lib/placeholder-images.json";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, Clock, Crown, Dumbbell, Flame, Lock, Zap } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Clock, Crown, Dumbbell, Flame, Lock } from "lucide-react";
 import Link from "next/link";
-
-const workouts: Workout[] = [
-  { id: "WK001", title: "Morning Yoga Flow", category: "Yoga", duration: 30, level: 'Beginner', isPremium: true, videoUrl: "https://www.youtube.com/embed/g_tea8ZN-1Q", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-1')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-1')?.imageHint || '' },
-  { id: "WK002", title: "HIIT Cardio Blast", category: "Cardio", duration: 20, level: 'Intermediate', isPremium: true, videoUrl: "https://www.youtube.com/embed/g_tea8ZN-1Q", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-2')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-2')?.imageHint || '' },
-  { id: "WK003", title: "Full Body Strength", category: "Weightlifting", duration: 45, level: 'Advanced', isPremium: true, videoUrl: "https://www.youtube.com/embed/g_tea8ZN-1Q", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-3')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-3')?.imageHint || '' },
-  { id: "WK004", title: "Core Sculpt Pilates", category: "Pilates", duration: 35, level: 'Intermediate', isPremium: true, videoUrl: "https://www.youtube.com/embed/g_tea8ZN-1Q", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-4')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-4')?.imageHint || '' },
-  { id: "WK005", title: "Beginner's Cardio", category: "Cardio", duration: 25, level: 'Beginner', isPremium: false, videoUrl: "https://www.youtube.com/embed/g_tea8ZN-1Q", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-5')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-5')?.imageHint || '' },
-  { id: "WK006", title: "Peaceful Outdoor Yoga", category: "Yoga", duration: 40, level: 'Beginner', isPremium: false, videoUrl: "https://www.youtube.com/embed/g_tea8ZN-1Q", thumbnailUrl: placeholderImages.placeholderImages.find(p => p.id === 'workout-6')?.imageUrl || '', thumbnailHint: placeholderImages.placeholderImages.find(p => p.id === 'workout-6')?.imageHint || '' },
-];
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase/config";
 
 // Placeholder for user subscription status. In a real app, this would come from an auth context.
 const isPremiumUser = true;
 
-export default function WorkoutDetailPage({ params }: { params: { id: string } }) {
-  const workout = workouts.find(w => w.id === params.id);
+async function getWorkout(id: string): Promise<Workout | null> {
+    try {
+        const workoutDoc = await getDoc(doc(db, "workouts", id));
+        if (workoutDoc.exists()) {
+            return { id: workoutDoc.id, ...workoutDoc.data() } as Workout;
+        }
+        return null;
+    } catch (error) {
+        console.error("Error fetching workout:", error);
+        return null;
+    }
+}
+
+
+export default async function WorkoutDetailPage({ params }: { params: { id: string } }) {
+  const workout = await getWorkout(params.id);
 
   if (!workout) {
     return (
