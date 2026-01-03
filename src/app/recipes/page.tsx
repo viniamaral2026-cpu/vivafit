@@ -2,177 +2,80 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { BrainCircuit, Plus, Coffee, Sun, Moon, ArrowLeft } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
-import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowLeft, Plus, MoreVertical, ChevronRight, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-const MealCard = ({ title, content }: { title: string, content: string }) => (
-    <div className="bg-muted/50 p-4 rounded-lg">
-        <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{title}</h4>
-        <p className="text-sm mt-1">{content}</p>
-    </div>
-);
-
-const MacroCircle = ({ value, goal, label, color }: { value: number, goal: number, label: string, color: string }) => (
-    <Card className="flex-1 text-center p-4 shadow-sm">
-        <div className="relative w-24 h-24 mx-auto">
-            <svg className="w-full h-full" viewBox="0 0 36 36">
-                <path
-                    className="text-muted/40"
-                    d="M18 2.0845
-                    a 15.9155 15.9155 0 0 1 0 31.831
-                    a 15.9155 15.9155 0 0 1 0 -31.831"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                />
-                <path
-                    className={color}
-                    strokeDasharray={`${(value / goal) * 100}, 100`}
-                    d="M18 2.0845
-                    a 15.9155 15.9155 0 0 1 0 31.831
-                    a 15.9155 15.9155 0 0 1 0 -31.831"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                 <span className="text-2xl font-bold">{value}g</span>
+const NutritionListItem = ({ label }: { label: string }) => (
+    <Card className="shadow-sm">
+        <CardContent className="p-4 flex justify-between items-center">
+            <div>
+                <p className="font-semibold">{label}</p>
+                <p className="text-sm text-muted-foreground">Não há dados recentes</p>
             </div>
-        </div>
-        <p className="mt-2 text-sm font-semibold">{label}</p>
-        <p className="text-xs text-muted-foreground">Meta: {goal}g</p>
+            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+        </CardContent>
     </Card>
 );
 
-const FoodItem = ({ name, protein, carbs, fat, calories }: { name: string, protein: number, carbs: number, fat: number, calories: number }) => (
-    <div className="flex justify-between items-center py-3 border-b border-border/60">
-        <div>
-            <p className="font-semibold">{name}</p>
-            <p className="text-xs text-muted-foreground">P: {protein}g | C: {carbs}g | G: {fat}g</p>
-        </div>
-        <p className="font-medium">{calories} cal</p>
-    </div>
-);
+export default function NutritionPage() {
+    const router = useRouter();
 
-
-export default function RecipesPage() {
+    const nutritionItems = [
+        "Calorias consumidas",
+        "Hidratação"
+    ];
 
     return (
-        <div className="p-4 md:p-8 bg-muted/20 min-h-screen">
-            <div className="max-w-4xl mx-auto">
-                <div className="mb-4">
-                    <Button variant="ghost" asChild>
-                        <Link href="/journal">
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            Voltar para o Diário
-                        </Link>
+        <div className="flex flex-col min-h-screen bg-muted/40">
+            <header className="flex items-center justify-between p-4 border-b bg-background sticky top-0 z-10">
+                <Button variant="ghost" size="icon" onClick={() => router.back()}>
+                    <ArrowLeft className="h-6 w-6" />
+                </Button>
+                <h1 className="text-xl font-bold">Nutrição</h1>
+                <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="icon">
+                        <Plus className="h-6 w-6" />
+                    </Button>
+                    <Button variant="ghost" size="icon">
+                        <MoreVertical className="h-6 w-6" />
                     </Button>
                 </div>
-                <div className="flex justify-between items-center mb-6">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight font-headline">Alimentação</h1>
-                        <p className="text-muted-foreground">Mantenha o foco nos seus macros.</p>
-                    </div>
-                    <div className="flex gap-2">
-                         <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                            <BrainCircuit className="mr-2 h-4 w-4"/>
-                            Plano IA Premium
-                        </Button>
-                         <Button className="bg-primary hover:bg-primary/90">
-                            <Plus className="mr-2 h-4 w-4"/>
-                            Adicionar
-                        </Button>
+            </header>
+
+            <main className="flex-1 p-4 md:p-6 space-y-6">
+                <div className="space-y-2">
+                    <h2 className="text-sm font-semibold text-muted-foreground px-2">DESCOBRIR</h2>
+                    <Card>
+                        <CardContent className="p-4 relative">
+                            <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-7 w-7">
+                                <X className="h-4 w-4" />
+                            </Button>
+                            <div className="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mt-1 text-blue-600"><path d="M20.32 3.68A12.5 12.5 0 0 0 12 0C5.37 0 0 5.37 0 12a12.5 12.5 0 0 0 3.68 8.68L12 12Z" fill="#EA4335"/><path d="m12 12-8.32 8.32A12.5 12.5 0 0 0 12 24c6.63 0 12-5.37 12-12a12.5 12.5 0 0 0-3.68-8.68Z" fill="#4285F4"/><path d="m12 12 8.32-8.32A12.5 12.5 0 0 0 12 0C5.37 0 0 5.37 0 12a12.5 12.5 0 0 0 3.68 8.68Z" fill="#34A853"/><path d="M12 12 3.68 3.68A12.5 12.5 0 0 0 0 12c0 6.63 5.37 12 12 12a12.5 12.5 0 0 0 8.32-3.68Z" fill="#FBBC05"/></svg>
+                                <div>
+                                    <h3 className="font-semibold text-blue-600">Aproveite o Fit ao máximo</h3>
+                                    <p className="text-xs text-blue-600 font-medium">Google Play</p>
+                                </div>
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-2">
+                                O Fit funciona melhor quando você conecta outros apps de saúde e fitness. Encontre apps compatíveis no Google Play para ajudar você a ficar sempre saudável.
+                            </p>
+                            <Button variant="link" className="p-0 h-auto mt-4 text-primary font-semibold">
+                                Encontre apps no Google Play
+                            </Button>
+                        </CardContent>
+                    </Card>
+                </div>
+                <div className="space-y-2">
+                    <h2 className="text-sm font-semibold text-muted-foreground px-2">SEM DADOS RECENTES</h2>
+                     <div className="grid gap-4">
+                        {nutritionItems.map(item => (
+                            <NutritionListItem key={item} label={item} />
+                        ))}
                     </div>
                 </div>
-
-                {/* Sugestão IA */}
-                <Card className="mb-8 shadow-md">
-                    <CardHeader>
-                        <h3 className="text-lg font-bold flex items-center gap-2"><BrainCircuit className="text-primary"/> Sugestão IA Personalizada</h3>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="grid md:grid-cols-4 gap-4">
-                            <MealCard title="Café" content="Omelete de 3 ovos com espinafre e queijo feta, servido com uma fatia de pão integral torrado e meia xícara de mirtilos." />
-                            <MealCard title="Almoço" content="Peito de frango grelhado (150g) com 150g de arroz integral, 100g de feijão preto e uma salada grande de folhas verdes com tomate e pepino temperada com 1 colher de sopa de azeite." />
-                            <MealCard title="Jantar" content="Filé de salmão assado (150g) com 200g de batata-doce assada e uma porção generosa de aspargos ou brócolis ao vapor." />
-                            <MealCard title="Lanches" content="Uma maçã média com 2 colheres de sopa de manteiga de amendoim e um iogurte grego natural (170g) com um punhado de nozes." />
-                        </div>
-                        <div className="text-center text-sm font-semibold text-muted-foreground pt-4 border-t">
-                            RESUMO ESTIMADO: Calorias: 2200 kcal | Proteína: 165g | Carboidratos: 210g | Gorduras: 78g
-                        </div>
-                    </CardContent>
-                </Card>
-                
-                {/* Resumo Macros */}
-                <div className="flex gap-4 md:gap-8 mb-8">
-                   <MacroCircle value={70} goal={110} label="PROTEÍNAS" color="text-sky-500" />
-                   <MacroCircle value={120} goal={200} label="CARBOS" color="text-orange-500" />
-                   <MacroCircle value={35} goal={60} label="GORDURAS" color="text-yellow-500" />
-                </div>
-                
-                {/* Diário de Refeições */}
-                <Accordion type="single" collapsible defaultValue="item-1" className="space-y-4">
-                    <AccordionItem value="item-1" className="bg-card rounded-xl border shadow-sm">
-                        <AccordionTrigger className="px-6 py-4 font-bold text-lg hover:no-underline">
-                            <div className="flex items-center gap-3">
-                               <div className="w-1.5 h-8 bg-yellow-400 rounded-full"></div>
-                               <Coffee className="w-5 h-5"/>
-                               <span>Café da Manhã</span>
-                            </div>
-                             <span className="text-base font-medium text-muted-foreground mr-4">260 kcal</span>
-                        </AccordionTrigger>
-                        <AccordionContent className="px-6 pb-6">
-                            <FoodItem name="Ovo cozido" protein={13} carbs={1} fat={10} calories={140} />
-                            <FoodItem name="Pão Integral" protein={4} carbs={22} fat={2} calories={120} />
-                             <Button variant="outline" className="w-full mt-4">
-                                <Plus className="mr-2 h-4 w-4"/>
-                                Adicionar Alimento
-                            </Button>
-                        </AccordionContent>
-                    </AccordionItem>
-
-                    <AccordionItem value="item-2" className="bg-card rounded-xl border shadow-sm">
-                        <AccordionTrigger className="px-6 py-4 font-bold text-lg hover:no-underline">
-                             <div className="flex items-center gap-3">
-                               <div className="w-1.5 h-8 bg-green-500 rounded-full"></div>
-                               <Sun className="w-5 h-5"/>
-                               <span>Almoço</span>
-                            </div>
-                             <Button variant="ghost" size="sm" className="mr-4"><Plus className="mr-1 h-4 w-4" /> Adicionar</Button>
-                        </AccordionTrigger>
-                        <AccordionContent className="px-6 pb-6 text-center text-muted-foreground">
-                            Nenhum alimento registrado para o almoço ainda.
-                            <Button variant="outline" className="w-full mt-4">
-                                <Plus className="mr-2 h-4 w-4"/>
-                                Adicionar Alimento
-                            </Button>
-                        </AccordionContent>
-                    </AccordionItem>
-                    
-                    <AccordionItem value="item-3" className="bg-card rounded-xl border shadow-sm">
-                        <AccordionTrigger className="px-6 py-4 font-bold text-lg hover:no-underline">
-                             <div className="flex items-center gap-3">
-                               <div className="w-1.5 h-8 bg-indigo-500 rounded-full"></div>
-                               <Moon className="w-5 h-5"/>
-                               <span>Jantar</span>
-                            </div>
-                             <Button variant="ghost" size="sm" className="mr-4"><Plus className="mr-1 h-4 w-4" /> Adicionar</Button>
-                        </AccordionTrigger>
-                        <AccordionContent className="px-6 pb-6 text-center text-muted-foreground">
-                            Nenhum alimento registrado para o jantar ainda.
-                             <Button variant="outline" className="w-full mt-4">
-                                <Plus className="mr-2 h-4 w-4"/>
-                                Adicionar Alimento
-                            </Button>
-                        </AccordionContent>
-                    </AccordionItem>
-                </Accordion>
-            </div>
+            </main>
         </div>
     );
 }
