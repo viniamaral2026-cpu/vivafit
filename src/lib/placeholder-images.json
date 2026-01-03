@@ -3,19 +3,19 @@
     {
       "id": "hero-fitness",
       "description": "A diverse group of people in a fitness class",
-      "imageUrl": "https://images.unsplash.com/photo-1591258370814-01609b341790?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmaXRuZXNzJTIwY2xhc3N8ZW58MHx8fHwxNzY3NDE2NTk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/logo-viva-fit.png",
       "imageHint": "fitness class"
     },
     {
       "id": "workout-1",
       "description": "A person doing yoga in a bright studio",
-      "imageUrl": "https://images.unsplash.com/photo-1641971216860-9fe6fc00de40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx5b2dhJTIwZml0bmVzc3xlbnwwfHx8fDE3NjczNTQ0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/imagem-promocional.png",
       "imageHint": "yoga fitness"
     },
     {
       "id": "workout-2",
       "description": "A person lifting weights in a modern gym",
-      "imageUrl": "https://images.unsplash.com/photo-1665366593451-e2e80e3a4212?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3ZWlnaHRsaWZ0aW5nJTIwZ3ltfGVufDB8fHx8MTc2NzMyMTU2OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/imagem-promocional.png",
       "imageHint": "weightlifting gym"
     },
     {
@@ -27,7 +27,7 @@
     {
       "id": "workout-4",
       "description": "A woman performing a pilates exercise on a mat",
-      "imageUrl": "https://images.unsplash.com/photo-1754257319723-6a775bedb0fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGlsYXRlcyUyMGV4ZXJjaXNlfGVufDB8fHx8MTc2NzQzNTk1NHww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1754257319723-6a775bedb0fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGlsYXRlcyUyMGV4ZXJjaXNlfGVufDB8fHx8MTc2NzQzNTk1NHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "pilates exercise"
     },
     {
