@@ -1,20 +1,24 @@
 "use client"
 
+import { Card } from "@/components/ui/card"
+
 export function StatsSummary() {
     return (
-        <div className="flex justify-around text-center w-full max-w-md">
-            <div>
-                <div className="text-2xl font-bold">870</div>
-                <div className="text-sm text-muted-foreground">Cal</div>
+        <Card className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-4rem)] max-w-md shadow-lg p-4">
+             <div className="flex justify-around text-center w-full">
+                <div>
+                    <div className="text-2xl font-bold">0</div>
+                    <div className="text-sm text-muted-foreground uppercase">KCAL</div>
+                </div>
+                <div>
+                    <div className="text-2xl font-bold">0</div>
+                    <div className="text-sm text-muted-foreground uppercase">KM</div>
+                </div>
+                <div>
+                    <div className="text-2xl font-bold">0</div>
+                    <div className="text-sm text-muted-foreground uppercase">MIN</div>
+                </div>
             </div>
-            <div>
-                <div className="text-2xl font-bold">0</div>
-                <div className="text-sm text-muted-foreground">km</div>
-            </div>
-            <div>
-                <div className="text-2xl font-bold">0</div>
-                <div className="text-sm text-muted-foreground">Min. em movimento</div>
-            </div>
-        </div>
+        </Card>
     )
 }

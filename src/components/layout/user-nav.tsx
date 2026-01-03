@@ -53,8 +53,8 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-9 w-9">
+        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+          <Avatar className="h-10 w-10 border">
             <AvatarImage src={user.photoURL!} alt={user.displayName!} />
             <AvatarFallback>{user.displayName?.charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
@@ -86,7 +86,7 @@ export function UserNav() {
           <DropdownMenuItem asChild>
             <Link href="/admin/dashboard">
                <LayoutDashboard className="mr-2 h-4 w-4" />
-              <span>Dashboard</span>
+              <span>Admin</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
