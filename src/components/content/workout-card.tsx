@@ -7,8 +7,8 @@ import { Crown, PlayCircle } from "lucide-react";
 
 export function WorkoutCard({ workout }: { workout: Workout }) {
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-lg">
-      <Link href="#">
+    <Card className="overflow-hidden transition-all hover:shadow-lg group">
+      <Link href={`/workouts/${workout.id}`}>
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           <Image

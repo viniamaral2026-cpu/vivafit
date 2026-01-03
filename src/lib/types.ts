@@ -39,3 +39,26 @@ export type User = {
   subscription: 'Free' | 'Premium';
   joinedDate: string;
 };
+
+export type Recipe = {
+  id: string;
+  title: string;
+  category: 'Breakfast' | 'Lunch' | 'Dinner' | 'Snack';
+  prepTime: number; // in minutes
+  cookTime: number; // in minutes
+  calories: number;
+  isPremium: boolean;
+  imageUrl: string;
+  imageHint: string;
+};
+
+export type Article = {
+  id: string;
+  title: string;
+  author: string;
+  publishedAt: string;
+  isPremium: boolean;
+  imageUrl: string;
+  imageHint: string;
+  content: string;
+};
