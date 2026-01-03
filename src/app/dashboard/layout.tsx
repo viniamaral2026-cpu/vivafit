@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { 
     Home, 
     Dumbbell, 
-    User, 
     Bot, 
     Utensils, 
     Star, 
@@ -29,7 +28,7 @@ import {
 import { UserNav } from "@/components/layout/user-nav";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "../auth-provider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -42,19 +41,29 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user, loading, isOnboardingComplete } = useAuth();
+  const { user, loading: authLoading, checkOnboardingStatus } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const [isReady, setIsReady] = useState(false);
+
 
   useEffect(() => {
-    if (!loading) {
-      if (!user) {
-        router.push('/auth');
-      } else if (isOnboardingComplete === false) { 
-        router.push('/onboarding');
-      }
+    if (authLoading) return; // Wait for firebase auth to be ready
+
+    if (!user) {
+      router.push('/auth');
+      return;
     }
-  }, [user, loading, isOnboardingComplete, router]);
+
+    checkOnboardingStatus().then(isComplete => {
+      if (!isComplete) {
+        router.push('/onboarding');
+      } else {
+        setIsReady(true);
+      }
+    });
+
+  }, [user, authLoading, router, checkOnboardingStatus]);
 
   const handleSignOut = async () => {
     try {
@@ -83,7 +92,7 @@ export default function DashboardLayout({
     { href: "/devices", label: "Dispositivos", icon: Smartphone },
   ];
   
-  if (loading || !user || isOnboardingComplete === null) {
+  if (!isReady) {
     return (
        <div className="flex min-h-screen bg-background">
         <div className="hidden md:block md:w-64 border-r p-4">
@@ -128,8 +137,6 @@ export default function DashboardLayout({
       </div>
     );
   }
-
-  const isDashboardActive = pathname === '/dashboard';
 
   return (
     <SidebarProvider>

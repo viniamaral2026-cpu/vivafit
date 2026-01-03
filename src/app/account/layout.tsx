@@ -23,7 +23,7 @@ import { UserNav } from "@/components/layout/user-nav";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "../auth-provider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
@@ -33,18 +33,28 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user, loading, isOnboardingComplete } = useAuth();
+  const { user, loading: authLoading, checkOnboardingStatus } = useAuth();
   const router = useRouter();
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    if (!loading) {
-      if (!user) {
-        router.push('/auth');
-      } else if (!isOnboardingComplete) {
-         router.push('/onboarding');
-      }
+    if (authLoading) return; // Wait for firebase auth to be ready
+
+    if (!user) {
+      router.push('/auth');
+      return;
     }
-  }, [user, loading, isOnboardingComplete, router]);
+    
+    checkOnboardingStatus().then(isComplete => {
+      if (!isComplete) {
+        router.push('/onboarding');
+      } else {
+        setIsReady(true);
+      }
+    });
+
+  }, [user, authLoading, router, checkOnboardingStatus]);
+
 
   const menuItems = [
     { href: "/account", label: "Perfil", icon: User },
@@ -52,7 +62,7 @@ export default function AccountLayout({
     { href: "/account/settings", label: "Configurações", icon: Settings },
   ];
   
-  if (loading || !user || isOnboardingComplete === null) {
+  if (!isReady) {
      return (
       <div className="flex min-h-screen">
         <div className="hidden md:block w-64 border-r p-4">

@@ -9,10 +9,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  isOnboardingComplete: boolean | null;
+  isOnboardingComplete: boolean | null; // This will now be managed by layouts
+  checkOnboardingStatus: () => Promise<boolean>;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true, isOnboardingComplete: null });
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true, isOnboardingComplete: null, checkOnboardingStatus: async () => false });
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -21,29 +22,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
 
+
+  const checkOnboardingStatus = async (): Promise<boolean> => {
+    if (!auth.currentUser) return false;
+    const userDocRef = doc(db, "users", auth.currentUser.uid);
+    try {
+        const userDoc = await getDoc(userDocRef);
+        const isComplete = userDoc.exists() && userDoc.data().onboardingComplete;
+        setIsOnboardingComplete(isComplete);
+        return isComplete;
+    } catch (error) {
+        console.error("Failed to fetch user onboarding status:", error);
+        setIsOnboardingComplete(false);
+        return false;
+    }
+  };
+
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setLoading(true);
+      setUser(user);
       if (user) {
-        setUser(user);
-        const userDocRef = doc(db, "users", user.uid);
-        try {
-          const userDoc = await getDoc(userDocRef);
-          if (userDoc.exists()) {
-             const isComplete = userDoc.data().onboardingComplete || false;
-             setIsOnboardingComplete(isComplete);
-          } else {
-            // This might happen briefly before the user document is created.
-            // Consider user not onboarded.
-            setIsOnboardingComplete(false);
-          }
-        } catch (error) {
-          console.error("Failed to fetch user onboarding status:", error);
-          // Consider user as not onboarded if there's an error
-          setIsOnboardingComplete(false);
-        }
+        // We still check it here once to set an initial state, but layouts will re-check.
+        await checkOnboardingStatus();
       } else {
-        setUser(null);
         setIsOnboardingComplete(null);
       }
       setLoading(false);
@@ -71,8 +74,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       )
   }
 
+  const value = {
+    user,
+    loading,
+    isOnboardingComplete,
+    checkOnboardingStatus
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, isOnboardingComplete }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

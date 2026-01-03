@@ -17,11 +17,11 @@ const navLinks = [
 ];
 
 export function MainHeader() {
-  const { user, loading, isOnboardingComplete } = useAuth();
+  const { user, loading } = useAuth();
   const pathname = usePathname();
 
   const isAuthPage = pathname === '/auth' || pathname.startsWith('/onboarding');
-  const showDashboardNav = user && isOnboardingComplete;
+  const showDashboardNav = user && !loading;
 
   if (isAuthPage || showDashboardNav) return null;
   
@@ -54,7 +54,7 @@ export function MainHeader() {
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
             <SheetHeader>
-              <SheetTitle className="sr-only">Menu</SheetTitle>
+               <SheetTitle className="sr-only">Menu</SheetTitle>
             </SheetHeader>
             <Link href="/" className="mr-6 flex items-center space-x-2">
               <Logo />
