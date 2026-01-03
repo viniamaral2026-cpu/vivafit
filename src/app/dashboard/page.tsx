@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { ProgressRing } from "@/components/dashboard/progress-ring"
 import { StatsSummary } from "@/components/dashboard/stats-summary"
-import { Footprints, Heart, Plus } from "lucide-react"
+import { Footprints, Heart, Plus, Scale, Pencil, Run, X, HeartPulse } from "lucide-react"
 import { useAuth } from "../auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DailyGoalCard } from "@/components/dashboard/daily-goal-card";
 import { WeeklyGoalCard } from "@/components/dashboard/weekly-goal-card";
-import { Dumbbell, HeartPulse, Utensils } from "lucide-react";
+import { Dumbbell, Utensils } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 
 type UserData = {
@@ -30,6 +30,7 @@ export default function DashboardPage() {
     const { user } = useAuth();
     const [userData, setUserData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isFabMenuOpen, setIsFabMenuOpen] = useState(false);
 
     // Simulated daily activity data
     const [activity, setActivity] = useState({
@@ -117,29 +118,47 @@ export default function DashboardPage() {
         <DailyGoalCard />
         <WeeklyGoalCard />
 
-      <div className="fixed bottom-6 right-6 z-50">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="icon" className="rounded-full h-14 w-14 shadow-lg bg-blue-600 hover:bg-blue-700">
-                <Plus className="h-8 w-8" />
+        {/* Speed Dial FAB */}
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-4">
+            {isFabMenuOpen && (
+                 <div className="flex flex-col items-end gap-4 transition-all duration-300">
+                    <div className="flex items-center gap-4">
+                        <span className="bg-background/80 backdrop-blur-sm text-foreground text-sm font-semibold px-3 py-1.5 rounded-lg shadow-sm">Monitorar treino</span>
+                        <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-white hover:bg-gray-100 text-gray-700">
+                            <Run className="h-6 w-6"/>
+                        </Button>
+                    </div>
+                     <div className="flex items-center gap-4">
+                        <span className="bg-background/80 backdrop-blur-sm text-foreground text-sm font-semibold px-3 py-1.5 rounded-lg shadow-sm">Adicionar atividade</span>
+                        <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-white hover:bg-gray-100 text-gray-700">
+                            <Pencil className="h-6 w-6"/>
+                        </Button>
+                    </div>
+                     <div className="flex items-center gap-4">
+                        <span className="bg-background/80 backdrop-blur-sm text-foreground text-sm font-semibold px-3 py-1.5 rounded-lg shadow-sm">Adicionar peso</span>
+                        <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-white hover:bg-gray-100 text-gray-700">
+                            <Scale className="h-6 w-6"/>
+                        </Button>
+                    </div>
+                     <div className="flex items-center gap-4">
+                        <span className="bg-background/80 backdrop-blur-sm text-foreground text-sm font-semibold px-3 py-1.5 rounded-lg shadow-sm">Adicionar pressão arterial</span>
+                        <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-white hover:bg-gray-100 text-gray-700">
+                            <HeartPulse className="h-6 w-6"/>
+                        </Button>
+                    </div>
+                </div>
+            )}
+             <Button 
+                size="icon" 
+                className={cn(
+                    "rounded-full h-16 w-16 shadow-lg transition-transform duration-300",
+                    isFabMenuOpen ? "bg-white hover:bg-gray-100 text-gray-700 rotate-90" : "bg-blue-600 hover:bg-blue-700"
+                )}
+                onClick={() => setIsFabMenuOpen(!isFabMenuOpen)}
+            >
+                {isFabMenuOpen ? <X className="h-8 w-8" /> : <Plus className="h-8 w-8" />}
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" side="top" className="w-64 mb-2">
-             <DropdownMenuItem className="py-3">
-                <Dumbbell className="mr-3" />
-                <span>Adicionar Atividade</span>
-             </DropdownMenuItem>
-             <DropdownMenuItem className="py-3">
-                <HeartPulse className="mr-3" />
-                <span>Adicionar Medição</span>
-             </DropdownMenuItem>
-             <DropdownMenuItem className="py-3">
-                <Utensils className="mr-3" />
-                <span>Registrar Refeição</span>
-             </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+        </div>
     </div>
   )
 }
