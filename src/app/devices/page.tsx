@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Disc3, CloudSync, Zap, Plus, RefreshCw } from "lucide-react";
+import { Disc3, Cloudy, Zap, Plus, RefreshCw } from "lucide-react";
 
 export default function DevicesPage() {
 
@@ -67,7 +67,7 @@ export default function DevicesPage() {
                     {/* Estado da Nuvem */}
                      <Card className="shadow-lg rounded-2xl p-6 flex flex-col items-center justify-center text-center">
                         <div className="flex items-center gap-3 mb-6 absolute top-6 left-6">
-                            <CloudSync className="w-6 h-6 text-foreground" />
+                            <Cloudy className="w-6 h-6 text-foreground" />
                             <h2 className="text-lg font-semibold text-foreground">Estado da Nuvem</h2>
                         </div>
                         
