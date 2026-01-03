@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 
 type UserProfile = {
     name: string;
+    username: string;
     email: string;
 }
 
@@ -21,6 +22,7 @@ export default function AccountProfilePage() {
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [loadingProfile, setLoadingProfile] = useState(true);
     const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -34,10 +36,12 @@ export default function AccountProfilePage() {
             setTimeout(() => {
                 const userProfile = {
                     name: user.displayName || 'Usuário de Teste',
+                    username: user.displayName?.toLowerCase().replace(' ', '') || 'usertest',
                     email: user.email || 'Não informado'
                 };
                 setProfile(userProfile);
                 setName(userProfile.name);
+                setUsername(userProfile.username);
                 setLoadingProfile(false);
             }, 500);
         } else {
@@ -48,7 +52,7 @@ export default function AccountProfilePage() {
     const handleUpdateProfile = async () => {
         if (!user || !profile) return;
         // Simulate update
-        setProfile({...profile, name});
+        setProfile({...profile, name, username});
         toast({
             title: "Sucesso!",
             description: "Seu perfil foi atualizado (simulação)."
@@ -92,6 +96,10 @@ export default function AccountProfilePage() {
                         <Skeleton className="h-4 w-1/4" />
                         <Skeleton className="h-10 w-full" />
                     </div>
+                     <div className="grid gap-2">
+                        <Skeleton className="h-4 w-1/4" />
+                        <Skeleton className="h-10 w-full" />
+                    </div>
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
                     <Skeleton className="h-10 w-32" />
@@ -117,6 +125,10 @@ export default function AccountProfilePage() {
                     <div className="grid gap-2">
                         <Label htmlFor="name">Nome Completo</Label>
                         <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                    </div>
+                     <div className="grid gap-2">
+                        <Label htmlFor="username">Nome de usuário</Label>
+                        <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email</Label>
