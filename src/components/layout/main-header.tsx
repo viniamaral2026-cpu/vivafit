@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -55,12 +56,6 @@ export function MainHeader() {
                 {link.label}
               </Link>
             ))}
-             {/* Show link to Journal if user is logged in */}
-            {user && !loading && (
-                 <Link href="/journal" className="transition-colors hover:text-foreground/80 text-primary font-semibold">
-                    Acessar Diário
-                </Link>
-            )}
           </nav>
         </div>
         
@@ -88,31 +83,17 @@ export function MainHeader() {
                   {link.label}
                 </Link>
               ))}
-               {/* Show link to Journal if user is logged in */}
-              {user && !loading && (
-                    <Link href="/journal" className="text-primary font-semibold">
-                        Acessar Diário
-                    </Link>
-              )}
             </div>
           </SheetContent>
         </Sheet>
 
         <div className="flex flex-1 items-center justify-end space-x-4">
-          {loading ? null : user ? (
-             <Button asChild>
-                <Link href="/journal">Entrar no App</Link>
-              </Button>
-          ) : (
-            <>
-              <Link href="/auth" className="hidden md:inline-flex text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60">
-                Entrar
-              </Link>
-              <Button asChild>
-                <Link href="/auth">Começar no app</Link>
-              </Button>
-            </>
-          )}
+          <Link href="/auth" className="hidden md:inline-flex text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60">
+            Entrar
+          </Link>
+          <Button asChild>
+            <Link href="/auth">Começar no app</Link>
+          </Button>
         </div>
       </div>
     </header>

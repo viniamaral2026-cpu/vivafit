@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -15,11 +16,14 @@ export default function OnboardingActivityGoalsPage() {
     const handleCompleteOnboarding = async () => {
         setIsSubmitting(true);
         // Simulate completing onboarding
+        if (typeof window !== 'undefined') {
+            window.sessionStorage.removeItem('vivafit-new-user');
+        }
         toast({
             title: "Tudo pronto!",
             description: "Seu perfil foi configurado com sucesso. Bem-vindo(a)!",
         });
-        router.push("/journal");
+        router.push("/dashboard");
     };
 
     return (

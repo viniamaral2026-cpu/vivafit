@@ -46,7 +46,7 @@ export default function AuthPage() {
   useEffect(() => {
     setIsClient(true);
     if (!loading && user) {
-      router.push('/journal');
+      router.push('/dashboard');
     }
   }, [user, loading, router]);
   
@@ -62,7 +62,7 @@ export default function AuthPage() {
     // A real app would re-render AuthProvider, but here we force a reload
     // to simulate the session change.
     setTimeout(() => {
-       router.push("/journal");
+       router.push("/dashboard");
        // A soft reload might be needed if the provider doesn't update across layouts
        setTimeout(() => window.location.reload(), 500);
     }, 1000);
@@ -87,14 +87,16 @@ export default function AuthPage() {
 
     if (typeof window !== 'undefined') {
       window.sessionStorage.setItem('vivafit-user', JSON.stringify(newUser));
+      // Mark this as a new user for onboarding
+      window.sessionStorage.setItem('vivafit-new-user', 'true');
     }
     toast({
       title: `Conta criada para ${registerName}!`,
-      description: "Registro de simulação bem-sucedido. Você será redirecionado...",
+      description: "Registro de simulação bem-sucedido. Você será redirecionado para o onboarding...",
     });
     
     setTimeout(() => {
-       router.push("/journal");
+       router.push("/onboarding");
        setTimeout(() => window.location.reload(), 500);
     }, 1000);
   }

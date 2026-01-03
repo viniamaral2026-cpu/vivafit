@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
@@ -32,17 +33,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Simulate fetching user data
     setTimeout(() => {
-      // To test the logged-out state, set mockUser to null
-      // To test the logged-in state, use the mockUser object
       const sessionUser = typeof window !== 'undefined' && window.sessionStorage.getItem('vivafit-user');
-      
-      if(sessionUser) {
+      const isNewUser = typeof window !== 'undefined' && window.sessionStorage.getItem('vivafit-new-user');
+
+      if (isNewUser) {
+        // Don't set user, let onboarding handle it.
+        // Or if you want to show user info during onboarding, you can parse and set it.
+        // For this flow, we'll assume the user is "logged in" but needs onboarding.
+         if(sessionUser) {
+            setUser(JSON.parse(sessionUser));
+         }
+      } else if(sessionUser) {
         setUser(JSON.parse(sessionUser));
       } else {
-        // By default, simulate a logged-in user.
-        // To test login flow, you can set this to null initially.
-        // setUser(null); 
-         setUser(mockUser);
+        setUser(null); 
       }
       setLoading(false);
     }, 500); // Shorten delay

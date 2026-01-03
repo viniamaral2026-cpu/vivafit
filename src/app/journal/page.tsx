@@ -11,15 +11,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Dumbbell, HeartPulse, Utensils } from "lucide-react";
+import { Dumbbell, HeartPulse, Utensils, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 
 export default function JournalPage() {
 
     return (
         <div className="p-4 md:p-6 space-y-6">
+             <div className="mb-4">
+                <Button variant="ghost" asChild>
+                    <Link href="/dashboard">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Voltar para o Dashboard
+                    </Link>
+                </Button>
+            </div>
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold font-headline">Diário</h1>
+                <h1 className="text-2xl font-bold font-headline">Feed do Diário</h1>
                  <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button className="md:hidden" size="icon">

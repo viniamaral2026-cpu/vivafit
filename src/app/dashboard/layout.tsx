@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -46,12 +47,19 @@ export default function DashboardLayout({
   useEffect(() => {
     if (authLoading) return; 
 
+    const isNewUser = typeof window !== 'undefined' && window.sessionStorage.getItem('vivafit-new-user');
+
     if (!user) {
       router.push('/auth');
       return;
     }
 
-  }, [authLoading, router, user]);
+    if (isNewUser && pathname !== '/onboarding') {
+      router.push('/onboarding');
+      return;
+    }
+
+  }, [authLoading, router, user, pathname]);
 
   const handleSignOut = async () => {
     if (typeof window !== 'undefined') {
@@ -67,7 +75,7 @@ export default function DashboardLayout({
   };
 
   const menuItems = [
-    { href: "/journal", label: "Diário", icon: Newspaper },
+    { href: "/dashboard", label: "Diário", icon: Newspaper },
     { href: "/recipes", label: "Alimentação", icon: Utensils },
     { href: "/workouts", label: "Treinos", icon: Dumbbell },
     { href: "/ai-coach", label: "AI Coach", icon: Bot },
@@ -116,7 +124,7 @@ export default function DashboardLayout({
       <Sidebar>
         <SidebarHeader className="p-4">
           <Card className="shadow-md">
-            <Link href="/journal" className="block p-2">
+            <Link href="/dashboard" className="block p-2">
               <Logo className="w-full" />
             </Link>
           </Card>
@@ -127,8 +135,8 @@ export default function DashboardLayout({
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname.startsWith(item.href) && (item.href === '/journal' ? pathname === item.href : true)}
-                  variant={pathname.startsWith(item.href) && (item.href === '/journal' ? pathname === item.href : true) ? 'default' : 'ghost'}
+                  isActive={pathname.startsWith(item.href) && (item.href === '/dashboard' ? pathname === item.href : true)}
+                  variant={pathname.startsWith(item.href) && (item.href === '/dashboard' ? pathname === item.href : true) ? 'default' : 'ghost'}
                   className="w-full justify-start"
                   tooltip={{ children: item.label }}
                 >
