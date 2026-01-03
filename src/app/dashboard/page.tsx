@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useEffect, useState } from "react";
@@ -142,12 +141,12 @@ export default function DashboardPage() {
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-4">
             {isFabMenuOpen && (
                  <div className="flex flex-col items-end gap-4 transition-all duration-300">
-                    <div className="flex items-center gap-4">
+                    <Link href="/activity/track" className="flex items-center gap-4">
                         <span className="bg-background/80 backdrop-blur-sm text-foreground text-sm font-semibold px-3 py-1.5 rounded-lg shadow-sm">Monitorar treino</span>
                         <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-white hover:bg-gray-100 text-gray-700">
                             <Dumbbell className="h-6 w-6"/>
                         </Button>
-                    </div>
+                    </Link>
                      <Link href="/activity/add" className="flex items-center gap-4">
                         <span className="bg-background/80 backdrop-blur-sm text-foreground text-sm font-semibold px-3 py-1.5 rounded-lg shadow-sm">Adicionar atividade</span>
                         <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-white hover:bg-gray-100 text-gray-700">
