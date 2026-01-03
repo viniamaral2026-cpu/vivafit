@@ -4,8 +4,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { BrainCircuit, Plus, Coffee, Sun, Moon } from "lucide-react";
+import { BrainCircuit, Plus, Coffee, Sun, Moon, ArrowLeft } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
 
 const MealCard = ({ title, content }: { title: string, content: string }) => (
     <div className="bg-muted/50 p-4 rounded-lg">
@@ -64,6 +65,14 @@ export default function RecipesPage() {
     return (
         <div className="p-4 md:p-8 bg-muted/20 min-h-screen">
             <div className="max-w-4xl mx-auto">
+                <div className="mb-4">
+                    <Button variant="ghost" asChild>
+                        <Link href="/journal">
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            Voltar para o Diário
+                        </Link>
+                    </Button>
+                </div>
                 <div className="flex justify-between items-center mb-6">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight font-headline">Alimentação</h1>
@@ -167,5 +176,3 @@ export default function RecipesPage() {
         </div>
     );
 }
-
-    

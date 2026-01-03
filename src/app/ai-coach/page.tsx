@@ -4,12 +4,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Bot, User, Loader, Rocket } from "lucide-react";
+import { Bot, User, Loader, Rocket, ArrowLeft } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "../auth-provider";
 import { aiCoach } from "@/ai/flows/ai-coach-flow";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 type Message = {
   role: "user" | "assistant";
@@ -63,8 +64,16 @@ export default function AICoachPage() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col items-center justify-center bg-muted/30 p-4">
-      <div className="w-full max-w-4xl h-full flex flex-col rounded-xl border bg-card shadow-lg">
+    <div className="flex h-[calc(100vh-4rem)] flex-col p-4 md:p-6">
+       <div className="mb-4">
+            <Button variant="ghost" asChild>
+                <Link href="/journal">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Voltar para o Diário
+                </Link>
+            </Button>
+        </div>
+      <div className="w-full max-w-4xl h-full flex flex-col rounded-xl border bg-card shadow-lg mx-auto">
         {/* Header */}
         <header className="bg-primary text-primary-foreground p-4 rounded-t-xl flex items-center gap-4">
             <div className="p-2 bg-primary-foreground/20 rounded-lg">
@@ -152,5 +161,3 @@ export default function AICoachPage() {
     </div>
   );
 }
-
-    

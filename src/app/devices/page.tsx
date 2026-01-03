@@ -3,7 +3,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Disc3, Cloudy, Zap, Plus, RefreshCw } from "lucide-react";
+import { Disc3, Cloudy, Zap, Plus, RefreshCw, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function DevicesPage() {
 
@@ -30,6 +31,14 @@ export default function DevicesPage() {
     return (
         <div className="p-4 md:p-8 bg-muted/20 min-h-screen">
             <div className="max-w-5xl mx-auto">
+                 <div className="mb-4">
+                    <Button variant="ghost" asChild>
+                        <Link href="/journal">
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            Voltar para o Diário
+                        </Link>
+                    </Button>
+                </div>
                 <div className="mb-8">
                     <h1 className="text-3xl md:text-4xl font-bold tracking-tight font-headline">Dispositivos & Wearables</h1>
                     <p className="text-muted-foreground mt-1">Sincronização inteligente baseada em foco.</p>

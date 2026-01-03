@@ -1,8 +1,9 @@
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Crown, Calendar, BrainCircuit } from 'lucide-react';
+import { Crown, Calendar, BrainCircuit, ArrowLeft } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Article, Workout } from '@/lib/types';
 
@@ -62,8 +63,16 @@ const masterclassWorkouts: Workout[] = [
 export default function PremiumHubPage() {
   return (
     <div className="bg-muted/30">
+        <div className="container px-4 md:px-6 pt-6">
+            <Button variant="ghost" asChild>
+                <Link href="/journal">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Voltar para o Diário
+                </Link>
+            </Button>
+        </div>
       {/* Header Section */}
-      <section className="w-full bg-gradient-to-br from-blue-700 to-indigo-800 text-white">
+      <section className="w-full bg-gradient-to-br from-blue-700 to-indigo-800 text-white mt-4">
         <div className="container px-4 md:px-6 py-12 md:py-20">
           <div className="max-w-3xl">
             <div className="inline-block rounded-full bg-white/10 px-3 py-1 text-sm font-semibold mb-4">
