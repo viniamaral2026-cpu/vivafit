@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/app/auth-provider";
-import { db } from "@/lib/firebase/config";
-import { doc, getDoc } from "firebase/firestore";
 import { CheckCircle, Crown, Star } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -19,16 +17,13 @@ export default function SubscriptionPage() {
 
     useEffect(() => {
         if (user) {
-            const fetchSubscription = async () => {
-                setLoading(true);
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
-                if (userDoc.exists()) {
-                    setSubscription(userDoc.data().subscription || 'Free');
-                }
+            setLoading(true);
+            // Simulate fetching subscription status
+            setTimeout(() => {
+                 // You can change this to 'Free' to test the other state
+                setSubscription('Premium');
                 setLoading(false);
-            };
-            fetchSubscription();
+            }, 500);
         } else {
             setLoading(false);
         }

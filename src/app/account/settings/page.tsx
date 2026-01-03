@@ -7,8 +7,6 @@ import { Switch } from "@/components/ui/switch";
 import { Watch } from "lucide-react";
 import { useAuth } from "@/app/auth-provider";
 import { useEffect, useState } from "react";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -26,54 +24,31 @@ export default function AccountSettingsPage() {
 
      useEffect(() => {
         if (user) {
-            const fetchSettings = async () => {
-                setLoading(true);
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
-
-                if (userDoc.exists() && userDoc.data().notificationSettings) {
-                    setSettings(userDoc.data().notificationSettings);
-                } else {
-                    // Default settings if none are found
-                    setSettings({
-                        workoutReminders: true,
-                        mealLogging: true,
-                        weeklySummary: false,
-                    });
-                }
+            setLoading(true);
+             // Simulate fetching settings
+            setTimeout(() => {
+                 setSettings({
+                    workoutReminders: true,
+                    mealLogging: true,
+                    weeklySummary: false,
+                });
                 setLoading(false);
-            };
-            fetchSettings();
+            }, 500);
         } else {
              setLoading(false);
         }
     }, [user]);
 
-    const handleSettingChange = async (key: keyof NotificationSettings, value: boolean) => {
+    const handleSettingChange = (key: keyof NotificationSettings, value: boolean) => {
         if (!user || !settings) return;
 
         const newSettings = { ...settings, [key]: value };
         setSettings(newSettings);
         
-        try {
-            const userDocRef = doc(db, "users", user.uid);
-            await updateDoc(userDocRef, {
-                notificationSettings: newSettings
-            });
-            toast({
-                title: "Configuração salva!",
-                description: "Suas preferências de notificação foram atualizadas.",
-            });
-        } catch (error) {
-            console.error("Error updating settings:", error);
-            // Revert optimistic update on error
-            setSettings(settings);
-            toast({
-                title: "Erro",
-                description: "Não foi possível salvar suas configurações. Tente novamente.",
-                variant: "destructive"
-            });
-        }
+        toast({
+            title: "Configuração salva!",
+            description: "Suas preferências de notificação foram atualizadas (simulação).",
+        });
     };
 
 

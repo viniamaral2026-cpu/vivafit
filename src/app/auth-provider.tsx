@@ -1,31 +1,51 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth, db } from '@/lib/firebase/config';
-import { doc, getDoc } from 'firebase/firestore';
+import type { User } from 'firebase/auth';
 import { Skeleton } from '@/components/ui/skeleton';
 
+// Define a mock user type that is compatible with Firebase's User
+type MockUser = Pick<User, 'uid' | 'displayName' | 'email' | 'photoURL'>;
+
 interface AuthContextType {
-  user: User | null;
+  user: MockUser | null;
   loading: boolean;
 }
+
+// Create a mock user for development
+const mockUser: MockUser = {
+  uid: 'mock-user-123',
+  displayName: 'Usuário de Teste',
+  email: 'teste@vivafit.com',
+  photoURL: 'https://i.pravatar.cc/150?u=mock-user-123',
+};
+
 
 const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
 
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<MockUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setUser(user);
+    // Simulate fetching user data
+    setTimeout(() => {
+      // To test the logged-out state, set mockUser to null
+      // To test the logged-in state, use the mockUser object
+      const sessionUser = typeof window !== 'undefined' && window.sessionStorage.getItem('vivafit-user');
+      
+      if(sessionUser) {
+        setUser(JSON.parse(sessionUser));
+      } else {
+        // By default, simulate a logged-in user.
+        // To test login flow, you can set this to null initially.
+        // setUser(null); 
+         setUser(mockUser);
+      }
       setLoading(false);
-    });
-
-    return () => unsubscribe();
+    }, 1000); // Simulate network delay
   }, []);
   
   if (loading) {

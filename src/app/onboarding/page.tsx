@@ -3,9 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../auth-provider";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -27,36 +24,16 @@ export default function OnboardingPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleOnboardingSubmit = async () => {
-        if (!user) {
-            toast({ title: "Erro", description: "Sessão de usuário não encontrada. Por favor, faça login novamente.", variant: "destructive" });
-            router.push('/auth');
-            return;
-        }
-
         if (!gender || !birthDate || !weight || !height) {
             toast({ title: "Campos incompletos", description: "Por favor, preencha todos os campos para continuar.", variant: "destructive" });
             return;
         }
         
         setIsSubmitting(true);
-        try {
-            const userDocRef = doc(db, "users", user.uid);
-            await updateDoc(userDocRef, {
-                gender,
-                birthDate,
-                weight: Number(weight),
-                height: Number(height),
-            });
-
-            toast({ title: "Informações salvas!", description: "Vamos para o próximo passo." });
-            router.push("/onboarding/goals");
-
-        } catch (error) {
-            console.error("Erro ao salvar informações de onboarding:", error);
-            toast({ title: "Erro", description: "Não foi possível salvar suas informações. Tente novamente.", variant: "destructive" });
-        } finally {
-            setIsSubmitting(false);
-        }
+        // Simulate saving data
+        toast({ title: "Informações salvas!", description: "Vamos para o próximo passo." });
+        router.push("/onboarding/goals");
+        setIsSubmitting(false);
     };
     
     if (loading || !user) {

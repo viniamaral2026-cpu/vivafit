@@ -3,15 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import {
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
-import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,134 +14,50 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/icons/logo";
-import { auth, db } from "@/lib/firebase/config";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/app/auth-provider";
 
+// Mock user for development
+const mockUser = {
+  uid: 'mock-user-123',
+  displayName: 'Usuário de Teste',
+  email: 'teste@vivafit.com',
+  photoURL: 'https://i.pravatar.cc/150?u=mock-user-123',
+};
+
 export default function AuthPage() {
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [registerName, setRegisterName] = useState("");
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
   const router = useRouter();
   const { toast } = useToast();
   const { user, loading } = useAuth();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     if (!loading && user) {
       router.push('/dashboard');
     }
   }, [user, loading, router]);
   
-  const createOrUpdateUserDocument = async (user: import("firebase/auth").User) => {
-    const userRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(userRef);
-    if (!docSnap.exists()) {
-      await setDoc(userRef, {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        createdAt: serverTimestamp(),
-        subscription: "Free",
-        role: "User",
-        onboardingComplete: false,
+  const handleSignIn = () => {
+    // Simulate a successful login
+     if (typeof window !== 'undefined') {
+        window.sessionStorage.setItem('vivafit-user', JSON.stringify(mockUser));
+     }
+     toast({
+        title: `Login de simulação bem-sucedido!`,
+        description: "Você será redirecionado...",
       });
-       router.push("/onboarding");
-    } else {
-      if(docSnap.data().onboardingComplete) {
-         router.push("/dashboard");
-      } else {
-         router.push("/onboarding");
-      }
-    }
+    // A real app would re-render AuthProvider, but here we force a reload
+    // to simulate the session change.
+    setTimeout(() => {
+       router.push("/dashboard");
+       // A soft reload might be needed if the provider doesn't update across layouts
+       setTimeout(() => window.location.reload(), 500);
+    }, 1000);
   }
 
-  const handleOAuthSignIn = async (provider: GoogleAuthProvider | FacebookAuthProvider) => {
-    const providerName = provider.providerId.replace('.com', '').charAt(0).toUpperCase() + provider.providerId.replace('.com', '').slice(1);
-    try {
-      const result = await signInWithPopup(auth, provider);
-      await createOrUpdateUserDocument(result.user);
-      toast({
-        title: `Login com ${providerName} bem-sucedido!`,
-        description: "Você será redirecionado...",
-      });
-    } catch (error: any) {
-      console.error(`Erro no login com ${providerName}:`, error);
-      let description = `Não foi possível fazer login com ${providerName}. Tente novamente.`;
-      if (error.code === 'auth/account-exists-with-different-credential') {
-        description = 'Já existe uma conta com este e-mail. Tente fazer login com um método diferente.';
-      } else if (error.code === 'auth/popup-closed-by-user') {
-        description = 'A janela de login foi fechada antes da conclusão. Por favor, tente novamente.';
-      }
-      toast({
-        title: `Erro no login com ${providerName}`,
-        description: description,
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleEmailLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const result = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      await createOrUpdateUserDocument(result.user);
-      toast({
-        title: `Login com E-mail bem-sucedido!`,
-        description: "Você será redirecionado...",
-      });
-    } catch (error: any) {
-        console.error("Erro no login com E-mail:", error);
-        let description = "Ocorreu um erro ao tentar fazer login. Verifique seu e-mail e senha.";
-        if(error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-            description = "E-mail ou senha inválidos. Por favor, tente novamente."
-        }
-        toast({
-            title: "Erro de Login",
-            description,
-            variant: "destructive",
-        });
-    }
-  };
-
-  const handleEmailSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-      await updateProfile(userCredential.user, {
-        displayName: registerName,
-      });
-      const userWithProfile = {
-        ...userCredential.user,
-        displayName: registerName,
-        photoURL: null // Ensure photoURL is part of the object
-      };
-      await createOrUpdateUserDocument(userWithProfile as import("firebase/auth").User);
-
-      toast({
-        title: "Cadastro bem-sucedido!",
-        description: "Sua conta foi criada. Vamos configurar seu perfil.",
-      });
-    } catch (error: any) {
-      console.error("Erro no cadastro:", error);
-      let description = "Ocorreu um erro ao criar sua conta. Tente novamente.";
-      if (error.code === 'auth/email-already-in-use') {
-        description = "Este endereço de e-mail já está em uso.";
-      } else if (error.code === 'auth/weak-password') {
-        description = "Sua senha é muito fraca. Por favor, use pelo menos 6 caracteres.";
-      }
-       toast({
-        title: "Erro no cadastro",
-        description,
-        variant: "destructive",
-      });
-    }
-  };
-
-  if(loading || user) return null;
-
+  if (!isClient || loading || user) return null;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
@@ -174,37 +81,37 @@ export default function AuthPage() {
               <TabsTrigger value="register">Criar Conta</TabsTrigger>
             </TabsList>
             <TabsContent value="login">
-              <form onSubmit={handleEmailLogin}>
+              <form onSubmit={(e) => { e.preventDefault(); handleSignIn(); }}>
                 <div className="grid gap-4 py-4">
                   <div className="grid gap-2">
                     <Label htmlFor="login-email">Email</Label>
-                    <Input id="login-email" type="email" placeholder="m@exemplo.com" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
+                    <Input id="login-email" type="email" placeholder="m@exemplo.com" required defaultValue="teste@vivafit.com"/>
                   </div>
                   <div className="grid gap-2">
                      <div className="flex items-center">
                         <Label htmlFor="login-password">Senha</Label>
                         <Link href="#" className="ml-auto inline-block text-sm underline">Esqueceu sua senha?</Link>
                      </div>
-                    <Input id="login-password" type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
+                    <Input id="login-password" type="password" required defaultValue="password" />
                   </div>
                   <Button type="submit" className="w-full">Entrar</Button>
                 </div>
               </form>
             </TabsContent>
             <TabsContent value="register">
-              <form onSubmit={handleEmailSignUp}>
+              <form onSubmit={(e) => { e.preventDefault(); handleSignIn(); }}>
                 <div className="grid gap-4 py-4">
                     <div className="grid gap-2">
                         <Label htmlFor="register-name">Nome Completo</Label>
-                        <Input id="register-name" placeholder="Seu Nome" required value={registerName} onChange={(e) => setRegisterName(e.target.value)} />
+                        <Input id="register-name" placeholder="Seu Nome" required />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="register-email">Email</Label>
-                        <Input id="register-email" type="email" placeholder="seunome@exemplo.com" required value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} />
+                        <Input id="register-email" type="email" placeholder="seunome@exemplo.com" required />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="register-password">Senha</Label>
-                        <Input id="register-password" type="password" required value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} />
+                        <Input id="register-password" type="password" required />
                     </div>
                     <Button type="submit" className="w-full">Criar conta</Button>
                 </div>
@@ -222,10 +129,10 @@ export default function AuthPage() {
           </div>
           
           <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" onClick={() => handleOAuthSignIn(new GoogleAuthProvider())}>
+              <Button variant="outline" onClick={handleSignIn}>
                   Google
               </Button>
-               <Button variant="outline" onClick={() => handleOAuthSignIn(new FacebookAuthProvider())}>
+               <Button variant="outline" onClick={handleSignIn}>
                   Facebook
               </Button>
           </div>

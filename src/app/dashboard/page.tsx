@@ -6,8 +6,6 @@ import { ProgressRing } from "@/components/dashboard/progress-ring"
 import { StatsSummary } from "@/components/dashboard/stats-summary"
 import { Footprints, Heart, Plus } from "lucide-react"
 import { useAuth } from "../auth-provider";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type UserData = {
@@ -15,7 +13,6 @@ type UserData = {
     email: string;
     weight: number;
     height: number;
-    onboardingComplete: boolean;
 };
 
 // Rough estimations
@@ -41,16 +38,17 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (user) {
-            const fetchUserData = async () => {
-                setLoading(true);
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
-                if (userDoc.exists()) {
-                    setUserData(userDoc.data() as UserData);
-                }
+            setLoading(true);
+            // Simulate fetching user data
+            setTimeout(() => {
+                setUserData({
+                    name: user.displayName || 'Usuário de Teste',
+                    email: user.email || 'teste@vivafit.com',
+                    weight: 75, // mock data
+                    height: 180, // mock data
+                });
                 setLoading(false);
-            };
-            fetchUserData();
+            }, 500);
         }
     }, [user]);
 

@@ -6,11 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "../auth-provider";
 import { useEffect, useState } from "react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db, auth } from "@/lib/firebase/config";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { updateProfile, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 
 
 type UserProfile = {
@@ -32,26 +29,17 @@ export default function AccountProfilePage() {
 
      useEffect(() => {
         if (user) {
-            const fetchProfile = async () => {
-                setLoadingProfile(true);
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
-
-                if (userDoc.exists()) {
-                    const userData = userDoc.data() as UserProfile;
-                    setProfile(userData);
-                    setName(userData.name);
-                } else {
-                    const fallbackProfile = {
-                        name: user.displayName || 'Usuário',
-                        email: user.email || 'Não informado'
-                    };
-                    setProfile(fallbackProfile);
-                    setName(fallbackProfile.name);
-                }
+            setLoadingProfile(true);
+            // Simulate fetching profile data
+            setTimeout(() => {
+                const userProfile = {
+                    name: user.displayName || 'Usuário de Teste',
+                    email: user.email || 'Não informado'
+                };
+                setProfile(userProfile);
+                setName(userProfile.name);
                 setLoadingProfile(false);
-            };
-            fetchProfile();
+            }, 500);
         } else {
             setLoadingProfile(false);
         }
@@ -59,26 +47,12 @@ export default function AccountProfilePage() {
 
     const handleUpdateProfile = async () => {
         if (!user || !profile) return;
-
-        try {
-            const userDocRef = doc(db, "users", user.uid);
-            await updateDoc(userDocRef, { name });
-            if(auth.currentUser) {
-                await updateProfile(auth.currentUser, { displayName: name });
-            }
-            setProfile({...profile, name});
-            toast({
-                title: "Sucesso!",
-                description: "Seu perfil foi atualizado."
-            });
-        } catch (error) {
-            console.error("Erro ao atualizar perfil:", error);
-             toast({
-                title: "Erro",
-                description: "Não foi possível atualizar seu perfil. Tente novamente.",
-                variant: "destructive"
-            });
-        }
+        // Simulate update
+        setProfile({...profile, name});
+        toast({
+            title: "Sucesso!",
+            description: "Seu perfil foi atualizado (simulação)."
+        });
     }
     
     const handleUpdatePassword = async () => {
@@ -91,21 +65,11 @@ export default function AccountProfilePage() {
             toast({ title: "Erro", description: "Por favor, preencha todos os campos de senha.", variant: "destructive" });
             return;
         }
-
-        try {
-            if (user.email) {
-                const credential = EmailAuthProvider.credential(user.email, currentPassword);
-                await reauthenticateWithCredential(user, credential);
-                await updatePassword(user, newPassword);
-                toast({ title: "Sucesso!", description: "Sua senha foi alterada." });
-                setCurrentPassword('');
-                setNewPassword('');
-                setConfirmPassword('');
-            }
-        } catch (error) {
-             console.error("Erro ao alterar senha:", error);
-             toast({ title: "Erro", description: "Não foi possível alterar sua senha. Verifique sua senha atual.", variant: "destructive" });
-        }
+        
+        toast({ title: "Sucesso!", description: "Sua senha foi alterada (simulação)." });
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
     }
 
     if (loadingProfile) return (

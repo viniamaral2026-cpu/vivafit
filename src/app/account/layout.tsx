@@ -26,8 +26,6 @@ import { useAuth } from "../auth-provider";
 import { useEffect, useState, useCallback } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
 
 export default function AccountLayout({
   children,
@@ -37,37 +35,12 @@ export default function AccountLayout({
   const pathname = usePathname();
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
-  const [isReady, setIsReady] = useState(false);
-
-  const checkOnboardingStatus = useCallback(async () => {
-    if (!user) return false;
-    const userDocRef = doc(db, "users", user.uid);
-    try {
-        const userDoc = await getDoc(userDocRef);
-        return userDoc.exists() && userDoc.data().onboardingComplete;
-    } catch (error) {
-        console.error("Failed to fetch user onboarding status:", error);
-        return false;
-    }
-  }, [user]);
 
   useEffect(() => {
-    if (authLoading) return;
-
-    if (!user) {
+    if (!authLoading && !user) {
       router.push('/auth');
-      return;
     }
-    
-    checkOnboardingStatus().then(isComplete => {
-      if (!isComplete) {
-        router.push('/onboarding');
-      } else {
-        setIsReady(true);
-      }
-    });
-
-  }, [authLoading, router, checkOnboardingStatus, user]);
+  }, [authLoading, router, user]);
 
 
   const menuItems = [
@@ -76,7 +49,7 @@ export default function AccountLayout({
     { href: "/account/settings", label: "Configurações", icon: Settings },
   ];
   
-  if (!isReady) {
+  if (authLoading || !user) {
      return (
       <div className="flex min-h-screen">
         <div className="hidden md:block w-64 border-r p-4">

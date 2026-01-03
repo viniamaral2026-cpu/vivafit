@@ -28,13 +28,11 @@ import {
 import { UserNav } from "@/components/layout/user-nav";
 import { Logo } from "@/components/icons/logo";
 import { useAuth } from "../auth-provider";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { auth, db } from "@/lib/firebase/config";
-import { doc, getDoc } from "firebase/firestore";
 
 export default function DashboardLayout({
   children,
@@ -45,19 +43,6 @@ export default function DashboardLayout({
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const [isReady, setIsReady] = useState(false);
-
-  const checkOnboardingStatus = useCallback(async () => {
-    if (!auth.currentUser) return false;
-    const userDocRef = doc(db, "users", auth.currentUser.uid);
-    try {
-        const userDoc = await getDoc(userDocRef);
-        return userDoc.exists() && userDoc.data().onboardingComplete;
-    } catch (error) {
-        console.error("Failed to fetch user onboarding status:", error);
-        return false;
-    }
-  }, []);
 
   useEffect(() => {
     if (authLoading) return; 
@@ -67,32 +52,19 @@ export default function DashboardLayout({
       return;
     }
 
-    checkOnboardingStatus().then(isComplete => {
-      if (!isComplete) {
-        router.push('/onboarding');
-      } else {
-        setIsReady(true);
-      }
-    });
-
-  }, [authLoading, router, checkOnboardingStatus, user]);
+  }, [authLoading, router, user]);
 
   const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-      toast({
-        title: "Você saiu!",
-        description: "Esperamos te ver novamente em breve.",
-      });
-      router.push("/");
-    } catch (error) {
-       console.error("Erro ao fazer logout:", error);
-       toast({
-         title: "Erro",
-         description: "Não foi possível fazer logout. Tente novamente.",
-         variant: "destructive",
-       });
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.removeItem('vivafit-user');
     }
+    toast({
+      title: "Você saiu!",
+      description: "Esperamos te ver novamente em breve.",
+    });
+    router.push("/");
+    // A soft reload might be needed if the provider doesn't update across layouts
+    setTimeout(() => window.location.reload(), 500);
   };
 
   const menuItems = [
@@ -104,7 +76,7 @@ export default function DashboardLayout({
     { href: "/devices", label: "Dispositivos", icon: Smartphone },
   ];
   
-  if (!isReady) {
+  if (authLoading || !user) {
     return (
        <div className="flex min-h-screen bg-background">
         <div className="hidden md:block md:w-64 border-r p-4">

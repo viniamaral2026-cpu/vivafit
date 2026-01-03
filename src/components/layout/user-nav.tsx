@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CreditCard, LayoutDashboard, LogOut, User as UserIcon } from "lucide-react";
 import { useAuth } from "@/app/auth-provider";
-import { auth } from "@/lib/firebase/config";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -25,21 +24,15 @@ export function UserNav() {
   const { toast } = useToast();
 
   const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-      toast({
-        title: "Você saiu!",
-        description: "Esperamos te ver novamente em breve.",
-      });
-      router.push("/");
-    } catch (error) {
-       console.error("Erro ao fazer logout:", error);
-       toast({
-         title: "Erro",
-         description: "Não foi possível fazer logout. Tente novamente.",
-         variant: "destructive",
-       });
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.removeItem('vivafit-user');
     }
+    toast({
+      title: "Você saiu!",
+      description: "Esperamos te ver novamente em breve.",
+    });
+    router.push("/");
+    setTimeout(() => window.location.reload(), 500);
   };
 
   if (loading) {

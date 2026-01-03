@@ -13,14 +13,17 @@ const firebaseConfig = {
   "messagingSenderId": "813921240014"
 };
 
-// Initialize Firebase
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
-
-// Initialize Firestore with memory cache
-const db = initializeFirestore(app, {
-  localCache: memoryLocalCache()
-});
+// SIMULATED: Firebase is temporarily disabled to allow UI development without a backend.
+let app, auth, db;
+try {
+  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+  auth = getAuth(app);
+  db = initializeFirestore(app, {
+    localCache: memoryLocalCache()
+  });
+} catch (e) {
+    console.error("Firebase initialization failed. Running in offline mode.");
+}
 
 
 export { app, auth, db };

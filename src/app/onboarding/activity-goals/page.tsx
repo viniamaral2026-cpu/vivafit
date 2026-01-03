@@ -4,37 +4,22 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Footprints } from "lucide-react";
-import { doc, updateDoc } from "firebase/firestore";
-import { useAuth } from "@/app/auth-provider";
-import { db } from "@/lib/firebase/config";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function OnboardingActivityGoalsPage() {
     const router = useRouter();
-    const { user } = useAuth();
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleCompleteOnboarding = async () => {
-         if (!user) return;
         setIsSubmitting(true);
-        try {
-            const userDocRef = doc(db, "users", user.uid);
-            await updateDoc(userDocRef, {
-                onboardingComplete: true,
-            });
-            // Em um app real, as metas (Pontos cardio, Passos) seriam salvas aqui
-            toast({
-                title: "Tudo pronto!",
-                description: "Seu perfil foi configurado com sucesso. Bem-vindo(a)!",
-            });
-            router.push("/dashboard");
-        } catch (error) {
-            console.error("Error updating user document:", error);
-            toast({ title: "Erro", description: "Não foi possível finalizar a configuração.", variant: "destructive"});
-            setIsSubmitting(false);
-        }
+        // Simulate completing onboarding
+        toast({
+            title: "Tudo pronto!",
+            description: "Seu perfil foi configurado com sucesso. Bem-vindo(a)!",
+        });
+        router.push("/dashboard");
     };
 
     return (
