@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card"
 
 export function StatsSummary() {
     return (
-        <Card className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-4rem)] max-w-md shadow-lg p-4">
+        <Card className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-4rem)] max-w-md shadow-lg p-4 animate-in slide-in-from-bottom-4 duration-500">
              <div className="flex justify-around text-center w-full">
                 <div>
                     <div className="text-2xl font-bold">0</div>
