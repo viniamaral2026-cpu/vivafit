@@ -1,4 +1,6 @@
 
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -6,6 +8,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Crown, Calendar, BrainCircuit, ArrowLeft } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Article, Workout } from '@/lib/types';
+import { useAuth } from '../auth-provider';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 // Mock data based on the image
 const articles: (Article & { author_avatar: string })[] = [
@@ -61,6 +67,39 @@ const masterclassWorkouts: Workout[] = [
 ];
 
 export default function PremiumHubPage() {
+  const { isPremium, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !isPremium) {
+      router.push('/subscribe');
+    }
+  }, [isPremium, loading, router]);
+
+  if (loading || !isPremium) {
+    return (
+        <div className="space-y-12 p-8">
+            <Skeleton className="h-12 w-1/3" />
+            <div className="space-y-6">
+                <Skeleton className="h-8 w-1/4" />
+                <div className="grid md:grid-cols-2 gap-8">
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-48 w-full" />
+                </div>
+            </div>
+             <div className="space-y-6">
+                <Skeleton className="h-8 w-1/4" />
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-48 w-full" />
+                </div>
+            </div>
+        </div>
+    );
+  }
+
   return (
     <div className="bg-muted/30">
         <div className="container px-4 md:px-6 pt-6">

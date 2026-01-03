@@ -4,53 +4,60 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { User } from 'firebase/auth';
 import { Skeleton } from '@/components/ui/skeleton';
+import { usePathname, useRouter } from 'next/navigation';
 
 // Define a mock user type that is compatible with Firebase's User
-type MockUser = Pick<User, 'uid' | 'displayName' | 'email' | 'photoURL'>;
+export type MockUser = Pick<User, 'uid' | 'displayName' | 'email' | 'photoURL'> & {
+  subscription: 'Free' | 'Premium';
+};
 
 interface AuthContextType {
   user: MockUser | null;
   loading: boolean;
+  isPremium: boolean;
 }
 
-// Create a mock user for development
-const mockUser: MockUser = {
-  uid: 'mock-user-123',
-  displayName: 'Usuário de Teste',
-  email: 'teste@vivafit.com',
-  photoURL: 'https://i.pravatar.cc/150?u=mock-user-123',
-};
 
-
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true, isPremium: false });
 
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<MockUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     // Simulate fetching user data
     setTimeout(() => {
-      const sessionUser = typeof window !== 'undefined' && window.sessionStorage.getItem('vivafit-user');
-      const isNewUser = typeof window !== 'undefined' && window.sessionStorage.getItem('vivafit-new-user');
-
-      if (isNewUser) {
-        // Don't set user, let onboarding handle it.
-        // Or if you want to show user info during onboarding, you can parse and set it.
-        // For this flow, we'll assume the user is "logged in" but needs onboarding.
-         if(sessionUser) {
-            setUser(JSON.parse(sessionUser));
-         }
-      } else if(sessionUser) {
-        setUser(JSON.parse(sessionUser));
+      const sessionUserStr = typeof window !== 'undefined' ? window.sessionStorage.getItem('vivafit-user') : null;
+      
+      if (sessionUserStr) {
+        const sessionUser = JSON.parse(sessionUserStr);
+         // Ensure subscription status is part of the user object, default to 'Free' if not present
+        if (!sessionUser.subscription) {
+            sessionUser.subscription = 'Free';
+        }
+        setUser(sessionUser);
       } else {
         setUser(null); 
       }
       setLoading(false);
-    }, 500); // Shorten delay
+    }, 500);
   }, []);
+
+  const isPremium = user?.subscription === 'Premium';
+
+  useEffect(() => {
+    if (!loading) {
+      // Redirect non-premium users from premium-only pages
+      if (pathname === '/premium' && !isPremium) {
+        router.push('/subscribe');
+      }
+    }
+  }, [loading, isPremium, pathname, router]);
+
   
   if (loading) {
       return (
@@ -74,6 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = {
     user,
     loading,
+    isPremium,
   };
 
   return (
