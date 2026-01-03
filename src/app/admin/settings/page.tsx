@@ -65,11 +65,11 @@ export default function AdminSettingsPage() {
                         <CardContent className="space-y-4">
                              <div className="space-y-2">
                                 <Label htmlFor="pagseguro-token">Token do PagSeguro</Label>
-                                <Input id="pagseguro-token" type="password" placeholder="Cole seu token aqui" />
+                                <Input id="pagseguro-token" type="password" placeholder="Cole seu token aqui" defaultValue="127259b0-b0ea-4292-a853-3b5b3f107aab6a2d47b746979b36991bd6d3759cd17ea476-c986-478e-aa33-6da99e3bfe81" />
                             </div>
                              <div className="space-y-2">
                                 <Label htmlFor="pagseguro-email">E-mail do PagSeguro</Label>
-                                <Input id="pagseguro-email" type="email" placeholder="seu-email@pagseguro.com" />
+                                <Input id="pagseguro-email" type="email" placeholder="seu-email@pagseguro.com" defaultValue="dmgproductionsoficial@gmail.com" />
                             </div>
                              <Separator className="my-4" />
                              <div className="space-y-2">
